@@ -1,5 +1,6 @@
 "use client";
 import { motion } from 'framer-motion';
+import { ExternalLink, FileText, Github, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -20,111 +21,251 @@ interface Project {
   githubUrl?: string;
   liveDemoUrl?: string;
   paperUrl?: string;
+  category?: string;
+  featured?: boolean;
 }
 
 interface ProjectCardProps {
   project: Project;
-  variants?: any; // Accept variants prop
+  variants?: {
+    hidden: { opacity: number; y: number; scale: number };
+    visible: { opacity: number; y: number; scale: number; transition: object };
+  };
+  index?: number;
 }
 
-// Placeholder icons (replace with actual SVGs or an icon library like Heroicons)
-const GitHubIcon = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-);
-const ExternalLinkIcon = ({ className }: { className?: string }) => (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-);
-const DocumentIcon = ({ className }: { className?: string }) => (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2zM12 3v6h6"></path></svg>
+// Function to infer image based on project title/category
+const getInferredImage = (project: Project): string => {
+  const title = project.title.toLowerCase();
+  const category = project.category?.toLowerCase() || '';
+  
+  // Map projects to appropriate images
+  if (title.includes('pose') || title.includes('health') || title.includes('sports')) {
+    return '/images/pose-analysis.svg';
+  }
+  if (title.includes('farm') || title.includes('agricultural') || title.includes('agriculture')) {
+    return '/images/farm-vision.svg';
+  }
+  if (title.includes('penguinpal') || title.includes('email')) {
+    return '/images/email-ai.svg';
+  }
+  if (title.includes('vista') || title.includes('pacific') || title.includes('financing')) {
+    return '/images/finance-platform.svg';
+  }
+  if (title.includes('phishing') || title.includes('security')) {
+    return '/images/cybersecurity.svg';
+  }
+  if (category === 'ai-ml') {
+    return '/images/ai-ml-default.svg';
+  }
+  if (category === 'web-dev') {
+    return '/images/web-dev-default.svg';
+  }
+  if (category === 'research') {
+    return '/images/research-default.svg';
+  }
+  if (category === 'security') {
+    return '/images/security-default.svg';
+  }
+  
+  // Default fallback
+  return '/images/project-default.svg';
+};
+
+const TechBadge = ({ tech }: { tech: string }) => (
+  <motion.span
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.3 }}
+    className="px-3 py-1 bg-white/10 backdrop-blur-sm text-white/80 text-xs font-medium rounded-full border border-white/20 hover:bg-white/20 hover:border-white/40 transition-all duration-300"
+  >
+    {tech}
+  </motion.span>
 );
 
-export default function ProjectCard({ project, variants }: ProjectCardProps) {
+const ActionButton = ({ href, icon: Icon, label, color = "purple" }) => {
+  const colorClasses = {
+    purple: "from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500",
+    blue: "from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500",
+    green: "from-green-500 to-green-600 hover:from-green-400 hover:to-green-500",
+    orange: "from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500"
+  };
+
   return (
-    <motion.div 
-      variants={variants}
-      className="group relative bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-2xl"
-      whileHover={{ y: -5 }}
+    <motion.div
+      whileHover={{ scale: 1.05, y: -2 }}
+      whileTap={{ scale: 0.95 }}
     >
-      {project.videoUrl ? (
-        <div className="aspect-video rounded-t-lg overflow-hidden">
-          <iframe 
-            src={project.videoUrl}
-            title={project.title}
-            allowFullScreen 
-            className="w-full h-full"
-          />
-        </div>
-      ) : project.imageUrl ? (
-        <div className="relative w-full h-56 rounded-t-lg overflow-hidden">
-          <Image 
-            src={project.imageUrl} 
-            alt={project.title} 
-            layout="fill" 
-            objectFit="cover"
-            className="transition-transform duration-300 group-hover:scale-105"
-          />
-        </div>
-      ) : (
-        <div className="w-full h-56 bg-gray-300 dark:bg-gray-700 flex items-center justify-center rounded-t-lg">
-            <span className="text-gray-500">No Image/Video</span>
-        </div>
-      )}
-
-      <div className="p-6">
-        <h3 className="text-xl font-semibold mb-2 text-primary dark:text-blue-400">{project.title}</h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 h-12 overflow-hidden">
-          {project.shortDescription}
-        </p>
-        
-        <div className="mb-4">
-            <h4 className="text-xs font-semibold uppercase text-gray-500 dark:text-gray-500 mb-1">Tech Stack:</h4>
-            <div className="flex flex-wrap gap-2">
-                {project.techStack.slice(0, 5).map(tech => (
-                    <span key={tech} className="text-xs bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded-full">
-                        {tech}
-                    </span>
-                ))}
-                {project.techStack.length > 5 && (
-                     <span className="text-xs bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded-full">
-                        +{project.techStack.length - 5} more
-                    </span>
-                )}
-            </div>
-        </div>
-      </div>
-
-      {/* Overlay for detailed description and links, revealed on hover */}
-      <div 
-        className="absolute inset-0 flex flex-col p-6 text-white 
-                   opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 
-                   bg-black/80 backdrop-blur-sm rounded-lg overflow-y-auto"
+      <Link 
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`group flex items-center space-x-2 px-4 py-2 bg-gradient-to-r ${colorClasses[color]} text-white rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl`}
       >
-        <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-        <div className="text-sm mb-3 space-y-1 text-gray-200">
-          <p><strong className="text-blue-300">Situation:</strong> {project.detailedDescription.situation}</p>
-          <p><strong className="text-blue-300">Task:</strong> {project.detailedDescription.task}</p>
-          <p><strong className="text-blue-300">Action:</strong> {project.detailedDescription.action}</p>
-          <p><strong className="text-blue-300">Result:</strong> {project.detailedDescription.result}</p>
+        <Icon className="w-4 h-4" />
+        <span className="text-sm font-medium">{label}</span>
+      </Link>
+    </motion.div>
+  );
+};
+
+export default function ProjectCard({ project, variants, index = 0 }: ProjectCardProps) {
+  const cardVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 50,
+      scale: 0.9
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        delay: index * 0.1,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      }
+    }
+  };
+
+  // Use inferred image if no imageUrl is provided
+  const displayImage = project.imageUrl || getInferredImage(project);
+
+  return (
+    <motion.div
+      variants={variants || cardVariants}
+      initial="hidden"
+      animate="visible"
+      className="group relative h-[500px]"
+    >
+      {/* Main Card */}
+      <motion.div
+        className="relative h-full bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl"
+        whileHover={{ 
+          scale: 1.02,
+          transition: { duration: 0.2 }
+        }}
+      >
+        {/* Animated gradient overlay */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-blue-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        />
+
+        {/* Featured Badge */}
+        {project.featured && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5 }}
+            className="absolute top-4 right-4 z-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full p-2 shadow-lg"
+          >
+            <Star className="w-4 h-4 text-white" />
+          </motion.div>
+        )}
+
+        {/* Category Badge */}
+        <div className="absolute top-4 left-4 z-20">
+          <motion.span 
+            className="px-3 py-1 bg-black/30 backdrop-blur-sm text-white text-xs font-medium rounded-full border border-white/20"
+            whileHover={{ scale: 1.05 }}
+          >
+            {project.category?.toUpperCase() || 'PROJECT'}
+          </motion.span>
         </div>
 
-        <div className="mt-auto flex items-center space-x-4 pt-4 border-t border-gray-600">
-          {project.githubUrl && (
-            <Link href={project.githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
-              <GitHubIcon className="w-6 h-6 hover:text-primary transition-colors"/>
-            </Link>
-          )}
-          {project.liveDemoUrl && (
-            <Link href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer" aria-label="Live Demo">
-              <ExternalLinkIcon className="w-6 h-6 hover:text-green-400 transition-colors" />
-            </Link>
-          )}
-          {project.paperUrl && (
-            <Link href={project.paperUrl} target="_blank" rel="noopener noreferrer" aria-label="Research Paper or Document">
-              <DocumentIcon className="w-6 h-6 hover:text-yellow-400 transition-colors" />
-            </Link>
+        {/* Image/Video Section */}
+        <div className="relative h-48 overflow-hidden">
+          {project.videoUrl ? (
+            <iframe 
+              src={project.videoUrl}
+              title={project.title}
+              allowFullScreen 
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="relative w-full h-full">
+              <Image 
+                src={displayImage} 
+                alt={project.title} 
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            </div>
           )}
         </div>
-      </div>
+
+        {/* Content Section */}
+        <div className="p-6 space-y-4 relative z-10">
+          <motion.h3 
+            className="text-xl font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-blue-400 group-hover:bg-clip-text transition-all duration-300 line-clamp-2"
+          >
+            {project.title}
+          </motion.h3>
+          
+          <motion.p 
+            className="text-white/80 text-sm leading-relaxed line-clamp-3"
+          >
+            {project.shortDescription}
+          </motion.p>
+          
+          {/* Tech Stack */}
+          <div className="space-y-2">
+            <h4 className="text-xs font-semibold uppercase text-white/60 tracking-wider">
+              Tech Stack
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {project.techStack.slice(0, 4).map((tech, _) => (
+                <TechBadge key={tech} tech={tech} />
+              ))}
+              {project.techStack.length > 4 && (
+                <span className="px-3 py-1 bg-white/5 text-white/60 text-xs rounded-full border border-white/10">
+                  +{project.techStack.length - 4}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center justify-between pt-4">
+            <div className="flex space-x-2">
+              {project.githubUrl && (
+                <ActionButton 
+                  href={project.githubUrl} 
+                  icon={Github} 
+                  label="Code" 
+                  color="purple" 
+                />
+              )}
+              {project.liveDemoUrl && (
+                <ActionButton 
+                  href={project.liveDemoUrl} 
+                  icon={ExternalLink} 
+                  label="Demo" 
+                  color="blue" 
+                />
+              )}
+            </div>
+            
+            {project.paperUrl && (
+              <ActionButton 
+                href={project.paperUrl} 
+                icon={FileText} 
+                label="Paper" 
+                color="orange" 
+              />
+            )}
+          </div>
+        </div>
+
+        {/* Simple Hover Glow Effect */}
+        <motion.div
+          className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+          style={{
+            background: "linear-gradient(45deg, transparent, rgba(147, 51, 234, 0.1), transparent, rgba(59, 130, 246, 0.1), transparent)",
+          }}
+        />
+      </motion.div>
     </motion.div>
   );
 } 
