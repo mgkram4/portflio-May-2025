@@ -83,7 +83,14 @@ const TechBadge = ({ tech }: { tech: string }) => (
   </motion.span>
 );
 
-const ActionButton = ({ href, icon: Icon, label, color = "purple" }) => {
+interface ActionButtonProps {
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  color?: "purple" | "blue" | "green" | "orange";
+}
+
+const ActionButton = ({ href, icon: Icon, label, color = "purple" }: ActionButtonProps) => {
   const colorClasses = {
     purple: "from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500",
     blue: "from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500",
@@ -215,6 +222,7 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
               Tech Stack
             </h4>
             <div className="flex flex-wrap gap-2">
+              {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
               {project.techStack.slice(0, 4).map((tech, _) => (
                 <TechBadge key={tech} tech={tech} />
               ))}

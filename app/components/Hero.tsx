@@ -25,7 +25,12 @@ const FloatingOrb = ({ delay = 0, duration = 4, size = "w-4 h-4", left = 50, top
   />
 );
 
-const TypewriterText = ({ text, delay = 0 }) => {
+interface TypewriterTextProps {
+  text: string;
+  delay?: number;
+}
+
+const TypewriterText = ({ text, delay = 0 }: TypewriterTextProps) => {
   const [displayText, setDisplayText] = useState(text); // Start with full text to prevent hydration mismatch
   const [currentIndex, setCurrentIndex] = useState(text.length); // Start at end
   const [isClient, setIsClient] = useState(false);
@@ -70,7 +75,14 @@ const TypewriterText = ({ text, delay = 0 }) => {
   );
 };
 
-const StatCard = ({ icon: Icon, value, label, delay }) => (
+interface StatCardProps {
+  icon: React.ComponentType<{ className?: string }>;
+  value: string;
+  label: string;
+  delay: number;
+}
+
+const StatCard = ({ icon: Icon, value, label, delay }: StatCardProps) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}

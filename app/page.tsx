@@ -15,7 +15,7 @@ const featuredProjects = [
       situation: "Developed for Hack for Humanity 2025, aiming to provide a modern web application for agricultural monitoring and analysis.",
       task: "Combine weather data, soil metrics, AI-powered disease detection, and yield prediction into a unified, mobile-responsive dashboard.",
       action: "Built with HTML5, CSS3, Vanilla JavaScript (with Chart.js) on the frontend, and Python (FastAPI) on the backend. Utilized PyTorch and Scikit-learn for machine learning models.",
-      result: "Winner of 'Best use of AI/ML' at Hack for Humanity 2025. Placed 14th-42nd overall."
+      result: "Winner of &apos;Best use of AI/ML&apos; at Hack for Humanity 2025. Placed 14th-42nd overall."
     },
     techStack: ["Python", "FastAPI", "PyTorch", "Scikit-learn", "AI/ML", "HTML5", "CSS3", "JavaScript", "Chart.js"],
     githubUrl: "https://github.com/mgkram4/Hack-4-Humanity-2025",
@@ -60,7 +60,15 @@ const featuredProjects = [
   }
 ];
 
-const StatCard = ({ icon: Icon, value, label, delay, gradient }) => {
+interface StatCardProps {
+  icon: React.ComponentType<{ className?: string }>;
+  value: string;
+  label: string;
+  delay: number;
+  gradient: string;
+}
+
+const StatCard = ({ icon: Icon, value, label, delay, gradient }: StatCardProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30, scale: 0.8 }}
@@ -92,7 +100,13 @@ const StatCard = ({ icon: Icon, value, label, delay, gradient }) => {
   );
 };
 
-const SkillBadge = ({ skill, delay, variant = "default" }) => {
+interface SkillBadgeProps {
+  skill: string;
+  delay: number;
+  variant?: "default" | "accent" | "highlight";
+}
+
+const SkillBadge = ({ skill, delay, variant = "default" }: SkillBadgeProps) => {
   const variants = {
     default: "from-purple-500/20 to-blue-500/20 border-purple-400/30 text-purple-200 hover:border-purple-300/50",
     accent: "from-emerald-500/20 to-cyan-500/20 border-emerald-400/30 text-emerald-200 hover:border-emerald-300/50",
@@ -112,7 +126,13 @@ const SkillBadge = ({ skill, delay, variant = "default" }) => {
   );
 };
 
-const FloatingElement = ({ children, delay = 0, duration = 3 }) => (
+interface FloatingElementProps {
+  children: React.ReactNode;
+  delay?: number;
+  duration?: number;
+}
+
+const FloatingElement = ({ children, delay = 0, duration = 3 }: FloatingElementProps) => (
   <motion.div
     animate={{
       y: [0, -10, 0],
@@ -137,7 +157,7 @@ export default function HomePage() {
     cta: false
   });
 
-  const skills = [
+  const skills: Array<{ name: string; variant: "default" | "accent" | "highlight" }> = [
     { name: "PyTorch", variant: "default" },
     { name: "TensorFlow", variant: "default" },
     { name: "Computer Vision", variant: "accent" },

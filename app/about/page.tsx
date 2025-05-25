@@ -4,7 +4,13 @@ import { Award, Brain, Code, Eye, Rocket, Target, Users, Zap } from 'lucide-reac
 import React, { useEffect, useState } from 'react';
 import Skills from '../components/Skills';
 
-const FloatingElement = ({ children, delay = 0, duration = 6 }) => (
+interface FloatingElementProps {
+  children: React.ReactNode;
+  delay?: number;
+  duration?: number;
+}
+
+const FloatingElement = ({ children, delay = 0, duration = 6 }: FloatingElementProps) => (
   <motion.div
     animate={{
       y: [-10, 10, -10],
@@ -21,7 +27,13 @@ const FloatingElement = ({ children, delay = 0, duration = 6 }) => (
   </motion.div>
 );
 
-const CountUpNumber = ({ end, duration = 2, delay = 0 }) => {
+interface CountUpNumberProps {
+  end: number;
+  duration?: number;
+  delay?: number;
+}
+
+const CountUpNumber = ({ end, duration = 2, delay = 0 }: CountUpNumberProps) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -45,7 +57,22 @@ const CountUpNumber = ({ end, duration = 2, delay = 0 }) => {
   return <span>{count}</span>;
 };
 
-const InteractiveCard = ({ icon: Icon, title, description, color, delay, stats }) => {
+interface Stat {
+  value: number;
+  suffix: string;
+  label: string;
+}
+
+interface InteractiveCardProps {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  description: string;
+  color: string;
+  delay: number;
+  stats?: Stat[];
+}
+
+const InteractiveCard = ({ icon: Icon, title, description, color, delay, stats }: InteractiveCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -95,7 +122,14 @@ const InteractiveCard = ({ icon: Icon, title, description, color, delay, stats }
   );
 };
 
-const TimelineItem = ({ year, title, description, index }) => (
+interface TimelineItemProps {
+  year: string;
+  title: string;
+  description: string;
+  index: number;
+}
+
+const TimelineItem = ({ year, title, description, index }: TimelineItemProps) => (
   <motion.div
     initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
     whileInView={{ opacity: 1, x: 0 }}
@@ -379,7 +413,7 @@ export default function AboutPage() {
               <Award className="w-16 h-16 text-purple-400 mx-auto mb-6" />
               <h3 className="text-3xl md:text-4xl font-bold mb-6">
                 <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                  Let's Build the Future Together
+                  Let&apos;s Build the Future Together
                 </span>
               </h3>
               <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">

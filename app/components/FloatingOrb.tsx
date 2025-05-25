@@ -80,7 +80,8 @@ function AnimatedOrb() {
 function ParticleField() {
   const particlesRef = useRef<THREE.Points>(null);
 
-  useFrame((state) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  useFrame((_state) => {
     if (particlesRef.current) {
       particlesRef.current.rotation.y += 0.002;
       particlesRef.current.rotation.x += 0.001;

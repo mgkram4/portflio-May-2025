@@ -157,7 +157,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300">
+      <body className="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300" suppressHydrationWarning>
         <Navbar />
         <main>
           {children}

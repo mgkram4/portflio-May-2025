@@ -63,7 +63,7 @@ export default function ContactForm() {
         </div>
         <h3 className="text-3xl font-bold text-white mb-4">Message Sent!</h3>
         <p className="text-gray-300 text-lg mb-6">
-          Thank you for reaching out. I'll get back to you within 24 hours.
+          Thank you for reaching out. I&apos;ll get back to you within 24 hours.
         </p>
         <motion.button
           onClick={() => setSubmitted(false)}

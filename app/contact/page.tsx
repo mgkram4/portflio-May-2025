@@ -168,6 +168,7 @@ export default function ContactPage() {
                 Let&apos;s Connect
               </span>
             </h2>
+            {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
             {contactMethods.map((method, _) => (
               <motion.div
                 key={method.title}
