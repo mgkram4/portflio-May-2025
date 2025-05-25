@@ -1,9 +1,14 @@
 "use client";
 
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
 import ProjectCard from '../components/ProjectCard';
-import ProjectsThreeBackground from '../components/ProjectsThreeBackground';
+
+const HomeThreeBackground = dynamic(() => import('../components/HomeThreeBackground'), {
+  ssr: false,
+  loading: () => null
+});
 
 const projects = [
   {
@@ -336,79 +341,30 @@ const categories = [
 ];
 
 export default function ProjectsPage() {
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const { scrollYProgress } = useScroll();
+  const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
+
+  const smoothY = useSpring(y, { stiffness: 300, damping: 30 });
+  const smoothOpacity = useSpring(opacity, { stiffness: 300, damping: 30 });
+
   const [scrollY, setScrollY] = useState(0);
   const [mounted, setMounted] = useState(false);
   const [threeLoaded, setThreeLoaded] = useState(false);
-  
-  const { scrollYProgress } = useScroll();
-  
-  // Advanced scroll-based animations
-  const headerY = useTransform(scrollYProgress, [0, 0.2], [0, -100]);
-  const headerOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  const titleScale = useTransform(scrollYProgress, [0, 0.1], [1, 0.8]);
-  
-  // Smooth spring animations
-  const smoothHeaderY = useSpring(headerY, { stiffness: 300, damping: 30 });
-  const smoothOpacity = useSpring(headerOpacity, { stiffness: 300, damping: 30 });
+  const [filter, setFilter] = useState("all");
+  const [visibleProjects, setVisibleProjects] = useState(6);
 
   useEffect(() => {
     setMounted(true);
-    // Load Three.js background after a short delay
-    const timer = setTimeout(() => {
-      setThreeLoaded(true);
-    }, 1000);
-    
+    setThreeLoaded(true);
+
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearTimeout(timer);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const filteredProjects = selectedCategory === 'all' 
-    ? projects 
-    : projects.filter(project => project.category === selectedCategory);
+  const filteredProjects = projects.filter(project => project.category === filter || filter === 'all');
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3
-      }
-    }
-  };
-
-  const categoryVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        delay: i * 0.1,
-        ease: [0.25, 0.46, 0.45, 0.94]
-      }
-    })
-  };
-
-  const statsVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.6,
-        delay: 0.8,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  // Don't render until mounted to avoid hydration issues
   if (!mounted) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
@@ -418,99 +374,68 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden">
-      {/* Three.js Background - Load after initial render */}
-      {threeLoaded && <ProjectsThreeBackground scrollY={scrollY} />}
+    <div className="min-h-screen bg-black text-white overflow-x-hidden relative" suppressHydrationWarning>
+      {/* Three.js Background */}
+      {threeLoaded && <HomeThreeBackground scrollY={scrollY} />}
       
       {/* Fallback gradient background */}
       {!threeLoaded && (
         <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-black to-purple-900/20 z-0" />
       )}
       
+      {/* Header section */}
+      <motion.header
+        style={{ y: smoothY, opacity: smoothOpacity }}
+        className="pt-24 pb-16 relative"
+      >
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="text-center"
+          >
+            <motion.h1 
+              className="text-6xl md:text-8xl font-black mb-8 leading-tight"
+            >
+              <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                Projects
+              </span>
+              <br />
+              <span className="text-white/80 text-4xl md:text-5xl font-light">
+                Portfolio
+              </span>
+            </motion.h1>
+            
+            <motion.p 
+              className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed"
+            >
+              Innovative solutions spanning{' '}
+              <span className="text-purple-400 font-semibold">AI/ML</span>,{' '}
+              <span className="text-blue-400 font-semibold">Web Development</span>,{' '}
+              <span className="text-cyan-400 font-semibold">Research</span>, and{' '}
+              <span className="text-green-400 font-semibold">Security</span>
+            </motion.p>
+          </motion.div>
+        </div>
+      </motion.header>
+
       {/* Content */}
       <div className="relative z-10">
-        {/* Hero Header */}
-        <motion.div 
-          style={{ y: smoothHeaderY, opacity: smoothOpacity }}
-          className="pt-24 pb-16 relative"
-        >
-          <div className="container mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="text-center"
-            >
-              <motion.h1 
-                style={{ scale: titleScale }}
-                className="text-6xl md:text-8xl font-black mb-8 leading-tight"
-              >
-                <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                  Projects
-                </span>
-                <br />
-                <span className="text-white/80 text-4xl md:text-5xl font-light">
-                  Portfolio
-                </span>
-              </motion.h1>
-              
-              <motion.p 
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed"
-              >
-                Innovative solutions spanning{' '}
-                <span className="text-purple-400 font-semibold">AI/ML</span>,{' '}
-                <span className="text-blue-400 font-semibold">Web Development</span>,{' '}
-                <span className="text-cyan-400 font-semibold">Research</span>, and{' '}
-                <span className="text-green-400 font-semibold">Security</span>
-              </motion.p>
-
-              {/* Stats */}
-              <motion.div
-                variants={statsVariants}
-                initial="hidden"
-                animate="visible"
-                className="flex justify-center items-center space-x-8 mt-12"
-              >
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-400">{projects.length}</div>
-                  <div className="text-sm text-gray-400 uppercase tracking-wider">Projects</div>
-                </div>
-                <div className="w-px h-12 bg-gray-600"></div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-400">{projects.filter(p => p.featured).length}</div>
-                  <div className="text-sm text-gray-400 uppercase tracking-wider">Featured</div>
-                </div>
-                <div className="w-px h-12 bg-gray-600"></div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-cyan-400">{categories.length - 1}</div>
-                  <div className="text-sm text-gray-400 uppercase tracking-wider">Categories</div>
-                </div>
-              </motion.div>
-            </motion.div>
-          </div>
-        </motion.div>
-
         {/* Category Filter */}
         <div className="container mx-auto px-6 mb-16">
           <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
             className="flex flex-wrap justify-center gap-4"
           >
             {categories.map((category, index) => (
               <motion.button
                 key={category.id}
-                variants={categoryVariants}
                 custom={index}
-                onClick={() => setSelectedCategory(category.id)}
+                onClick={() => setFilter(category.id)}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 className={`group relative px-8 py-4 rounded-2xl text-sm font-semibold transition-all duration-300 ${
-                  selectedCategory === category.id
+                  filter === category.id
                     ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-2xl shadow-purple-500/25'
                     : 'bg-gray-900/50 text-gray-300 hover:bg-gray-800/50 hover:text-white border border-gray-700/50 backdrop-blur-sm'
                 }`}
@@ -519,14 +444,6 @@ export default function ProjectsPage() {
                   <span className="text-lg">{category.icon}</span>
                   <span>{category.name}</span>
                 </span>
-                
-                {selectedCategory === category.id && (
-                  <motion.div
-                    layoutId="activeCategory"
-                    className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl -z-10"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
               </motion.button>
             ))}
           </motion.div>
@@ -535,15 +452,11 @@ export default function ProjectsPage() {
         {/* Projects Grid */}
         <div className="container mx-auto px-6 pb-20">
           <motion.div
-            key={selectedCategory}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {filteredProjects.map((project, index) => (
               <ProjectCard
-                key={`${project.title}-${selectedCategory}-${index}`}
+                key={`${project.title}-${filter}-${index}`}
                 project={project}
                 index={index}
               />

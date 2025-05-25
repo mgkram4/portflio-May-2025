@@ -1,14 +1,14 @@
 "use client";
 
-import { Download, Github, Linkedin, Mail, Menu, Moon, Sun, X } from 'lucide-react';
+import { Download, Github, Linkedin, Mail, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { BsHexagonFill } from 'react-icons/bs';
 
 const ModernNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [isDark, setIsDark] = useState(true);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isClient, setIsClient] = useState(false);
   const pathname = usePathname();
@@ -41,11 +41,6 @@ const ModernNavbar = () => {
     { name: 'Contact', href: '/contact', id: 'contact' },
   ];
 
-  const toggleTheme = () => {
-    setIsDark(!isDark);
-    // In a real app, you'd implement actual theme switching logic here
-  };
-
   const isActiveRoute = (href: string) => {
     if (href === '/') {
       return pathname === '/';
@@ -68,9 +63,9 @@ const ModernNavbar = () => {
               <div className="absolute -inset-2 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full opacity-0 group-hover:opacity-20 blur-xl transition-all duration-500"></div>
               <Link 
                 href="/"
-                className="relative text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent hover:from-purple-300 hover:to-blue-300 transition-all duration-300"
+                className="relative text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent hover:from-purple-300 hover:to-blue-300 transition-all duration-300 flex items-center"
               >
-                MG
+                <BsHexagonFill className="h-8 w-8 text-purple-400 group-hover:text-purple-300 transition-all duration-300" />
               </Link>
             </div>
 
@@ -106,8 +101,8 @@ const ModernNavbar = () => {
               <div className="flex items-center space-x-2">
                 {[
                   { icon: Github, href: "https://github.com/mgkram4", label: "GitHub" },
-                  { icon: Linkedin, href: "https://linkedin.com/in/markgarcia4", label: "LinkedIn" },
-                  { icon: Mail, href: "mailto:contact@markgarcia.dev", label: "Email" }
+                  { icon: Linkedin, href: "https://www.linkedin.com/in/mark-garcia-mg18/", label: "LinkedIn" },
+                  { icon: Mail, href: "mailto:mark.garcia4@laverne.edu", label: "Email" }
                 ].map(({ icon: Icon, href, label }) => (
                   <a
                     key={label}
@@ -123,24 +118,19 @@ const ModernNavbar = () => {
                 ))}
               </div>
 
-              {/* Theme Toggle */}
-              <button
-                onClick={toggleTheme}
-                className="relative p-2 text-gray-400 hover:text-purple-400 rounded-full transition-all duration-300 group hover:scale-110"
-                aria-label="Toggle theme"
-              >
-                <div className="absolute inset-0 bg-purple-500/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                {isDark ? <Sun size={18} className="relative z-10" /> : <Moon size={18} className="relative z-10" />}
-              </button>
-
               {/* Resume Download */}
-              <button className="relative px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white text-sm font-medium rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 group overflow-hidden">
+              <a
+                href="/placeholder-resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white text-sm font-medium rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 group overflow-hidden"
+              >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative flex items-center space-x-2">
                   <Download size={16} />
                   <span>Resume</span>
                 </div>
-              </button>
+              </a>
             </div>
 
             {/* Mobile menu button */}
@@ -190,8 +180,8 @@ const ModernNavbar = () => {
               <div className="flex justify-center space-x-6 mb-6">
                 {[
                   { icon: Github, href: "https://github.com/mgkram4", label: "GitHub" },
-                  { icon: Linkedin, href: "https://linkedin.com/in/markgarcia4", label: "LinkedIn" },
-                  { icon: Mail, href: "mailto:contact@markgarcia.dev", label: "Email" }
+                  { icon: Linkedin, href: "https://www.linkedin.com/in/mark-garcia-mg18/", label: "LinkedIn" },
+                  { icon: Mail, href: "mailto:mark.garcia4@laverne.edu", label: "Email" }
                 ].map(({ icon: Icon, href, label }) => (
                   <a
                     key={label}
@@ -208,18 +198,15 @@ const ModernNavbar = () => {
 
               {/* Mobile Actions */}
               <div className="space-y-3">
-                <button
-                  onClick={toggleTheme}
-                  className="w-full px-4 py-3 text-gray-300 hover:text-white border border-gray-700/50 rounded-lg transition-all duration-300 hover:border-purple-500/50 flex items-center justify-center space-x-2"
+                <a
+                  href="/placeholder-resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full px-4 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-medium rounded-lg transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-2"
                 >
-                  {isDark ? <Sun size={18} /> : <Moon size={18} />}
-                  <span>Toggle Theme</span>
-                </button>
-                
-                <button className="w-full px-4 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-medium rounded-lg transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-2">
                   <Download size={18} />
                   <span>Download Resume</span>
-                </button>
+                </a>
               </div>
             </div>
           </div>

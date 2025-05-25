@@ -1,8 +1,15 @@
 "use client";
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { Award, Brain, Code, Eye, Rocket, Target, Users, Zap } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
 import Skills from '../components/Skills';
+
+// Dynamic import for 3D background
+const HomeThreeBackground = dynamic(() => import('../components/HomeThreeBackground'), {
+  ssr: false,
+  loading: () => null
+});
 
 interface FloatingElementProps {
   children: React.ReactNode;
@@ -82,7 +89,7 @@ const InteractiveCard = ({ icon: Icon, title, description, color, delay, stats }
       transition={{ delay, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-xl border border-gray-700/50 rounded-3xl p-8 hover:border-purple-500/50 transition-all duration-500 overflow-hidden"
+      className="group relative bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-xl border border-gray-700/50 rounded-3xl p-8 hover:border-blue-500/50 transition-all duration-500 overflow-hidden"
     >
       {/* Animated background */}
       <motion.div
@@ -99,7 +106,7 @@ const InteractiveCard = ({ icon: Icon, title, description, color, delay, stats }
       </FloatingElement>
       
       <div className="relative z-10">
-        <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-blue-400 group-hover:bg-clip-text transition-all duration-300">
+        <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-sky-400 group-hover:bg-clip-text transition-all duration-300">
           {title}
         </h3>
         <p className="text-gray-300 leading-relaxed mb-6">{description}</p>
@@ -108,7 +115,7 @@ const InteractiveCard = ({ icon: Icon, title, description, color, delay, stats }
           <div className="grid grid-cols-2 gap-4">
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
-                <div className="text-2xl font-bold text-purple-400">
+                <div className="text-2xl font-bold text-blue-400">
                   <CountUpNumber end={stat.value} delay={delay + 500 + index * 200} />
                   {stat.suffix}
                 </div>
@@ -137,16 +144,16 @@ const TimelineItem = ({ year, title, description, index }: TimelineItemProps) =>
     className={`flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'} mb-12`}
   >
     <div className={`flex-1 ${index % 2 === 0 ? 'pr-8' : 'pl-8'}`}>
-      <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-6 hover:border-purple-500/30 transition-all duration-300">
-        <div className="text-purple-400 font-bold text-lg mb-2">{year}</div>
+      <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-6 hover:border-blue-500/30 transition-all duration-300">
+        <div className="text-blue-400 font-bold text-lg mb-2">{year}</div>
         <h4 className="text-xl font-semibold text-white mb-3">{title}</h4>
         <p className="text-gray-300">{description}</p>
       </div>
     </div>
     
     <div className="relative">
-      <div className="w-4 h-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full border-4 border-gray-900"></div>
-      {index < 2 && <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-0.5 h-16 bg-gradient-to-b from-purple-500 to-blue-500"></div>}
+      <div className="w-4 h-4 bg-gradient-to-r from-blue-500 to-sky-500 rounded-full border-4 border-gray-900"></div>
+      {index < 2 && <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-0.5 h-16 bg-gradient-to-b from-blue-500 to-sky-500"></div>}
     </div>
     
     <div className="flex-1"></div>
@@ -161,12 +168,27 @@ export default function AboutPage() {
   const smoothY = useSpring(y, { stiffness: 300, damping: 30 });
   const smoothOpacity = useSpring(opacity, { stiffness: 300, damping: 30 });
 
+  const [scrollY, setScrollY] = useState(0);
+  const [mounted, setMounted] = useState(false);
+  const [threeLoaded, setThreeLoaded] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setThreeLoaded(true); 
+    
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   const achievements = [
     {
       icon: Brain,
       title: "AI Research Excellence",
       description: "Published researcher in IEEE conferences with focus on computer vision and biometric analysis. Achieved 63%+ accuracy improvements in pose estimation systems.",
-      color: "from-purple-500 to-blue-500",
+      color: "from-blue-500 to-sky-500",
       delay: 0.2,
       stats: [
         { value: 3, suffix: "+", label: "Publications" },
@@ -177,7 +199,7 @@ export default function AboutPage() {
       icon: Code,
       title: "Full-Stack Mastery",
       description: "End-to-end development expertise from AI model deployment to production-ready web applications. Specialized in modern frameworks and cloud technologies.",
-      color: "from-blue-500 to-cyan-500",
+      color: "from-sky-500 to-cyan-500",
       delay: 0.4,
       stats: [
         { value: 15, suffix: "+", label: "Projects" },
@@ -215,36 +237,23 @@ export default function AboutPage() {
     }
   ];
 
-  return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden">
-      {/* Animated Background */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-purple-900/20" />
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
-        
-        {/* Floating orbs */}
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-6 h-6 bg-gradient-to-r from-purple-400/20 to-blue-400/20 rounded-full"
-            animate={{
-              y: [-20, 20, -20],
-              x: [-10, 10, -10],
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: 4 + Math.random() * 2,
-              delay: i * 0.5,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-          />
-        ))}
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-2xl">Loading...</div>
       </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-black text-white overflow-x-hidden relative" suppressHydrationWarning>
+      {/* Three.js Background */}
+      {threeLoaded && <HomeThreeBackground scrollY={scrollY} />}
+      
+      {/* Fallback gradient background */}
+      {!threeLoaded && (
+        <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-black to-blue-900/20 z-0" />
+      )}
 
       {/* Hero Section */}
       <motion.div 
@@ -259,7 +268,7 @@ export default function AboutPage() {
             className="text-center max-w-4xl mx-auto"
           >
             <motion.div
-              className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-purple-600/20 to-blue-600/20 backdrop-blur-sm border border-purple-500/30 rounded-full text-purple-300 text-sm font-medium mb-8"
+              className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-600/20 to-sky-600/20 backdrop-blur-sm border border-blue-500/30 rounded-full text-blue-300 text-sm font-medium mb-8"
               whileHover={{ scale: 1.05 }}
             >
               <Zap className="w-4 h-4" />
@@ -267,10 +276,10 @@ export default function AboutPage() {
             </motion.div>
             
             <h1 className="text-6xl md:text-8xl font-black mb-8 leading-tight">
-              <span className="block bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-white via-sky-200 to-blue-200 bg-clip-text text-transparent">
                 About
               </span>
-              <span className="block bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-blue-400 via-sky-400 to-cyan-400 bg-clip-text text-transparent">
                 Mark
               </span>
             </h1>
@@ -282,9 +291,9 @@ export default function AboutPage() {
               className="text-xl md:text-2xl text-gray-300 leading-relaxed"
             >
               Passionate about leveraging{' '}
-              <span className="text-purple-400 font-semibold">AI to solve real-world problems</span>{' '}
+              <span className="text-blue-400 font-semibold">AI to solve real-world problems</span>{' '}
               and create meaningful impact through{' '}
-              <span className="text-blue-400 font-semibold">cutting-edge technology</span>.
+              <span className="text-sky-400 font-semibold">cutting-edge technology</span>.
             </motion.p>
           </motion.div>
         </div>
@@ -299,7 +308,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-4xl md:text-5xl font-bold text-center mb-16"
           >
-            <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
               Core Expertise
             </span>
           </motion.h2>
@@ -321,7 +330,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-4xl md:text-5xl font-bold text-center mb-16"
           >
-            <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
               My Journey
             </span>
           </motion.h2>
@@ -343,22 +352,22 @@ export default function AboutPage() {
             transition={{ duration: 0.8 }}
             className="max-w-6xl mx-auto"
           >
-            <div className="bg-gradient-to-r from-purple-900/20 via-blue-900/20 to-cyan-900/20 rounded-3xl p-12 border border-purple-500/20 backdrop-blur-xl relative overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-900/20 via-sky-900/20 to-cyan-900/20 rounded-3xl p-12 border border-blue-500/20 backdrop-blur-xl relative overflow-hidden">
               {/* Animated background elements */}
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-600/5 to-blue-600/5 animate-pulse" />
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500" />
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-sky-600/5 animate-pulse" />
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500" />
               
               <div className="relative z-10">
                 <div className="flex items-center justify-center mb-8">
                   <div className="flex space-x-4">
-                    <Target className="w-8 h-8 text-purple-400" />
-                    <Rocket className="w-8 h-8 text-blue-400" />
+                    <Target className="w-8 h-8 text-blue-400" />
+                    <Rocket className="w-8 h-8 text-sky-400" />
                     <Users className="w-8 h-8 text-cyan-400" />
                   </div>
                 </div>
                 
                 <h3 className="text-3xl md:text-4xl font-bold text-center mb-8">
-                  <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
                     My Philosophy
                   </span>
                 </h3>
@@ -367,8 +376,8 @@ export default function AboutPage() {
                   <div>
                     <p className="mb-6">
                       I believe that the intersection of{' '}
-                      <span className="text-purple-400 font-semibold">artificial intelligence</span> and{' '}
-                      <span className="text-blue-400 font-semibold">human-centric design</span>{' '}
+                      <span className="text-blue-400 font-semibold">artificial intelligence</span> and{' '}
+                      <span className="text-sky-400 font-semibold">human-centric design</span>{' '}
                       holds the key to solving some of our most pressing challenges.
                     </p>
                     <p>
@@ -409,10 +418,10 @@ export default function AboutPage() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <div className="bg-gradient-to-r from-purple-900/20 via-blue-900/20 to-cyan-900/20 rounded-3xl p-12 border border-purple-500/20 backdrop-blur-xl">
-              <Award className="w-16 h-16 text-purple-400 mx-auto mb-6" />
+            <div className="bg-gradient-to-r from-blue-900/20 via-sky-900/20 to-cyan-900/20 rounded-3xl p-12 border border-blue-500/20 backdrop-blur-xl">
+              <Award className="w-16 h-16 text-blue-400 mx-auto mb-6" />
               <h3 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
                   Let&apos;s Build the Future Together
                 </span>
               </h3>
@@ -423,14 +432,14 @@ export default function AboutPage() {
                 <motion.button
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-semibold rounded-2xl transition-all duration-300 shadow-2xl shadow-purple-500/25"
+                  className="px-8 py-4 bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-500 hover:to-sky-500 text-white font-semibold rounded-2xl transition-all duration-300 shadow-2xl shadow-blue-500/25"
                 >
                   Get In Touch
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 border-2 border-purple-500/50 hover:border-purple-400 text-purple-400 hover:text-purple-300 font-semibold rounded-2xl transition-all duration-300 backdrop-blur-sm hover:bg-purple-500/10"
+                  className="px-8 py-4 border-2 border-blue-500/50 hover:border-blue-400 text-blue-400 hover:text-blue-300 font-semibold rounded-2xl transition-all duration-300 backdrop-blur-sm hover:bg-blue-500/10"
                 >
                   View Projects
                 </motion.button>

@@ -1,18 +1,14 @@
 "use client"; // Add client directive
 import { motion } from 'framer-motion'; // Import motion
-import React from 'react';
+import dynamic from 'next/dynamic'; // Added dynamic import
+import React, { useEffect, useState } from 'react'; // Added useEffect and useState
 import ContactForm from '../components/ContactForm'; // Adjusted import path
 
-// Simple 3D-like animated component as fallback
-const FloatingOrb = () => (
-  <div className="w-full h-full flex items-center justify-center">
-    <div className="relative">
-      <div className="w-32 h-32 bg-gradient-to-br from-purple-500 via-blue-500 to-pink-500 rounded-full animate-pulse shadow-2xl shadow-purple-500/50"></div>
-      <div className="absolute inset-0 w-32 h-32 bg-gradient-to-tr from-transparent via-white/10 to-transparent rounded-full animate-spin"></div>
-      <div className="absolute inset-4 w-24 h-24 bg-gradient-to-bl from-purple-400 to-blue-400 rounded-full animate-bounce opacity-80"></div>
-    </div>
-  </div>
-);
+// Dynamic import for HomeThreeBackground
+const HomeThreeBackground = dynamic(() => import('../components/HomeThreeBackground'), {
+  ssr: false,
+  loading: () => null
+});
 
 // Animation variants
 const containerVariants = {
@@ -49,6 +45,21 @@ const cardVariants = {
 
 // This is the Contact page
 export default function ContactPage() {
+  const [scrollY, setScrollY] = useState(0); // Added scrollY state
+  const [mounted, setMounted] = useState(false); // Added mounted state
+  const [threeLoaded, setThreeLoaded] = useState(false); // Added threeLoaded state
+
+  useEffect(() => { // Added useEffect for background loading and scroll
+    setMounted(true);
+    setThreeLoaded(true);
+    
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   const contactMethods = [
     {
       icon: (
@@ -119,10 +130,27 @@ export default function ContactPage() {
     }
   ];
 
+  // Don't render until mounted to avoid hydration issues
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-2xl">Loading...</div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
+    <div className="min-h-screen bg-black text-white overflow-x-hidden relative" suppressHydrationWarning> 
+      {/* Three.js Background */}
+      {threeLoaded && <HomeThreeBackground scrollY={scrollY} />}
+      
+      {/* Fallback gradient background */}
+      {!threeLoaded && (
+        <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-black to-blue-900/20 z-0" />
+      )}
+
       {/* Hero Section */}
-      <div className="pt-24 pb-16">
+      <div className="relative z-10 pt-24 pb-16">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -131,7 +159,7 @@ export default function ContactPage() {
             className="text-center"
           >
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
                 Get In Touch
               </span>
             </h1>
@@ -151,20 +179,19 @@ export default function ContactPage() {
       >
         {/* 3D Component and Contact Info */}
         <div className="grid lg:grid-cols-2 gap-12 mb-20">
-          {/* 3D Floating Orb */}
+          {/* 3D Background container (empty, background handles it) */}
           <motion.div 
             variants={cardVariants}
-            className="relative"
+            className="relative h-96 lg:h-auto"
           >
-            <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20 h-96">
-              <FloatingOrb />
-            </div>
+            {/* This container can be used for specific content on top of the 3D bg if needed */}
+            {/* Or it can be left empty if the background is purely decorative for this section */}
           </motion.div>
 
           {/* Contact Methods */}
           <motion.div variants={cardVariants} className="space-y-6">
             <h2 className="text-3xl font-bold mb-8">
-              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
                 Let&apos;s Connect
               </span>
             </h2>
@@ -173,10 +200,10 @@ export default function ContactPage() {
               <motion.div
                 key={method.title}
                 variants={itemVariants}
-                className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 hover:border-purple-500/50 transition-all duration-300"
+                className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300"
               >
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white">
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-sky-500 rounded-full flex items-center justify-center text-white">
                     {method.icon}
                   </div>
                   <div>
@@ -185,7 +212,7 @@ export default function ContactPage() {
                     {method.href.startsWith('mailto:') ? (
                       <a 
                         href={method.href}
-                        className="text-purple-400 hover:text-purple-300 transition-colors"
+                        className="text-blue-400 hover:text-sky-300 transition-colors"
                       >
                         {method.contact}
                       </a>
@@ -203,7 +230,7 @@ export default function ContactPage() {
         <motion.div variants={cardVariants} className="max-w-4xl mx-auto mb-20">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
                 Send a Message
               </span>
             </h2>
@@ -217,11 +244,11 @@ export default function ContactPage() {
         {/* Resume Download Section */}
         <motion.div 
           variants={cardVariants}
-          className="bg-gradient-to-r from-purple-900/20 to-blue-900/20 rounded-2xl p-8 border border-purple-500/20 mb-20"
+          className="relative z-10 bg-gradient-to-r from-blue-900/20 to-sky-900/20 rounded-2xl p-8 border border-blue-500/20 mb-20"
         >
           <div className="text-center">
             <h2 className="text-3xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
                 Want to Learn More?
               </span>
             </h2>
@@ -233,7 +260,7 @@ export default function ContactPage() {
               download
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-medium rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/25"
+              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-500 hover:to-sky-500 text-white font-medium rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25"
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -244,9 +271,9 @@ export default function ContactPage() {
         </motion.div>
 
         {/* Social Links */}
-        <motion.div variants={cardVariants} className="text-center">
+        <motion.div variants={cardVariants} className="relative z-10 text-center">
           <h3 className="text-2xl font-bold mb-8">
-            <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
               Follow My Journey
             </span>
           </h3>
@@ -259,7 +286,7 @@ export default function ContactPage() {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className={`p-4 bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-full border border-gray-700/50 hover:border-purple-500/50 text-gray-400 ${social.color} transition-all duration-300`}
+                className={`p-4 bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-full border border-gray-700/50 hover:border-blue-500/50 text-gray-400 ${social.color} transition-all duration-300`}
                 aria-label={social.name}
               >
                 {social.icon}
