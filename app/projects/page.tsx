@@ -333,16 +333,6 @@ const projects = [
 // Ensure all projects have a `featured` property, defaulting to false if not present
 const allProjects = projects.map(p => ({ ...p, featured: p.featured ?? false }));
 
-const categories = [
-  { id: 'all', name: 'All Projects', icon: '🚀' },
-  { id: 'ai-ml', name: 'AI/ML', icon: '🤖' },
-  { id: 'web-dev', name: 'Web Development', icon: '💻' },
-  { id: 'research', name: 'Research', icon: '🔬' },
-  { id: 'security', name: 'Security', icon: '🔒' },
-  { id: 'data-science', name: 'Data Science', icon: '📊' },
-  { id: 'mobile-dev', name: 'Mobile Development', icon: '📱' }
-];
-
 export default function ProjectsPage() {
   const [filter, setFilter] = useState('all');
   const [mounted, setMounted] = useState(false);
