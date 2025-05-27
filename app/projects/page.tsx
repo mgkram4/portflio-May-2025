@@ -1,8 +1,8 @@
 "use client";
 
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProjectCard from '../components/ProjectCard';
 
 const HomeThreeBackground = dynamic(() => import('../components/HomeThreeBackground'), {
@@ -330,6 +330,9 @@ const projects = [
   }
 ];
 
+// Ensure all projects have a `featured` property, defaulting to false if not present
+const allProjects = projects.map(p => ({ ...p, featured: p.featured ?? false }));
+
 const categories = [
   { id: 'all', name: 'All Projects', icon: '🚀' },
   { id: 'ai-ml', name: 'AI/ML', icon: '🤖' },
@@ -341,217 +344,118 @@ const categories = [
 ];
 
 export default function ProjectsPage() {
-  const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
-
-  const smoothY = useSpring(y, { stiffness: 300, damping: 30 });
-  const smoothOpacity = useSpring(opacity, { stiffness: 300, damping: 30 });
-
-  const [scrollY, setScrollY] = useState(0);
+  const [filter, setFilter] = useState('all');
   const [mounted, setMounted] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
   const [threeLoaded, setThreeLoaded] = useState(false);
-  const [filter, setFilter] = useState("all");
-  const [visibleProjects, setVisibleProjects] = useState(6);
 
   useEffect(() => {
     setMounted(true);
-    setThreeLoaded(true);
-
+    // Load Three.js background after a short delay
+    const timer = setTimeout(() => setThreeLoaded(true), 100);
+    
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
-  const filteredProjects = projects.filter(project => project.category === filter || filter === 'all');
+  const filteredProjects = allProjects.filter(project => 
+    filter === 'all' || project.category?.toLowerCase() === filter
+  );
+
+  const pageCategories = Array.from(new Set(allProjects.map(p => p.category || 'general')));
 
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-2xl">Loading...</div>
+      <div className="min-h-screen bg-neutral-950 text-neutral-300 flex items-center justify-center">
+        <div className="text-2xl">Loading Projects...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden relative" suppressHydrationWarning>
-      {/* Three.js Background */}
+    <div className="min-h-screen bg-neutral-950 text-neutral-300 overflow-x-hidden relative pt-24 md:pt-32 pb-16">
       {threeLoaded && <HomeThreeBackground scrollY={scrollY} />}
-      
-      {/* Fallback gradient background */}
       {!threeLoaded && (
-        <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-black to-purple-900/20 z-0" />
+        <div className="fixed inset-0 bg-gradient-to-br from-neutral-900 via-black to-neutral-800 z-0" />
       )}
-      
-      {/* Header section */}
-      <motion.header
-        style={{ y: smoothY, opacity: smoothOpacity }}
-        className="pt-24 pb-16 relative"
-      >
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="text-center"
-          >
-            <motion.h1 
-              className="text-6xl md:text-8xl font-black mb-8 leading-tight"
-            >
-              <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                Projects
-              </span>
-              <br />
-              <span className="text-white/80 text-4xl md:text-5xl font-light">
-                Portfolio
-              </span>
-            </motion.h1>
-            
-            <motion.p 
-              className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed"
-            >
-              Innovative solutions spanning{' '}
-              <span className="text-purple-400 font-semibold">AI/ML</span>,{' '}
-              <span className="text-blue-400 font-semibold">Web Development</span>,{' '}
-              <span className="text-cyan-400 font-semibold">Research</span>, and{' '}
-              <span className="text-green-400 font-semibold">Security</span>
-            </motion.p>
-          </motion.div>
-        </div>
-      </motion.header>
 
-      {/* Content */}
-      <div className="relative z-10">
-        {/* Category Filter */}
-        <div className="container mx-auto px-6 mb-16">
-          <motion.div
-            className="flex flex-wrap justify-center gap-4"
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div 
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="text-center mb-12 md:mb-16"
+        >
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-black mb-4">
+            <span className="bg-gradient-to-r from-neutral-100 via-neutral-300 to-neutral-400 bg-clip-text text-transparent">
+              My Portfolio
+            </span>
+          </h1>
+          <p className="text-lg sm:text-xl text-neutral-400 max-w-2xl mx-auto">
+            A collection of my work in AI/ML, web development, research, and more.
+          </p>
+        </motion.div>
+
+        {/* Category Filters */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-12 md:mb-16"
+        >
+          <button
+            onClick={() => setFilter('all')}
+            className={`px-5 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 border-2 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-neutral-900 ${filter === 'all' 
+              ? 'bg-neutral-300 text-neutral-900 border-neutral-300 shadow-lg' 
+              : 'bg-neutral-800/60 text-neutral-300 border-neutral-700/70 hover:bg-neutral-700 hover:border-neutral-500 hover:text-neutral-100'}`}
           >
-            {categories.map((category, index) => (
-              <motion.button
-                key={category.id}
-                custom={index}
-                onClick={() => setFilter(category.id)}
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className={`group relative px-8 py-4 rounded-2xl text-sm font-semibold transition-all duration-300 ${
-                  filter === category.id
-                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-2xl shadow-purple-500/25'
-                    : 'bg-gray-900/50 text-gray-300 hover:bg-gray-800/50 hover:text-white border border-gray-700/50 backdrop-blur-sm'
-                }`}
-              >
-                <span className="flex items-center space-x-2">
-                  <span className="text-lg">{category.icon}</span>
-                  <span>{category.name}</span>
-                </span>
-              </motion.button>
-            ))}
-          </motion.div>
-        </div>
+            All
+          </button>
+          {pageCategories.map(category => (
+            <button
+              key={category}
+              onClick={() => setFilter(category.toLowerCase())}
+              className={`px-5 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 border-2 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-neutral-900 ${filter === category.toLowerCase() 
+                ? 'bg-neutral-300 text-neutral-900 border-neutral-300 shadow-lg' 
+                : 'bg-neutral-800/60 text-neutral-300 border-neutral-700/70 hover:bg-neutral-700 hover:border-neutral-500 hover:text-neutral-100'}`}
+            >
+              {category.charAt(0).toUpperCase() + category.slice(1).replace(/-/g, ' ')}
+            </button>
+          ))}
+        </motion.div>
 
         {/* Projects Grid */}
-        <div className="container mx-auto px-6 pb-20">
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {filteredProjects.map((project, index) => (
-              <ProjectCard
-                key={`${project.title}-${filter}-${index}`}
-                project={project}
-                index={index}
-              />
-            ))}
-          </motion.div>
+        <motion.div 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+        >
+          {filteredProjects.map((project, index) => (
+            <ProjectCard key={project.title + index} project={project} index={index} />
+          ))}
+        </motion.div>
 
-          {filteredProjects.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-20"
-            >
-              <div className="text-6xl mb-4">🔍</div>
-              <p className="text-2xl text-gray-400 mb-2">
-                No projects found in this category
-              </p>
-              <p className="text-gray-500">
-                Try selecting a different category to explore more projects
-              </p>
-            </motion.div>
-          )}
-        </div>
-
-        {/* Call to Action */}
-        <div className="container mx-auto px-6 pb-20">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
+        {filteredProjects.length === 0 && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
-            className="relative text-center bg-gradient-to-r from-purple-900/20 via-blue-900/20 to-cyan-900/20 rounded-3xl p-16 border border-purple-500/20 backdrop-blur-xl overflow-hidden"
+            transition={{ duration: 0.5, delay: 0.7 }}
+            className="text-center py-16"
           >
-            {/* Animated background elements */}
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-blue-600/10 animate-pulse" />
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500" />
-            
-            <div className="relative z-10">
-              <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.4 }}
-                className="text-4xl md:text-5xl font-bold mb-6"
-              >
-                <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                  Ready to collaborate?
-                </span>
-              </motion.h2>
-              
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.5 }}
-                className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed"
-              >
-                I&apos;m passionate about building innovative solutions and always excited to discuss new opportunities, cutting-edge projects, and potential collaborations.
-              </motion.p>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.6 }}
-                className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-              >
-                <motion.a
-                  href="/contact"
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="group relative px-10 py-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-semibold rounded-2xl transition-all duration-300 shadow-2xl shadow-purple-500/25 hover:shadow-purple-500/40"
-                >
-                  <span className="relative z-10 flex items-center space-x-2">
-                    <span>Get In Touch</span>
-                    <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </span>
-                </motion.a>
-                
-                <motion.a
-                  href="https://github.com/mgkram4"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="group px-10 py-4 bg-gray-800/50 hover:bg-gray-700/50 text-white font-semibold rounded-2xl transition-all duration-300 border border-gray-600/50 backdrop-blur-sm"
-                >
-                  <span className="flex items-center space-x-2">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-                    </svg>
-                    <span>View GitHub</span>
-                  </span>
-                </motion.a>
-              </motion.div>
-            </div>
+            <p className="text-2xl text-neutral-500 mb-4">No projects found for this category.</p>
+            <button
+              onClick={() => setFilter('all')}
+              className="px-6 py-3 bg-neutral-700 text-neutral-200 rounded-lg hover:bg-neutral-600 transition-colors duration-300"
+            >
+              Show All Projects
+            </button>
           </motion.div>
-        </div>
+        )}
       </div>
     </div>
   );

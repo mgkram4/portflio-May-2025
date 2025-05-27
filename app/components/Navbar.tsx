@@ -3,7 +3,7 @@
 import { Download, Github, Linkedin, Mail, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BsHexagonFill } from 'react-icons/bs';
 
 const ModernNavbar = () => {
@@ -53,19 +53,19 @@ const ModernNavbar = () => {
       {/* Main Navigation */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled 
-          ? 'bg-black/80 backdrop-blur-xl border-b border-purple-500/20 shadow-lg shadow-purple-500/5' 
+          ? 'bg-black/80 backdrop-blur-xl border-b border-neutral-700/50 shadow-lg shadow-neutral-800/10' 
           : 'bg-transparent'
       }`}>
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="relative group">
-              <div className="absolute -inset-2 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full opacity-0 group-hover:opacity-20 blur-xl transition-all duration-500"></div>
+              <div className="absolute -inset-2 bg-gradient-to-r from-neutral-600 to-neutral-500 rounded-full opacity-0 group-hover:opacity-20 blur-xl transition-all duration-500"></div>
               <Link 
                 href="/"
-                className="relative text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent hover:from-purple-300 hover:to-blue-300 transition-all duration-300 flex items-center"
+                className="relative text-2xl font-bold bg-gradient-to-r from-neutral-300 to-neutral-100 bg-clip-text text-transparent hover:from-neutral-200 hover:to-white transition-all duration-300 flex items-center"
               >
-                <BsHexagonFill className="h-8 w-8 text-purple-400 group-hover:text-purple-300 transition-all duration-300" />
+                <BsHexagonFill className="h-8 w-8 text-neutral-400 group-hover:text-neutral-200 transition-all duration-300" />
               </Link>
             </div>
 
@@ -78,17 +78,17 @@ const ModernNavbar = () => {
                   onClick={() => setIsOpen(false)}
                   className={`relative px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 group ${
                     isActiveRoute(item.href)
-                      ? 'text-purple-300'
-                      : 'text-gray-300 hover:text-white'
+                      ? 'text-neutral-100'
+                      : 'text-neutral-400 hover:text-neutral-100'
                   }`}
                 >
                   {/* Active indicator */}
                   {isActiveRoute(item.href) && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-full border border-purple-500/30 backdrop-blur-sm"></div>
+                    <div className="absolute inset-0 bg-neutral-700/30 rounded-full border border-neutral-600/40 backdrop-blur-sm"></div>
                   )}
                   
                   {/* Hover effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-blue-600/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 bg-neutral-700/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   
                   <span className="relative z-10">{item.name}</span>
                 </Link>
@@ -109,10 +109,10 @@ const ModernNavbar = () => {
                     href={href}
                     target={href.startsWith('http') ? '_blank' : undefined}
                     rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    className="relative p-2 text-gray-400 hover:text-purple-400 rounded-full transition-all duration-300 group hover:scale-110"
+                    className="relative p-2 text-neutral-500 hover:text-neutral-200 rounded-full transition-all duration-300 group hover:scale-110"
                     aria-label={label}
                   >
-                    <div className="absolute inset-0 bg-purple-500/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-neutral-700/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <Icon size={18} className="relative z-10" />
                   </a>
                 ))}
@@ -123,9 +123,9 @@ const ModernNavbar = () => {
                 href="/placeholder-resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white text-sm font-medium rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 group overflow-hidden"
+                className="relative px-6 py-2 bg-gradient-to-r from-neutral-600 to-neutral-700 hover:from-neutral-500 hover:to-neutral-600 text-neutral-100 text-sm font-medium rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-neutral-700/25 group overflow-hidden"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-neutral-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative flex items-center space-x-2">
                   <Download size={16} />
                   <span>Resume</span>
@@ -136,10 +136,10 @@ const ModernNavbar = () => {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden relative p-2 text-gray-300 hover:text-white rounded-lg transition-all duration-300 group"
+              className="md:hidden relative p-2 text-neutral-300 hover:text-white rounded-lg transition-all duration-300 group"
               aria-label="Toggle menu"
             >
-              <div className="absolute inset-0 bg-purple-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-neutral-700/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative z-10">
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
               </div>
@@ -153,7 +153,7 @@ const ModernNavbar = () => {
             ? 'max-h-screen opacity-100' 
             : 'max-h-0 opacity-0 overflow-hidden'
         }`}>
-          <div className="bg-black/95 backdrop-blur-xl border-t border-purple-500/20 px-6 py-8">
+          <div className="bg-black/95 backdrop-blur-xl border-t border-neutral-700/50 px-6 py-8">
             {/* Mobile Navigation Items */}
             <div className="space-y-1 mb-8">
               {navItems.map((item, index) => (
@@ -163,8 +163,8 @@ const ModernNavbar = () => {
                   onClick={() => setIsOpen(false)}
                   className={`block w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all duration-300 ${
                     isActiveRoute(item.href)
-                      ? 'text-purple-300 bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30'
-                      : 'text-gray-300 hover:text-white hover:bg-gray-800/50'
+                      ? 'text-neutral-100 bg-neutral-700/40 border border-neutral-600/50'
+                      : 'text-neutral-400 hover:text-white hover:bg-neutral-800/50'
                   }`}
                   style={{
                     animationDelay: `${index * 100}ms`,
@@ -176,7 +176,7 @@ const ModernNavbar = () => {
             </div>
 
             {/* Mobile Social Links */}
-            <div className="border-t border-gray-700/50 pt-6">
+            <div className="border-t border-neutral-700/50 pt-6">
               <div className="flex justify-center space-x-6 mb-6">
                 {[
                   { icon: Github, href: "https://github.com/mgkram4", label: "GitHub" },
@@ -188,7 +188,7 @@ const ModernNavbar = () => {
                     href={href}
                     target={href.startsWith('http') ? '_blank' : undefined}
                     rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    className="p-3 text-gray-400 hover:text-purple-400 rounded-full border border-gray-700/50 hover:border-purple-500/50 transition-all duration-300 hover:scale-105"
+                    className="p-3 text-neutral-500 hover:text-neutral-200 rounded-full border border-neutral-700/50 hover:border-neutral-500/70 transition-all duration-300 hover:scale-105"
                     aria-label={label}
                   >
                     <Icon size={20} />
@@ -202,7 +202,7 @@ const ModernNavbar = () => {
                   href="/placeholder-resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full px-4 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-medium rounded-lg transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-2"
+                  className="w-full px-4 py-3 bg-gradient-to-r from-neutral-600 to-neutral-700 hover:from-neutral-500 hover:to-neutral-600 text-neutral-100 font-medium rounded-lg transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-2"
                 >
                   <Download size={18} />
                   <span>Download Resume</span>
@@ -214,9 +214,9 @@ const ModernNavbar = () => {
       </nav>
 
       {/* Scroll Progress Indicator */}
-      <div className="fixed top-0 left-0 w-full h-1 bg-gray-800/50 z-40">
+      <div className="fixed top-0 left-0 w-full h-1 bg-neutral-800/50 z-40">
         <div 
-          className="h-full bg-gradient-to-r from-purple-500 to-blue-500 transition-all duration-300 ease-out"
+          className="h-full bg-gradient-to-r from-neutral-500 to-neutral-300 transition-all duration-300 ease-out"
           style={{
             width: `${scrollProgress}%`
           }}

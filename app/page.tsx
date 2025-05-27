@@ -1,6 +1,6 @@
 "use client";
 import { motion } from 'framer-motion';
-import { ArrowRight, Award, Brain, Code, Eye, Github, Sparkles, Star, TrendingUp, Zap } from 'lucide-react';
+import { ArrowRight, Award, Brain, Github, Sparkles, Star, TrendingUp, Zap } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -84,23 +84,23 @@ const StatCard = ({ icon: Icon, value, label, delay, gradient }: StatCardProps) 
       transition={{ delay, duration: 0.6, type: "spring", stiffness: 100 }}
       className="group relative overflow-hidden"
     >
-      <div className={`relative bg-gradient-to-br ${gradient} backdrop-blur-xl border border-white/10 rounded-3xl p-8 hover:border-white/20 transition-all duration-500 text-center h-full`}>
+      <div className={`relative bg-gradient-to-br ${gradient} backdrop-blur-xl border border-neutral-700/30 rounded-3xl p-8 hover:border-neutral-500/40 transition-all duration-500 text-center h-full`}>
         {/* Animated background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-r from-neutral-800/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
         {/* Floating particles effect */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-4 right-4 w-2 h-2 bg-white/20 rounded-full animate-pulse" />
-          <div className="absolute bottom-6 left-6 w-1 h-1 bg-white/30 rounded-full animate-ping" />
+          <div className="absolute top-4 right-4 w-2 h-2 bg-neutral-600/20 rounded-full animate-pulse" />
+          <div className="absolute bottom-6 left-6 w-1 h-1 bg-neutral-500/30 rounded-full animate-ping" />
         </div>
         
         <div className="relative z-10">
           <div className="mb-4 relative">
-            <Icon className="w-12 h-12 text-white mx-auto drop-shadow-lg" />
-            <div className="absolute inset-0 bg-white/20 blur-xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <Icon className="w-12 h-12 text-neutral-100 mx-auto drop-shadow-lg" />
+            <div className="absolute inset-0 bg-neutral-500/20 blur-xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           </div>
-          <div className="text-4xl font-black text-white mb-2 tracking-tight">{value}</div>
-          <div className="text-sm text-white/70 font-medium uppercase tracking-widest">{label}</div>
+          <div className="text-4xl font-black text-neutral-50 mb-2 tracking-tight">{value}</div>
+          <div className="text-sm text-neutral-400 font-medium uppercase tracking-widest">{label}</div>
         </div>
       </div>
     </motion.div>
@@ -115,9 +115,9 @@ interface SkillBadgeProps {
 
 const SkillBadge = ({ skill, delay, variant = "default" }: SkillBadgeProps) => {
   const variants = {
-    default: "from-blue-500/20 to-sky-500/20 border-blue-400/30 text-blue-200 hover:border-blue-300/50",
-    accent: "from-emerald-500/20 to-cyan-500/20 border-emerald-400/30 text-emerald-200 hover:border-emerald-300/50",
-    highlight: "from-sky-500/20 to-cyan-500/20 border-sky-400/30 text-sky-200 hover:border-sky-300/50"
+    default: "from-neutral-700/30 to-neutral-600/30 border-neutral-500/40 text-neutral-300 hover:border-neutral-400/60 hover:bg-neutral-600/40",
+    accent: "from-neutral-600/30 to-neutral-500/30 border-neutral-400/40 text-neutral-200 hover:border-neutral-300/60 hover:bg-neutral-500/40",
+    highlight: "from-neutral-500/30 to-neutral-400/30 border-neutral-300/40 text-neutral-100 hover:border-neutral-200/60 hover:bg-neutral-400/40"
   };
 
   return (
@@ -198,20 +198,20 @@ export default function HomePage() {
   // Don't render until mounted to avoid hydration issues
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className="min-h-screen bg-neutral-950 text-neutral-300 flex items-center justify-center">
         <div className="text-2xl">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden relative" suppressHydrationWarning>
+    <div className="min-h-screen bg-neutral-950 text-neutral-300 overflow-x-hidden relative" suppressHydrationWarning>
       {/* Three.js Background - Load after initial render */}
       {threeLoaded && <HomeThreeBackground scrollY={scrollY} />}
       
       {/* Fallback gradient background */}
       {!threeLoaded && (
-        <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-black to-blue-900/20 z-0" />
+        <div className="fixed inset-0 bg-gradient-to-br from-neutral-900 via-black to-neutral-800 z-0" />
       )}
 
       {/* Content */}
@@ -223,8 +223,8 @@ export default function HomePage() {
         <section className="relative py-24 px-6 overflow-hidden">
           {/* Background elements */}
           <div className="absolute inset-0">
-            <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
-            <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
+            <div className="absolute top-20 left-10 w-72 h-72 bg-neutral-700/10 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute bottom-20 right-10 w-96 h-96 bg-neutral-600/10 rounded-full blur-3xl animate-pulse delay-1000" />
           </div>
 
           <div className="container mx-auto max-w-7xl relative z-10">
@@ -236,11 +236,11 @@ export default function HomePage() {
               className="text-center mb-20"
             >
               <FloatingElement delay={0.2}>
-                <Sparkles className="w-8 h-8 text-blue-400 mx-auto mb-6" />
+                <Sparkles className="w-8 h-8 text-neutral-400 mx-auto mb-6" />
               </FloatingElement>
               
               <h2 className="text-5xl md:text-7xl font-black mb-8 leading-tight">
-                <span className="bg-gradient-to-r from-blue-400 via-sky-400 to-cyan-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-neutral-300 via-neutral-200 to-neutral-100 bg-clip-text text-transparent">
                   About Me
                 </span>
               </h2>
@@ -248,14 +248,14 @@ export default function HomePage() {
               <motion.p 
                 initial={sectionsAnimated.about ? false : { opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="text-xl md:text-2xl text-gray-300 max-w-5xl mx-auto leading-relaxed font-light"
+                transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+                className="text-lg md:text-xl text-neutral-400 max-w-3xl mx-auto mb-12 leading-relaxed"
               >
-                Driven by a passion for leveraging{' '}
-                <span className="text-transparent bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text font-semibold">
-                  AI to solve real-world problems
+                As a Machine-Learning Engineer and Full-Stack Developer, I specialize in{' '}
+                <span className="text-transparent bg-gradient-to-r from-neutral-300 to-neutral-200 bg-clip-text font-semibold">
+                  computer vision and biometric analysis
                 </span>, 
-                I specialize in the intersection of machine learning and human-centric applications.
+                delivering end-to-end AI systems and production web applications with a focus on real-world impact and innovation in vision-based physiological sensing.
               </motion.p>
             </motion.div>
 
@@ -266,28 +266,28 @@ export default function HomePage() {
                 value="6+" 
                 label="AI Projects" 
                 delay={0.1} 
-                gradient="from-blue-600/20 to-blue-800/20"
+                gradient="from-neutral-700/20 to-neutral-800/20"
               />
               <StatCard 
                 icon={Award} 
-                value="3+" 
-                label="Publications" 
+                value="1+" 
+                label="IEEE Publication" 
                 delay={0.2} 
-                gradient="from-sky-600/20 to-sky-800/20"
+                gradient="from-neutral-700/20 to-neutral-800/20"
               />
               <StatCard 
                 icon={TrendingUp} 
-                value="63%" 
+                value="63%+" 
                 label="Accuracy Boost" 
                 delay={0.3} 
-                gradient="from-emerald-600/20 to-emerald-800/20"
+                gradient="from-neutral-600/20 to-neutral-700/20"
               />
               <StatCard 
                 icon={Github} 
                 value="15+" 
                 label="Repositories" 
                 delay={0.4} 
-                gradient="from-orange-600/20 to-orange-800/20"
+                gradient="from-neutral-600/20 to-neutral-700/20"
               />
             </div>
 
@@ -299,11 +299,11 @@ export default function HomePage() {
               className="text-center"
             >
               <h3 className="text-3xl md:text-4xl font-bold mb-4">
-                <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-neutral-300 to-neutral-200 bg-clip-text text-transparent">
                   Core Technologies
                 </span>
               </h3>
-              <p className="text-gray-400 mb-12 text-lg">The tools and frameworks I use to bring ideas to life</p>
+              <p className="text-neutral-400 mb-12 text-lg">The tools and frameworks I use to bring ideas to life</p>
               
               <div className="flex flex-wrap gap-4 justify-center max-w-5xl mx-auto mb-12">
                 {skills.map((skill, index) => (
@@ -323,11 +323,11 @@ export default function HomePage() {
               >
                 <Link 
                   href="/about"
-                  className="w-full bg-gradient-to-b from-blue-600 to-sky-600 hover:from-blue-500 hover:to-sky-500 text-white font-bold rounded-2xl transition-all duration-500 shadow-2xl shadow-blue-500/25 hover:shadow-blue-500/40 overflow-hidden"  
+                  className="w-full bg-gradient-to-b from-neutral-600 to-neutral-500 hover:from-neutral-500 hover:to-neutral-400 text-neutral-100 font-bold rounded-2xl transition-all duration-500 shadow-2xl shadow-neutral-500/25 hover:shadow-neutral-500/40 overflow-hidden"  
                 >
-                  <div className="absolute  inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <span className="relative  bg-gradient-to-b from-blue-600 to-sky-600 hover:from-blue-500 hover:to-sky-500 text-white font-bold rounded-2xl transition-all duration-500 shadow-2xl shadow-blue-500/25 hover:shadow-blue-500/40 overflow-hidden z-10 flex items-center space-x-3 text-lg">
-                    <span className="m-4"> My Journey</span>
+                  <div className="absolute  inset-0 bg-gradient-to-b from-neutral-800/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <span className="relative  bg-gradient-to-b from-neutral-600 to-neutral-500 hover:from-neutral-500 hover:to-neutral-400 text-neutral-100 font-bold rounded-2xl transition-all duration-500 shadow-2xl shadow-neutral-500/25 hover:shadow-neutral-500/40 overflow-hidden z-10 flex items-center space-x-3 text-lg">
+                    <span className="m-4"> My Journey {'->'}</span>
                    
                   </span>
                 </Link>
@@ -340,8 +340,9 @@ export default function HomePage() {
         <section className="relative py-24 px-6 overflow-hidden">
           {/* Background elements */}
           <div className="absolute inset-0">
-            <div className="absolute top-40 right-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-500" />
-            <div className="absolute bottom-40 left-20 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse delay-1500" />
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-neutral-800/20 rounded-full blur-[100px] animate-blob" />
+            <div className="absolute top-10 right-20 w-80 h-80 bg-neutral-700/15 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute bottom-10 left-20 w-72 h-72 bg-neutral-600/15 rounded-full blur-3xl animate-pulse delay-500" />
           </div>
 
           <div className="container mx-auto max-w-7xl relative z-10">
@@ -352,30 +353,24 @@ export default function HomePage() {
               transition={{ duration: 1 }}
               className="text-center mb-20"
             >
-              <FloatingElement delay={0.5}>
-                <Star className="w-10 h-10 text-yellow-400 mx-auto mb-8" />
+              <FloatingElement delay={0.3}>
+                <Zap className="w-8 h-8 text-neutral-400 mx-auto mb-6" />
               </FloatingElement>
-              
-              <h2 className="text-6xl md:text-8xl font-black mb-10 leading-tight">
-                <span className="bg-gradient-to-r from-blue-400 via-sky-400 to-cyan-400 bg-clip-text text-transparent">
-                  Featured
-                </span>
-                <br />
-                <span className="text-white/90 text-5xl md:text-6xl font-light">
-                  Projects
+              <h2 className="text-5xl md:text-7xl font-black mb-8 leading-tight">
+                <span className="bg-gradient-to-r from-neutral-300 via-neutral-200 to-neutral-100 bg-clip-text text-transparent">
+                  Featured Projects
                 </span>
               </h2>
-              
               <motion.p 
                 initial={sectionsAnimated.projects ? false : { opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-12"
+                transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+                className="text-lg md:text-xl text-neutral-400 max-w-3xl mx-auto mb-12 leading-relaxed"
               >
                 Innovative solutions spanning{' '}
-                <span className="text-blue-400 font-semibold">AI/ML</span>,{' '}
-                <span className="text-sky-400 font-semibold">Web Development</span>, and{' '}
-                <span className="text-cyan-400 font-semibold">Research</span>
+                <span className="text-neutral-400 font-semibold">AI/ML</span>,{' '}
+                <span className="text-neutral-300 font-semibold">Web Development</span>, and{' '}
+                <span className="text-neutral-200 font-semibold">Research</span>
               </motion.p>
 
               {/* Enhanced Stats */}
@@ -386,20 +381,20 @@ export default function HomePage() {
                 className="flex flex-wrap justify-center items-center gap-8 mt-16"
               >
                 <div className="text-center group">
-                  <div className="text-4xl md:text-5xl font-black text-blue-400 group-hover:scale-110 transition-transform duration-300">
+                  <div className="text-4xl md:text-5xl font-black text-neutral-400 group-hover:scale-110 transition-transform duration-300">
                     {featuredProjects.length}
                   </div>
-                  <div className="text-sm text-gray-400 uppercase tracking-wider font-medium">Featured</div>
+                  <div className="text-sm text-neutral-400 uppercase tracking-wider font-medium">Featured</div>
                 </div>
-                <div className="w-px h-16 bg-gradient-to-b from-transparent via-gray-600 to-transparent"></div>
+                <div className="w-px h-16 bg-gradient-to-b from-transparent via-neutral-600 to-transparent"></div>
                 <div className="text-center group">
-                  <div className="text-4xl md:text-5xl font-black text-sky-400 group-hover:scale-110 transition-transform duration-300">3</div>
-                  <div className="text-sm text-gray-400 uppercase tracking-wider font-medium">Categories</div>
+                  <div className="text-4xl md:text-5xl font-black text-neutral-300 group-hover:scale-110 transition-transform duration-300">3</div>
+                  <div className="text-sm text-neutral-400 uppercase tracking-wider font-medium">Categories</div>
                 </div>
-                <div className="w-px h-16 bg-gradient-to-b from-transparent via-gray-600 to-transparent"></div>
+                <div className="w-px h-16 bg-gradient-to-b from-transparent via-neutral-600 to-transparent"></div>
                 <div className="text-center group">
-                  <div className="text-4xl md:text-5xl font-black text-cyan-400 group-hover:scale-110 transition-transform duration-300">100%</div>
-                  <div className="text-sm text-gray-400 uppercase tracking-wider font-medium">Success Rate</div>
+                  <div className="text-4xl md:text-5xl font-black text-neutral-200 group-hover:scale-110 transition-transform duration-300">100%</div>
+                  <div className="text-sm text-neutral-400 uppercase tracking-wider font-medium">Success Rate</div>
                 </div>
               </motion.div>
             </motion.div>
@@ -409,17 +404,14 @@ export default function HomePage() {
               initial={sectionsAnimated.projects ? false : { opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 mb-20 place-items-center"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 mb-20 place-items-center"
             >
               {featuredProjects.map((project, index) => (
-                <motion.div
-                  key={index}
-                  initial={sectionsAnimated.projects ? false : { opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.2 }}
-                >
-                  <ProjectCard project={project} index={index} />
-                </motion.div>
+                <ProjectCard 
+                  key={project.title} 
+                  project={project} 
+                  index={index} 
+                />
               ))}
             </motion.div>
 
@@ -437,13 +429,12 @@ export default function HomePage() {
               >
                 <Link 
                   href="/projects"
-                  className="group relative px-12 py-6 bg-gradient-to-r from-blue-600 via-sky-600 to-cyan-600 hover:from-blue-500 hover:via-sky-500 hover:to-cyan-500 text-white font-bold rounded-3xl transition-all duration-500 shadow-2xl shadow-blue-500/25 hover:shadow-blue-500/40 overflow-hidden text-lg"
+               
+                 className="w-full bg-gradient-to-b from-neutral-600 to-neutral-500 hover:from-neutral-500 hover:to-neutral-400 text-neutral-100 font-bold rounded-2xl transition-all duration-500 shadow-2xl shadow-neutral-500/25 hover:shadow-neutral-500/40 overflow-hidden"  
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                  <span className="relative z-10 flex items-center space-x-3">
-                    <span>Explore All Projects</span>
-                    <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-neutral-800/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <span className="relative bg-gradient-to-b from-neutral-600 to-neutral-500 hover:from-neutral-500 hover:to-neutral-400 text-neutral-100 font-bold rounded-2xl transition-all duration-500 shadow-2xl shadow-neutral-500/25 hover:shadow-neutral-500/40 overflow-hidden z-10 flex items-center space-x-3 text-lg">
+                    <span className="m-4">All Projects {'->'}</span>
                   </span>
                 </Link>
               </motion.div>
@@ -454,8 +445,8 @@ export default function HomePage() {
         {/* Enhanced Expertise Section */}
         <section className="relative py-24 px-6 overflow-hidden">
           <div className="absolute inset-0">
-            <div className="absolute top-20 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl animate-pulse" />
-            <div className="absolute bottom-20 right-1/4 w-80 h-80 bg-sky-500/5 rounded-full blur-3xl animate-pulse delay-1000" />
+            <div className="absolute top-20 left-1/4 w-96 h-96 bg-neutral-700/10 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute bottom-20 right-1/4 w-80 h-80 bg-neutral-600/10 rounded-full blur-3xl animate-pulse delay-1000" />
           </div>
 
           <div className="container mx-auto max-w-7xl relative z-10">
@@ -466,91 +457,62 @@ export default function HomePage() {
               transition={{ duration: 1 }}
               className="text-center mb-20"
             >
-              <h2 className="text-5xl md:text-6xl font-black mb-6">
-                <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
-                  My Expertise
+              <FloatingElement delay={0.2}>
+                <Brain className="w-8 h-8 text-neutral-400 mx-auto mb-6" />
+              </FloatingElement>
+              <h2 className="text-5xl md:text-7xl font-black mb-8 leading-tight">
+                <span className="bg-gradient-to-r from-neutral-300 via-neutral-200 to-neutral-100 bg-clip-text text-transparent">
+                  Core Expertise
                 </span>
               </h2>
-              <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+              <motion.p 
+                initial={sectionsAnimated.expertise ? false : { opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+                className="text-lg md:text-xl text-neutral-400 max-w-3xl mx-auto mb-12 leading-relaxed"
+              >
                 Specialized knowledge across cutting-edge technologies and methodologies
-              </p>
+              </motion.p>
             </motion.div>
 
-            <div className="flex flex-col md:flex-row justify-center gap-10">
-              <motion.div
-                initial={sectionsAnimated.expertise ? false : { opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -10 }}
-                transition={{ duration: 0.8, delay: 0.1 }}
-                className="group relative bg-gradient-to-br from-blue-900/30 to-blue-800/20 backdrop-blur-xl border border-blue-500/20 rounded-3xl p-10 hover:border-blue-400/40 transition-all duration-500 text-center overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-sky-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-sky-500" />
-                
-                <div className="relative z-10">
-                  <FloatingElement delay={0.1}>
-                    <Brain className="w-20 h-20 text-blue-400 mx-auto mb-8" />
-                  </FloatingElement>
-                  <h3 className="text-3xl font-bold text-white mb-6">AI Research</h3>
-                  <p className="text-gray-300 leading-relaxed text-lg">
-                    Published researcher in IEEE conferences with focus on computer vision and biometric analysis. 
-                    Achieved 63%+ accuracy improvements in pose estimation systems.
-                  </p>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={sectionsAnimated.expertise ? false : { opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -10 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="group relative bg-gradient-to-br from-sky-900/30 to-sky-800/20 backdrop-blur-xl border border-sky-500/20 rounded-3xl p-10 hover:border-sky-400/40 transition-all duration-500 text-center overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-sky-600/10 to-cyan-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-sky-500 to-cyan-500" />
-                
-                <div className="relative z-10">
-                  <FloatingElement delay={0.2}>
-                    <Code className="w-20 h-20 text-sky-400 mx-auto mb-8" />
-                  </FloatingElement>
-                  <h3 className="text-3xl font-bold text-white mb-6">Full-Stack Development</h3>
-                  <p className="text-gray-300 leading-relaxed text-lg">
-                    End-to-end development expertise from AI model deployment to production-ready web applications. 
-                    Specialized in modern frameworks and cloud technologies.
-                  </p>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={sectionsAnimated.expertise ? false : { opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -10 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="group relative bg-gradient-to-br from-cyan-900/30 to-cyan-800/20 backdrop-blur-xl border border-cyan-500/20 rounded-3xl p-10 hover:border-cyan-400/40 transition-all duration-500 text-center overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-600/10 to-emerald-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-emerald-500" />
-                
-                <div className="relative z-10">
-                  <FloatingElement delay={0.3}>
-                    <Eye className="w-20 h-20 text-cyan-400 mx-auto mb-8" />
-                  </FloatingElement>
-                  <h3 className="text-3xl font-bold text-white mb-6">Computer Vision</h3>
-                  <p className="text-gray-300 leading-relaxed text-lg">
-                    Specialized in pose estimation, biometric analysis, and physiological sensing. 
-                    Leading innovation in contactless vital-sign monitoring.
-                  </p>
-                </div>
-              </motion.div>
+            <div className="mb-16 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {skills.map((skill, index) => (
+                <SkillBadge key={skill.name} skill={skill.name} delay={index * 0.07} variant={skill.variant} />
+              ))}
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+              <StatCard 
+                icon={Zap} 
+                value="5+" 
+                label="Years of Experience" 
+                delay={0.1}
+                gradient="from-neutral-800/70 to-neutral-700/70"
+              />
+              <StatCard 
+                icon={Award} 
+                value="10+" 
+                label="Projects Completed" 
+                delay={0.2}
+                gradient="from-neutral-700/70 to-neutral-600/70"
+              />
+              <StatCard 
+                icon={Star} 
+                value="15+" 
+                label="Skills & Technologies" 
+                delay={0.3}
+                gradient="from-neutral-600/70 to-neutral-500/70"
+              />
             </div>
           </div>
         </section>
 
         {/* Enhanced Call to Action Section */}
         <section className="relative py-24 px-6 overflow-hidden">
+          {/* Background elements */}
           <div className="absolute inset-0">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-sky-900/20 to-cyan-900/20" />
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute inset-0 bg-gradient-to-r from-neutral-900/20 via-neutral-900/20 to-neutral-900/20" />
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-neutral-800/20 rounded-full blur-[100px] animate-blob" />
           </div>
 
           <div className="container mx-auto max-w-5xl relative z-10">
@@ -559,26 +521,26 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               onAnimationComplete={() => setSectionsAnimated(prev => ({ ...prev, cta: true }))}
               transition={{ duration: 1 }}
-              className="relative text-center bg-gradient-to-r from-blue-900/40 via-sky-900/40 to-cyan-900/40 rounded-3xl p-16 border border-blue-500/30 backdrop-blur-xl overflow-hidden"
+              className="relative text-center bg-gradient-to-r from-neutral-900/40 via-neutral-900/40 to-neutral-900/40 rounded-3xl p-16 border border-neutral-500/30 backdrop-blur-xl overflow-hidden"
             >
               {/* Animated background elements */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-sky-600/10 animate-pulse" />
-              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500" />
-              <div className="absolute -top-10 -right-10 w-20 h-20 bg-blue-500/20 rounded-full blur-xl animate-bounce" />
-              <div className="absolute -bottom-10 -left-10 w-16 h-16 bg-sky-500/20 rounded-full blur-xl animate-bounce delay-1000" />
+              <div className="absolute inset-0 bg-gradient-to-r from-neutral-600/10 to-neutral-500/10 animate-pulse" />
+              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-neutral-500 via-neutral-400 to-neutral-300" />
+              <div className="absolute -top-10 -right-10 w-20 h-20 bg-neutral-500/20 rounded-full blur-xl animate-bounce" />
+              <div className="absolute -bottom-10 -left-10 w-16 h-16 bg-neutral-400/20 rounded-full blur-xl animate-bounce delay-1000" />
               
               <div className="relative z-10">
                 <FloatingElement delay={0.5}>
-                  <Zap className="w-20 h-20 text-blue-400 mx-auto mb-8" />
+                  <Zap className="w-20 h-20 text-neutral-400 mx-auto mb-8" />
                 </FloatingElement>
                 
                 <h2 className="text-5xl md:text-6xl font-black mb-8">
-                  <span className="bg-gradient-to-r from-blue-400 via-sky-400 to-cyan-400 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-neutral-300 via-neutral-200 to-neutral-100 bg-clip-text text-transparent">
                     Ready to collaborate?
                   </span>
                 </h2>
                 
-                <p className="text-lg md:text-xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
+                <p className="text-lg md:text-xl text-neutral-300 mb-12 max-w-4xl mx-auto leading-relaxed">
                   I&apos;m passionate about building innovative solutions and always excited to discuss new opportunities, 
                   cutting-edge projects, and potential collaborations.
                 </p>
@@ -591,10 +553,10 @@ export default function HomePage() {
                   >
                     <Link
                       href="/contact"
-                      className="group relative bg-gradient-to-b from-blue-600 to-sky-600 hover:from-blue-500 hover:to-sky-500 text-white font-bold rounded-2xl transition-all duration-500 shadow-2xl shadow-blue-500/25 hover:shadow-blue-500/40 overflow-hidden"
+                      className="group relative bg-gradient-to-b from-neutral-600 to-neutral-500 hover:from-neutral-500 hover:to-neutral-400 text-neutral-100 font-bold rounded-2xl transition-all duration-500 shadow-2xl shadow-neutral-500/25 hover:shadow-neutral-500/40 overflow-hidden"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      <span className="relative bg-gradient-to-b from-blue-600 to-sky-600 hover:from-blue-500 hover:to-sky-500 text-white font-bold rounded-2xl transition-all duration-500 shadow-2xl shadow-blue-500/25 hover:shadow-blue-500/40 overflow-hidden z-10 flex items-center space-x-3 text-lg">
+                      <div className="absolute inset-0 bg-gradient-to-b from-neutral-800/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <span className="relative bg-gradient-to-b from-neutral-600 to-neutral-500 hover:from-neutral-500 hover:to-neutral-400 text-neutral-100 font-bold rounded-2xl transition-all duration-500 shadow-2xl shadow-neutral-500/25 hover:shadow-neutral-500/40 overflow-hidden z-10 flex items-center space-x-3 text-lg">
                         <span className="flex items-center space-x-3 px-12 py-5">
                           <span>Get In Touch</span>
                           <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
@@ -612,10 +574,10 @@ export default function HomePage() {
                       href="https://github.com/mgkram4"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group relative bg-gradient-to-b from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-white font-bold rounded-2xl transition-all duration-500 shadow-2xl shadow-gray-500/25 hover:shadow-gray-500/40 overflow-hidden"
+                      className="group relative bg-gradient-to-b from-neutral-700 to-neutral-800 hover:from-neutral-600 hover:to-neutral-700 text-neutral-100 font-bold rounded-2xl transition-all duration-500 shadow-2xl shadow-neutral-500/25 hover:shadow-neutral-500/40 overflow-hidden"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      <span className="relative bg-gradient-to-b from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-white font-bold rounded-2xl transition-all duration-500 shadow-2xl shadow-gray-500/25 hover:shadow-gray-500/40 overflow-hidden z-10 flex items-center space-x-3 text-lg">
+                      <div className="absolute inset-0 bg-gradient-to-b from-neutral-800/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <span className="relative bg-gradient-to-b from-neutral-700 to-neutral-800 hover:from-neutral-600 hover:to-neutral-700 text-neutral-100 font-bold rounded-2xl transition-all duration-500 shadow-2xl shadow-neutral-500/25 hover:shadow-neutral-500/40 overflow-hidden z-10 flex items-center space-x-3 text-lg">
                         <span className="flex items-center space-x-3 px-12 py-5">
                           <Github className="w-6 h-6" />
                           <span>View GitHub</span>

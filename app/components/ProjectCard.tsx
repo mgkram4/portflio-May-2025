@@ -77,7 +77,7 @@ const TechBadge = ({ tech }: { tech: string }) => (
     initial={{ opacity: 0, scale: 0.8 }}
     animate={{ opacity: 1, scale: 1 }}
     transition={{ duration: 0.3 }}
-    className="px-3 py-1 bg-white/10 backdrop-blur-sm text-white/80 text-xs font-medium rounded-full border border-white/20 hover:bg-white/20 hover:border-white/40 transition-all duration-300"
+    className="px-3 py-1 bg-neutral-700/50 backdrop-blur-sm text-neutral-300 text-xs font-medium rounded-full border border-neutral-600/50 hover:bg-neutral-600/70 hover:border-neutral-500 transition-all duration-300"
   >
     {tech}
   </motion.span>
@@ -87,15 +87,16 @@ interface ActionButtonProps {
   href: string;
   icon: React.ComponentType<{ className?: string }>;
   label: string;
-  color?: "purple" | "blue" | "green" | "orange";
+  color?: "purple" | "blue" | "green" | "orange" | "grey";
 }
 
-const ActionButton = ({ href, icon: Icon, label, color = "purple" }: ActionButtonProps) => {
+const ActionButton = ({ href, icon: Icon, label, color = "grey" }: ActionButtonProps) => {
   const colorClasses = {
     purple: "from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500",
     blue: "from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500",
     green: "from-green-500 to-green-600 hover:from-green-400 hover:to-green-500",
-    orange: "from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500"
+    orange: "from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500",
+    grey: "from-neutral-600 to-neutral-700 hover:from-neutral-500 hover:to-neutral-600 text-neutral-100"
   };
 
   return (
@@ -143,11 +144,11 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
       variants={variants || cardVariants}
       initial="hidden"
       animate="visible"
-      className="group relative h-[500px]"
+      className="group relative min-h-[420px] max-h-[450px]"
     >
       {/* Main Card */}
       <motion.div
-        className="relative h-full bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl"
+        className="relative h-full bg-gradient-to-br from-neutral-800/80 to-neutral-900/70 backdrop-blur-xl border border-neutral-700 rounded-3xl overflow-hidden shadow-2xl"
         whileHover={{ 
           scale: 1.02,
           transition: { duration: 0.2 }
@@ -155,7 +156,7 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
       >
         {/* Animated gradient overlay */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-blue-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          className="absolute inset-0 bg-gradient-to-br from-neutral-600/20 via-neutral-500/20 to-neutral-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         />
 
         {/* Featured Badge */}
@@ -164,7 +165,7 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.5 }}
-            className="absolute top-4 right-4 z-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full p-2 shadow-lg"
+            className="absolute top-4 right-4 z-20 bg-gradient-to-r from-neutral-500 to-neutral-400 rounded-full p-2 shadow-lg"
           >
             <Star className="w-4 h-4 text-white" />
           </motion.div>
@@ -173,7 +174,7 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
         {/* Category Badge */}
         <div className="absolute top-4 left-4 z-20">
           <motion.span 
-            className="px-3 py-1 bg-black/30 backdrop-blur-sm text-white text-xs font-medium rounded-full border border-white/20"
+            className="px-3 py-1 bg-neutral-800/50 backdrop-blur-sm text-neutral-200 text-xs font-medium rounded-full border border-neutral-600"
             whileHover={{ scale: 1.05 }}
           >
             {project.category?.toUpperCase() || 'PROJECT'}
@@ -181,7 +182,7 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
         </div>
 
         {/* Image/Video Section */}
-        <div className="relative h-48 overflow-hidden">
+        <div className="relative h-40 overflow-hidden">
           {project.videoUrl ? (
             <iframe 
               src={project.videoUrl}
@@ -203,22 +204,22 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
         </div>
 
         {/* Content Section */}
-        <div className="p-6 space-y-4 relative z-10">
+        <div className="p-4 space-y-3 relative z-10">
           <motion.h3 
-            className="text-xl font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-blue-400 group-hover:bg-clip-text transition-all duration-300 line-clamp-2"
+            className="text-xl font-bold text-neutral-100 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-neutral-300 group-hover:to-neutral-100 group-hover:bg-clip-text transition-all duration-300 line-clamp-2"
           >
             {project.title}
           </motion.h3>
           
           <motion.p 
-            className="text-white/80 text-sm leading-relaxed line-clamp-3"
+            className="text-neutral-400 text-sm leading-relaxed line-clamp-2"
           >
             {project.shortDescription}
           </motion.p>
           
           {/* Tech Stack */}
           <div className="space-y-2">
-            <h4 className="text-xs font-semibold uppercase text-white/60 tracking-wider">
+            <h4 className="text-xs font-semibold uppercase text-neutral-500 tracking-wider">
               Tech Stack
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -227,7 +228,7 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
                 <TechBadge key={tech} tech={tech} />
               ))}
               {project.techStack.length > 4 && (
-                <span className="px-3 py-1 bg-white/5 text-white/60 text-xs rounded-full border border-white/10">
+                <span className="px-3 py-1 bg-neutral-700/30 text-neutral-400 text-xs rounded-full border border-neutral-600/50">
                   +{project.techStack.length - 4}
                 </span>
               )}
@@ -235,14 +236,14 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-between pt-4">
+          <div className="flex items-center justify-between pt-3">
             <div className="flex space-x-2">
               {project.githubUrl && (
                 <ActionButton 
                   href={project.githubUrl} 
                   icon={Github} 
                   label="Code" 
-                  color="purple" 
+                  color="grey"
                 />
               )}
               {project.liveDemoUrl && (
@@ -250,7 +251,7 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
                   href={project.liveDemoUrl} 
                   icon={ExternalLink} 
                   label="Demo" 
-                  color="blue" 
+                  color="grey"
                 />
               )}
             </div>
@@ -260,7 +261,7 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
                 href={project.paperUrl} 
                 icon={FileText} 
                 label="Paper" 
-                color="orange" 
+                color="grey"
               />
             )}
           </div>
@@ -270,7 +271,7 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
         <motion.div
           className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
           style={{
-            background: "linear-gradient(45deg, transparent, rgba(147, 51, 234, 0.1), transparent, rgba(59, 130, 246, 0.1), transparent)",
+            background: "linear-gradient(45deg, transparent, rgba(100, 100, 100, 0.05), transparent, rgba(150, 150, 150, 0.05), transparent)",
           }}
         />
       </motion.div>

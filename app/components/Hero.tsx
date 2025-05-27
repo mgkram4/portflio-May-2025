@@ -36,7 +36,7 @@ const TypewriterText = ({ text, delay = 0 }: TypewriterTextProps) => {
         setDisplayText(prev => prev + text[currentIndex]);
         setCurrentIndex(prev => prev + 1);
       }
-    }, currentIndex * 100);
+    }, currentIndex * 100); // Adjusted speed for modern feel, can be tweaked
 
     return () => clearTimeout(timer);
   }, [currentIndex, text, isClient, shouldAnimate]);
@@ -46,7 +46,7 @@ const TypewriterText = ({ text, delay = 0 }: TypewriterTextProps) => {
       {displayText}
       {isClient && shouldAnimate && currentIndex < text.length && (
         <motion.span
-          className="inline-block w-0.5 h-8 bg-purple-400 ml-1"
+          className="inline-block w-0.5 h-8 bg-neutral-400 ml-1" // Cursor color to neutral
           animate={{ opacity: [1, 0, 1] }}
           transition={{ duration: 1, repeat: Infinity }}
         />
@@ -71,30 +71,29 @@ const StatCard = ({ icon: Icon, value, label, delay, gradient }: StatCardProps) 
     transition={{ delay, duration: 0.6, type: "spring", stiffness: 100 }}
     className="group relative overflow-hidden"
   >
-    <div className={`relative bg-gradient-to-br ${gradient} backdrop-blur-xl border border-white/10 rounded-3xl p-6 hover:border-white/20 transition-all duration-500 text-center h-full`}>
+    <div className={`relative bg-gradient-to-br ${gradient} backdrop-blur-xl border border-neutral-700/30 rounded-3xl p-6 hover:border-neutral-500/40 transition-all duration-500 text-center h-full`}>
       {/* Animated background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-r from-neutral-800/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       
       {/* Floating particles effect */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-3 right-3 w-2 h-2 bg-white/20 rounded-full animate-pulse" />
-        <div className="absolute bottom-4 left-4 w-1 h-1 bg-white/30 rounded-full animate-ping" />
+        <div className="absolute top-3 right-3 w-2 h-2 bg-neutral-600/20 rounded-full animate-pulse" />
+        <div className="absolute bottom-4 left-4 w-1 h-1 bg-neutral-500/30 rounded-full animate-ping" />
       </div>
       
       <div className="relative z-10">
         <div className="mb-3 relative">
-          <Icon className="w-8 h-8 text-white mx-auto drop-shadow-lg" />
-          <div className="absolute inset-0 bg-white/20 blur-xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <Icon className="w-8 h-8 text-neutral-100 mx-auto drop-shadow-lg" />
+          <div className="absolute inset-0 bg-neutral-500/20 blur-xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </div>
-        <div className="text-2xl font-black text-white mb-1 tracking-tight">{value}</div>
-        <div className="text-xs text-white/70 font-medium uppercase tracking-widest">{label}</div>
+        <div className="text-2xl font-black text-neutral-50 mb-1 tracking-tight">{value}</div>
+        <div className="text-xs text-neutral-400 font-medium uppercase tracking-widest">{label}</div>
       </div>
     </div>
   </motion.div>
 );
 
 export default function Hero() {
-  const [isClient, setIsClient] = useState(false);
   const { scrollYProgress } = useScroll();
   
   const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
@@ -106,7 +105,7 @@ export default function Hero() {
   const smoothScale = useSpring(scale, { stiffness: 300, damping: 30 });
 
   useEffect(() => {
-    setIsClient(true);
+    // setIsClient(true); // Removed as it's not used
   }, []);
 
   const containerVariants = {
@@ -133,7 +132,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden" suppressHydrationWarning>
+    <section className="relative min-h-screen mt-10 flex items-center justify-center overflow-hidden" suppressHydrationWarning>
       {/* Content */}
       <motion.div 
         style={{ y: smoothY, opacity: smoothOpacity, scale: smoothScale }}
@@ -148,7 +147,7 @@ export default function Hero() {
           {/* Main Title */}
           <motion.div variants={itemVariants} className="space-y-4">
             <motion.div 
-              className="inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-purple-900/40 via-blue-900/40 to-cyan-900/40 backdrop-blur-xl border border-purple-500/30 rounded-3xl text-purple-300 text-sm font-medium mb-6"
+              className="inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-neutral-800/40 via-neutral-700/40 to-neutral-800/40 backdrop-blur-xl border border-neutral-600/30 rounded-3xl text-neutral-300 text-sm font-medium mb-6"
               whileHover={{ scale: 1.05, y: -2 }}
             >
               <Sparkles className="w-4 h-4" />
@@ -156,25 +155,25 @@ export default function Hero() {
             </motion.div>
             
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-none">
-              <span className="block bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-neutral-100 via-neutral-300 to-neutral-400 bg-clip-text text-transparent">
                 Mark
               </span>
-              <span className="block bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-neutral-400 via-neutral-300 to-neutral-100 bg-clip-text text-transparent">
                 Garcia
               </span>
             </h1>
           </motion.div>
 
           {/* Animated Role */}
-          <motion.div variants={itemVariants} className="text-xl md:text-3xl lg:text-4xl font-light">
+          <motion.div variants={itemVariants} className="text-xl md:text-3xl lg:text-4xl font-light text-neutral-200">
             <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8">
-              <div className="flex items-center space-x-3 px-8 py-4 bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur-xl border border-purple-500/20 rounded-3xl hover:border-purple-400/40 transition-all duration-500">
-                <Brain className="w-8 h-8 text-purple-400" />
+              <div className="flex items-center space-x-3 px-8 py-4 bg-gradient-to-br from-neutral-800/30 to-neutral-700/20 backdrop-blur-xl border border-neutral-600/20 rounded-3xl hover:border-neutral-500/40 transition-all duration-500">
+                <Brain className="w-8 h-8 text-neutral-400" />
                 <TypewriterText text="ML Engineer" delay={500} />
               </div>
-              <span className="text-gray-500 hidden md:block text-2xl">×</span>
-              <div className="flex items-center space-x-3 px-8 py-4 bg-gradient-to-br from-blue-900/30 to-blue-800/20 backdrop-blur-xl border border-blue-500/20 rounded-3xl hover:border-blue-400/40 transition-all duration-500">
-                <Code className="w-8 h-8 text-blue-400" />
+              <span className="text-neutral-600 hidden md:block text-2xl">×</span>
+              <div className="flex items-center space-x-3 px-8 py-4 bg-gradient-to-br from-neutral-800/30 to-neutral-700/20 backdrop-blur-xl border border-neutral-600/20 rounded-3xl hover:border-neutral-500/40 transition-all duration-500">
+                <Code className="w-8 h-8 text-neutral-400" />
                 <TypewriterText text="Full-Stack Dev" delay={2000} />
               </div>
             </div>
@@ -183,14 +182,14 @@ export default function Hero() {
           {/* Description */}
           <motion.div 
             variants={itemVariants}
-            className="relative bg-gradient-to-r from-gray-900/40 via-gray-800/40 to-gray-900/40 backdrop-blur-xl border border-gray-700/30 rounded-3xl p-8 max-w-5xl mx-auto"
+            className="relative bg-gradient-to-r from-neutral-900/40 via-neutral-800/50 to-neutral-900/40 backdrop-blur-xl border border-neutral-700/30 rounded-3xl p-8 max-w-5xl mx-auto"
           >
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500" />
-            <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neutral-600 via-neutral-500 to-neutral-400" />
+            <p className="text-lg md:text-xl text-neutral-300 leading-relaxed">
               Specializing in{' '}
-              <span className="text-purple-400 font-semibold">computer vision</span> and{' '}
-              <span className="text-blue-400 font-semibold">biometric analysis</span> with{' '}
-              <span className="text-cyan-400 font-bold">63%+ accuracy improvements</span>.
+              <span className="text-neutral-300 font-semibold">computer vision</span> and{' '}
+              <span className="text-neutral-300 font-semibold">biometric analysis</span> with{' '}
+              <span className="text-neutral-200 font-bold">63%+ accuracy improvements</span>.
               <br />
               Published researcher delivering end-to-end AI systems.
             </p>
@@ -206,28 +205,28 @@ export default function Hero() {
               value="6+" 
               label="AI Projects" 
               delay={1.2} 
-              gradient="from-purple-600/20 to-purple-800/20"
+              gradient="from-neutral-700/20 to-neutral-800/20"
             />
             <StatCard 
               icon={Code} 
               value="3+" 
               label="Publications" 
               delay={1.4} 
-              gradient="from-blue-600/20 to-blue-800/20"
+              gradient="from-neutral-700/20 to-neutral-800/20"
             />
             <StatCard 
               icon={Sparkles} 
               value="63%" 
               label="Accuracy Boost" 
               delay={1.6} 
-              gradient="from-emerald-600/20 to-emerald-800/20"
+              gradient="from-neutral-600/20 to-neutral-700/20" // Slightly different grey for variety
             />
             <StatCard 
               icon={Github} 
               value="15+" 
               label="Repositories" 
               delay={1.8} 
-              gradient="from-orange-600/20 to-orange-800/20"
+              gradient="from-neutral-600/20 to-neutral-700/20" // Slightly different grey for variety
             />
           </motion.div>
 
@@ -237,12 +236,12 @@ export default function Hero() {
             className="flex flex-col sm:flex-row gap-6 justify-center items-center"
           >
             <motion.button 
-              className="group relative px-10 py-5 bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 hover:from-purple-500 hover:via-blue-500 hover:to-cyan-500 text-white font-bold rounded-3xl transition-all duration-500 shadow-2xl shadow-purple-500/25 hover:shadow-purple-500/40 overflow-hidden"
+              className="group relative px-10 py-5 bg-gradient-to-r from-neutral-200 via-neutral-100 to-white hover:from-neutral-100 hover:via-white hover:to-white text-neutral-800 font-bold rounded-3xl transition-all duration-500 shadow-2xl shadow-neutral-500/25 hover:shadow-neutral-400/40 overflow-hidden"
               whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
               <span className="relative flex items-center space-x-3 text-lg">
                 <Link href="/projects">
                   <span>View My Work</span>
@@ -255,7 +254,7 @@ export default function Hero() {
               href="/placeholder-resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="group px-10 py-5 bg-gradient-to-br from-gray-900/40 to-gray-800/40 backdrop-blur-xl border border-gray-700/50 hover:border-purple-500/50 text-purple-400 hover:text-purple-300 font-bold rounded-3xl transition-all duration-500 hover:bg-purple-500/10"
+              className="group px-10 py-5 bg-gradient-to-br from-neutral-800/40 to-neutral-700/40 backdrop-blur-xl border border-neutral-600/50 hover:border-neutral-400/50 text-neutral-300 hover:text-neutral-100 font-bold rounded-3xl transition-all duration-500 hover:bg-neutral-700/20"
               whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -272,10 +271,10 @@ export default function Hero() {
             className="flex justify-center space-x-6"
           >
             {[
-              { icon: Github, href: "https://github.com/mgkram4", label: "GitHub", gradient: "from-gray-900/40 to-gray-800/40", border: "border-gray-700/50", hover: "hover:border-purple-500/50 hover:bg-purple-500/10" },
-              { icon: Linkedin, href: "https://www.linkedin.com/in/mark-garcia-mg18/", label: "LinkedIn", gradient: "from-blue-900/40 to-blue-800/40", border: "border-blue-700/50", hover: "hover:border-blue-500/50 hover:bg-blue-500/10" },
-              { icon: Mail, href: "mailto:mark.garcia4@laverne.edu", label: "Email", gradient: "from-purple-900/40 to-purple-800/40", border: "border-purple-700/50", hover: "hover:border-purple-500/50 hover:bg-purple-500/10" }
-            ].map(({ icon: Icon, href, label, gradient, border, hover }, index) => (
+              { icon: Github, href: "https://github.com/mgkram4", label: "GitHub", gradient: "from-neutral-900/40 to-neutral-800/40", border: "border-neutral-700/50", hover: "hover:border-neutral-500/50 hover:bg-neutral-600/20", iconColor: "text-neutral-400", iconHoverColor: "group-hover:text-neutral-100" },
+              { icon: Linkedin, href: "https://www.linkedin.com/in/mark-garcia-mg18/", label: "LinkedIn", gradient: "from-neutral-800/40 to-neutral-700/40", border: "border-neutral-600/50", hover: "hover:border-neutral-400/50 hover:bg-neutral-500/20", iconColor: "text-neutral-400", iconHoverColor: "group-hover:text-neutral-100" },
+              { icon: Mail, href: "mailto:mark.garcia4@laverne.edu", label: "Email", gradient: "from-neutral-900/40 to-neutral-800/40", border: "border-neutral-700/50", hover: "hover:border-neutral-500/50 hover:bg-neutral-600/20", iconColor: "text-neutral-400", iconHoverColor: "group-hover:text-neutral-100" }
+            ].map(({ icon: Icon, href, label, gradient, border, hover, iconColor, iconHoverColor }, index) => (
               <motion.a 
                 key={label}
                 href={href}
@@ -288,8 +287,8 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 2 + index * 0.1 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl" />
-                <Icon className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors relative z-10" />
+                <div className="absolute inset-0 bg-gradient-to-r from-neutral-700/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl" />
+                <Icon className={`w-6 h-6 ${iconColor} ${iconHoverColor} transition-colors relative z-10`} />
               </motion.a>
             ))}
           </motion.div>

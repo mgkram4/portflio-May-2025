@@ -26,11 +26,11 @@ const FloatingGeometry = ({ position, geometry, color, speed }: {
       <primitive object={geometry} />
       <meshStandardMaterial
         color={color}
-        transparent
-        opacity={0.6}
-        wireframe
+        transparent={false}
+        opacity={1}
+        wireframe={false}
         emissive={color}
-        emissiveIntensity={0.2}
+        emissiveIntensity={0.7}
       />
     </mesh>
   );
@@ -168,10 +168,10 @@ const ProjectsScene = ({ scrollY }: { scrollY: number }) => {
   const { camera } = useThree();
   
   const geometries = useMemo(() => [
-    new THREE.OctahedronGeometry(0.5),
-    new THREE.TetrahedronGeometry(0.6),
-    new THREE.IcosahedronGeometry(0.4),
-    new THREE.DodecahedronGeometry(0.3),
+    new THREE.OctahedronGeometry(1),
+    new THREE.TetrahedronGeometry(1.2),
+    new THREE.IcosahedronGeometry(0.8),
+    new THREE.DodecahedronGeometry(0.6),
   ], []);
 
   const shapes = useMemo(() => [
@@ -181,6 +181,10 @@ const ProjectsScene = ({ scrollY }: { scrollY: number }) => {
     { position: [6, 6, -6], geometry: geometries[3], color: '#ec4899', speed: 0.6 },
     { position: [0, 8, -10], geometry: geometries[0], color: '#10b981', speed: 0.4 },
     { position: [-10, 0, -4], geometry: geometries[1], color: '#f59e0b', speed: 0.8 },
+    { position: [10, 5, -7], geometry: geometries[2], color: '#f43f5e', speed: 0.45 },
+    { position: [-5, 10, -9], geometry: geometries[3], color: '#38bdf8', speed: 0.65 },
+    { position: [0, -10, -6], geometry: geometries[0], color: '#a3e635', speed: 0.35 },
+    { position: [12, -8, -4], geometry: geometries[1], color: '#c084fc', speed: 0.75 },
   ], [geometries]);
 
   useFrame(() => {

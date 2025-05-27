@@ -1,6 +1,6 @@
 "use client";
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
-import { Award, Brain, Code, Eye, Rocket, Target, Users, Zap } from 'lucide-react';
+import { Brain, Code, Eye, Rocket, Target, Users } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
 import Skills from '../components/Skills';
@@ -89,7 +89,7 @@ const InteractiveCard = ({ icon: Icon, title, description, color, delay, stats }
       transition={{ delay, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-xl border border-gray-700/50 rounded-3xl p-8 hover:border-blue-500/50 transition-all duration-500 overflow-hidden"
+      className="group relative bg-gradient-to-br from-neutral-900/80 to-neutral-800/80 backdrop-blur-xl border border-neutral-700/50 rounded-3xl p-8 hover:border-neutral-500/50 transition-all duration-500 overflow-hidden"
     >
       {/* Animated background */}
       <motion.div
@@ -106,20 +106,20 @@ const InteractiveCard = ({ icon: Icon, title, description, color, delay, stats }
       </FloatingElement>
       
       <div className="relative z-10">
-        <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-sky-400 group-hover:bg-clip-text transition-all duration-300">
+        <h3 className="text-2xl font-bold text-neutral-100 mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-neutral-400 group-hover:to-neutral-200 group-hover:bg-clip-text transition-all duration-300">
           {title}
         </h3>
-        <p className="text-gray-300 leading-relaxed mb-6">{description}</p>
+        <p className="text-neutral-300 leading-relaxed mb-6">{description}</p>
         
         {stats && (
           <div className="grid grid-cols-2 gap-4">
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
-                <div className="text-2xl font-bold text-blue-400">
+                <div className="text-2xl font-bold text-neutral-300">
                   <CountUpNumber end={stat.value} delay={delay + 500 + index * 200} />
                   {stat.suffix}
                 </div>
-                <div className="text-sm text-gray-400">{stat.label}</div>
+                <div className="text-sm text-neutral-400">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -134,9 +134,10 @@ interface TimelineItemProps {
   title: string;
   description: string;
   index: number;
+  isLast: boolean;
 }
 
-const TimelineItem = ({ year, title, description, index }: TimelineItemProps) => (
+const TimelineItem = ({ year, title, description, index, isLast }: TimelineItemProps) => (
   <motion.div
     initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
     whileInView={{ opacity: 1, x: 0 }}
@@ -144,16 +145,16 @@ const TimelineItem = ({ year, title, description, index }: TimelineItemProps) =>
     className={`flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'} mb-12`}
   >
     <div className={`flex-1 ${index % 2 === 0 ? 'pr-8' : 'pl-8'}`}>
-      <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-6 hover:border-blue-500/30 transition-all duration-300">
-        <div className="text-blue-400 font-bold text-lg mb-2">{year}</div>
-        <h4 className="text-xl font-semibold text-white mb-3">{title}</h4>
-        <p className="text-gray-300">{description}</p>
+      <div className="bg-gradient-to-br from-neutral-900/80 to-neutral-800/80 backdrop-blur-xl border border-neutral-700/50 rounded-2xl p-6 hover:border-neutral-500/30 transition-all duration-300">
+        <div className="text-neutral-400 font-bold text-lg mb-2">{year}</div>
+        <h4 className="text-xl font-semibold text-neutral-100 mb-3">{title}</h4>
+        <p className="text-neutral-300">{description}</p>
       </div>
     </div>
     
     <div className="relative">
-      <div className="w-4 h-4 bg-gradient-to-r from-blue-500 to-sky-500 rounded-full border-4 border-gray-900"></div>
-      {index < 2 && <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-0.5 h-16 bg-gradient-to-b from-blue-500 to-sky-500"></div>}
+      <div className="w-4 h-4 bg-gradient-to-r from-neutral-500 to-neutral-600 rounded-full border-4 border-neutral-900"></div>
+      {!isLast && <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-0.5 h-20 md:h-24 bg-gradient-to-b from-neutral-500 to-neutral-600"></div>}
     </div>
     
     <div className="flex-1"></div>
@@ -187,267 +188,219 @@ export default function AboutPage() {
     {
       icon: Brain,
       title: "AI Research Excellence",
-      description: "Published researcher in IEEE conferences with focus on computer vision and biometric analysis. Achieved 63%+ accuracy improvements in pose estimation systems.",
-      color: "from-blue-500 to-sky-500",
+      description: "Published researcher delivering end-to-end AI systems. Focus on computer vision and biometric analysis, achieving 63%+ accuracy improvements in pose estimation systems. Co-authored IEEE paper and drafted university patent for novel biometric estimation methods.",
+      color: "from-neutral-500 to-neutral-600",
       delay: 0.2,
       stats: [
-        { value: 3, suffix: "+", label: "Publications" },
-        { value: 63, suffix: "%", label: "Accuracy Boost" }
+        { value: 1, suffix: "+", label: "IEEE Paper" },
+        { value: 63, suffix: "%+", label: "Accuracy Gain" },
+        { value: 1, suffix: "+", label: "Patent Drafted" }
       ]
     },
     {
       icon: Code,
       title: "Full-Stack Mastery",
-      description: "End-to-end development expertise from AI model deployment to production-ready web applications. Specialized in modern frameworks and cloud technologies.",
-      color: "from-sky-500 to-cyan-500",
+      description: "End-to-end development expertise from AI model deployment (PyTorch/TensorFlow) to production-ready web applications (Next.js/FastAPI). Specialized in modern frameworks (Next.js 14, TypeScript, Tailwind), cloud technologies, and performance optimization (223% mobile performance boost, 65% load time reduction).",
+      color: "from-neutral-600 to-neutral-700",
       delay: 0.4,
       stats: [
         { value: 15, suffix: "+", label: "Projects" },
-        { value: 8, suffix: "+", label: "Technologies" }
+        { value: 223, suffix: "%", label: "Mobile Perf. Boost" },
+        { value: 65, suffix: "%", label: "Load Time Cut" }
       ]
     },
     {
       icon: Eye,
       title: "Computer Vision Pioneer",
-      description: "Specialized in pose estimation, biometric analysis, and physiological sensing. Leading innovation in contactless vital-sign monitoring.",
-      color: "from-cyan-500 to-green-500",
+      description: "Specialized in pose estimation (YOLOv8, MediaPipe, SAM), biometric analysis, and physiological sensing (contactless vital-sign extraction: heart-rate ±5 BPM). Led development of 'Perfect-Pose' real-time biometric pipeline (30 FPS), improving anthropometric accuracy by 63% (height ±5 cm, weight ±3 kg).",
+      color: "from-neutral-700 to-neutral-800",
       delay: 0.6,
       stats: [
-        { value: 5, suffix: "+", label: "CV Projects" },
-        { value: 2, suffix: "+", label: "Patents Pending" }
+        { value: 5, suffix: "BPM", label: "HR Accuracy" },
+        { value: 63, suffix: "%", label: "Pose Accuracy" },
+        { value: 2, suffix: "+", label: "CV Innovations" }
       ]
     }
   ];
 
   const timeline = [
     {
+      year: "Mar 2025 - Present",
+      title: "Student Research Assistant - University of La Verne",
+      description: "Led development of Perfect-Pose, a real-time biometric pipeline (30 FPS) improving anthropometric accuracy by 63%. Integrated YOLOv8, MediaPipe, SAM for height (±5cm) & weight (±3kg) estimation. Implemented contactless vital-sign extraction (HR ±5 BPM). Built Bayesian RL optimizer cutting hyper-parameter tuning time by 40%. Co-authored IEEE paper and drafted university patent."
+    },
+    {
       year: "2025",
-      title: "IEEE ICHI Publication",
-      description: "Published novel contactless vital-sign monitoring technique with significant accuracy improvements in biometric analysis."
+      title: "IEEE ICHI Publication - Intelligent Perfect Pose",
+      description: "Presented novel contactless vital-sign monitoring technique with significant accuracy improvements in biometric analysis. Pre-print DOI: xx/xxxx."
+    },
+    {
+      year: "2025",
+      title: "Farm Vision - Hack for Humanity Winner",
+      description: "Developed a CNN + NASA POWER API disease-risk predictor achieving 91% accuracy and 100ms latency on FastAPI. Awarded 'Best use of AI/ML'."
+    },
+    {
+      year: "Aug 2024 - Apr 2025",
+      title: "Full-Stack Developer - Vista Pacific Capital",
+      description: "Developed and shipped a responsive financial-services platform (Next.js 14, TypeScript, Tailwind). Improved mobile performance by 223% and load time by 65% via SSR & code-splitting. Integrated SendGrid for email, improving lead response by 40%. Automated CI/CD with GitHub Actions & Vercel (99.9% uptime)."
+    },
+    {
+      year: "Jun 2024 - Apr 2025",
+      title: "Chief Community Officer - Google Developer Group",
+      description: "Directed a 7-person dev team releasing a Flutter + Flask healthcare app. Architected a CV pipeline for posture analysis (87% accuracy). Hosted 10 technical workshops for 100+ developers, participated in 3 hackathons, and contributed to one open-source project. Designed UI/UX in Figma."
+    },
+    {
+      year: "Oct 2023 - Apr 2025",
+      title: "STEM Instructor - Coding Minds Academy",
+      description: "Taught ML, web-dev, and data-science curricula to 80+ students. Guided student projects (pose networks, Alpaca trading simulators); one team won a U17 hackathon. Built project-based modules with React front-end and Flask/ML back-end."
     },
     {
       year: "2024",
-      title: "Award-Winning Projects",
-      description: "Winner of &apos;Best use of AI/ML&apos; at Hack for Humanity 2025 with Farm Vision agricultural intelligence platform."
+      title: "PenguinPal - Cerebral Beach Hacks Winner",
+      description: "Award-winning AI-powered email summarizer using Claude API, featuring a secure OAuth stack and a Next.js dashboard."
     },
     {
-      year: "2023",
-      title: "Research & Development",
-      description: "Focused on computer vision applications in sports and fitness, developing innovative pose estimation systems."
+      year: "Aug 2024 - Aug 2025",
+      title: "M.S. Data Analytics - University of La Verne",
+      description: "Pursuing advanced studies in data analytics, focusing on machine learning and statistical analysis, to deepen expertise in extracting insights from complex datasets."
+    },
+    {
+      year: "Aug 2021 - May 2024",
+      title: "B.S. E-Commerce - University of La Verne",
+      description: "Graduated with a Bachelor of Science in E-Commerce, gaining a strong foundation in digital business, online marketing, and web technologies."
     }
   ];
 
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-2xl">Loading...</div>
+      <div className="min-h-screen bg-neutral-950 text-neutral-300 flex items-center justify-center">
+        <div className="text-2xl">Loading About...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden relative" suppressHydrationWarning>
-      {/* Three.js Background */}
+    <div className="min-h-screen bg-neutral-950 text-neutral-300 overflow-x-hidden relative" suppressHydrationWarning>
       {threeLoaded && <HomeThreeBackground scrollY={scrollY} />}
-      
-      {/* Fallback gradient background */}
       {!threeLoaded && (
-        <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-black to-blue-900/20 z-0" />
+        <div className="fixed inset-0 bg-gradient-to-br from-neutral-900 via-black to-neutral-800 z-0" />
       )}
 
-      {/* Hero Section */}
       <motion.div 
         style={{ y: smoothY, opacity: smoothOpacity }}
         className="relative z-10 pt-24 pb-16"
       >
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
+        <section className="container mx-auto px-6 text-center mb-24 md:mb-32">
+          <motion.h1 
+            initial={{ opacity: 0, y: -40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="text-center max-w-4xl mx-auto"
+            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+            className="text-5xl sm:text-6xl md:text-7xl font-black mb-8 leading-tight"
           >
-            <motion.div
-              className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-600/20 to-sky-600/20 backdrop-blur-sm border border-blue-500/30 rounded-full text-blue-300 text-sm font-medium mb-8"
-              whileHover={{ scale: 1.05 }}
-            >
-              <Zap className="w-4 h-4" />
-              <span>Passionate about AI innovation</span>
-            </motion.div>
-            
-            <h1 className="text-6xl md:text-8xl font-black mb-8 leading-tight">
-              <span className="block bg-gradient-to-r from-white via-sky-200 to-blue-200 bg-clip-text text-transparent">
-                About
-              </span>
-              <span className="block bg-gradient-to-r from-blue-400 via-sky-400 to-cyan-400 bg-clip-text text-transparent">
-                Mark
-              </span>
-            </h1>
-            
-            <motion.p 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-xl md:text-2xl text-gray-300 leading-relaxed"
-            >
-              Passionate about leveraging{' '}
-              <span className="text-blue-400 font-semibold">AI to solve real-world problems</span>{' '}
-              and create meaningful impact through{' '}
-              <span className="text-sky-400 font-semibold">cutting-edge technology</span>.
-            </motion.p>
-          </motion.div>
-        </div>
-      </motion.div>
+            <span className="block bg-gradient-to-r from-neutral-100 via-neutral-300 to-neutral-400 bg-clip-text text-transparent">
+              Mark Garcia: Innovator
+            </span>
+            <span className="block bg-gradient-to-r from-neutral-400 via-neutral-300 to-neutral-100 bg-clip-text text-transparent text-4xl sm:text-5xl md:text-6xl mt-2">
+              AI Visionary & Builder
+            </span>
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            className="text-lg sm:text-xl text-neutral-400 max-w-3xl mx-auto leading-relaxed"
+          >
+            Driven by a passion for transformative technology, I architect intelligent systems that bridge the gap between human potential and computational power. My journey is one of relentless learning, innovation, and a commitment to creating impactful solutions.
+          </motion.p>
+        </section>
 
-      {/* Main Achievements */}
-      <section className="relative z-10 py-20">
-        <div className="container mx-auto px-6">
+        <section className="container mx-auto px-6 mb-24 md:mb-32">
           <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl md:text-5xl font-bold text-center mb-16"
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+            className="text-4xl sm:text-5xl font-bold text-center mb-16 md:mb-20"
           >
-            <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
-              Core Expertise
+            <span className="bg-gradient-to-r from-neutral-300 via-neutral-200 to-neutral-100 bg-clip-text text-transparent">
+              Key Achievements
             </span>
           </motion.h2>
-          
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8">
             {achievements.map((achievement, index) => (
-              <InteractiveCard key={index} {...achievement} />
+              <InteractiveCard key={index} {...achievement} delay={index * 0.2 + 0.3} />
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Journey Timeline */}
-      <section className="relative z-10 py-20">
-        <div className="container mx-auto px-6">
+        <section className="container mx-auto px-6 mb-24 md:mb-32">
           <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl md:text-5xl font-bold text-center mb-16"
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
+            className="text-4xl sm:text-5xl font-bold text-center mb-16 md:mb-20"
           >
-            <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-neutral-300 via-neutral-200 to-neutral-100 bg-clip-text text-transparent">
               My Journey
             </span>
           </motion.h2>
-          
-          <div className="max-w-4xl mx-auto">
+          <div className="relative">
+            <div className="hidden md:block absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 w-1 bg-neutral-700/50 rounded-full"></div>
             {timeline.map((item, index) => (
-              <TimelineItem key={index} {...item} index={index} />
+              <TimelineItem key={index} {...item} index={index} isLast={index === timeline.length - 1} />
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Philosophy Section */}
-      <section className="relative z-10 py-20">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-6xl mx-auto"
+        </section>
+        
+        <section className="container mx-auto px-6 mb-24 md:mb-32">
+          <motion.h2 
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+            className="text-4xl sm:text-5xl font-bold text-center mb-16 md:mb-20"
           >
-            <div className="bg-gradient-to-r from-blue-900/20 via-sky-900/20 to-cyan-900/20 rounded-3xl p-12 border border-blue-500/20 backdrop-blur-xl relative overflow-hidden">
-              {/* Animated background elements */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-sky-600/5 animate-pulse" />
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500" />
-              
-              <div className="relative z-10">
-                <div className="flex items-center justify-center mb-8">
-                  <div className="flex space-x-4">
-                    <Target className="w-8 h-8 text-blue-400" />
-                    <Rocket className="w-8 h-8 text-sky-400" />
-                    <Users className="w-8 h-8 text-cyan-400" />
-                  </div>
+            <span className="bg-gradient-to-r from-neutral-300 via-neutral-200 to-neutral-100 bg-clip-text text-transparent">
+              Core Values
+            </span>
+          </motion.h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              { icon: Rocket, title: "Innovation", description: "Constantly exploring new frontiers in AI and technology.", color: "from-neutral-500 to-neutral-600" },
+              { icon: Target, title: "Impact", description: "Focused on creating solutions that deliver tangible results.", color: "from-neutral-600 to-neutral-700" },
+              { icon: Brain, title: "Learning", description: "Committed to continuous growth and knowledge acquisition.", color: "from-neutral-700 to-neutral-800" },
+              { icon: Users, title: "Collaboration", description: "Believing in the power of teamwork to achieve greater outcomes.", color: "from-neutral-800 to-neutral-900" },
+            ].map((value, index) => (
+              <motion.div
+                key={value.title}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.15 + 0.4, duration: 0.6 }}
+                className="bg-gradient-to-br from-neutral-800/60 to-neutral-900/60 backdrop-blur-md border border-neutral-700/50 rounded-2xl p-8 text-center hover:border-neutral-500/70 transition-all duration-300"
+              >
+                <div className={`w-16 h-16 bg-gradient-to-r ${value.color} rounded-full flex items-center justify-center mx-auto mb-6 text-white`}>
+                  <value.icon className="w-8 h-8" />
                 </div>
-                
-                <h3 className="text-3xl md:text-4xl font-bold text-center mb-8">
-                  <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
-                    My Philosophy
-                  </span>
-                </h3>
-                
-                <div className="grid md:grid-cols-2 gap-8 text-lg text-gray-300 leading-relaxed">
-                  <div>
-                    <p className="mb-6">
-                      I believe that the intersection of{' '}
-                      <span className="text-blue-400 font-semibold">artificial intelligence</span> and{' '}
-                      <span className="text-sky-400 font-semibold">human-centric design</span>{' '}
-                      holds the key to solving some of our most pressing challenges.
-                    </p>
-                    <p>
-                      My work in computer vision and biometric analysis isn&apos;t just about pushing technological boundaries—it&apos;s about creating solutions that enhance human well-being and performance.
-                    </p>
-                  </div>
-                  <div>
-                    <p className="mb-6">
-                      With a strong foundation in both{' '}
-                      <span className="text-cyan-400 font-semibold">research</span> and{' '}
-                      <span className="text-green-400 font-semibold">full-stack development</span>, 
-                      I excel in transforming complex data into actionable insights and robust software solutions.
-                    </p>
-                    <p>
-                      I&apos;m eager to apply my skills in environments that value research-driven development and cutting-edge technological solutions.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+                <h3 className="text-xl font-bold text-neutral-100 mb-3">{value.title}</h3>
+                <p className="text-neutral-400 text-sm leading-relaxed">{value.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
 
-      {/* Skills Section */}
-      <section className="relative z-10 bg-gradient-to-r from-gray-900/50 to-black/50 backdrop-blur-sm">
-        <div className="container mx-auto px-6">
-          <Skills />
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="relative z-10 py-20">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center max-w-4xl mx-auto"
+        <section className="container mx-auto px-6 mb-16 md:mb-24">
+          <motion.h2 
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+            className="text-4xl sm:text-5xl font-bold text-center mb-16 md:mb-20"
           >
-            <div className="bg-gradient-to-r from-blue-900/20 via-sky-900/20 to-cyan-900/20 rounded-3xl p-12 border border-blue-500/20 backdrop-blur-xl">
-              <Award className="w-16 h-16 text-blue-400 mx-auto mb-6" />
-              <h3 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent">
-                  Let&apos;s Build the Future Together
-                </span>
-              </h3>
-              <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-                Interested in collaborating on innovative projects in machine learning and computer vision? Let&apos;s start a conversation.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <motion.button
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-500 hover:to-sky-500 text-white font-semibold rounded-2xl transition-all duration-300 shadow-2xl shadow-blue-500/25"
-                >
-                  Get In Touch
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 border-2 border-blue-500/50 hover:border-blue-400 text-blue-400 hover:text-blue-300 font-semibold rounded-2xl transition-all duration-300 backdrop-blur-sm hover:bg-blue-500/10"
-                >
-                  View Projects
-                </motion.button>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+            <span className="bg-gradient-to-r from-neutral-300 via-neutral-200 to-neutral-100 bg-clip-text text-transparent">
+              Technical Skills
+            </span>
+          </motion.h2>
+          <Skills /> 
+        </section>
+
+      </motion.div>
     </div>
   );
 } 

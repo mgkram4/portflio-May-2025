@@ -3,262 +3,192 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import React, { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
-// Floating geometric shapes component
-const FloatingGeometry = ({ position, geometry, color, speed }: {
+// Enhanced floating geometry with pulse, morph, and glow effects
+const FloatingGeometry = ({ position, geometry, color, speed, index }: {
   position: [number, number, number];
   geometry: THREE.BufferGeometry;
   color: string;
   speed: number;
+  index: number;
 }) => {
   const meshRef = useRef<THREE.Mesh>(null!);
-  const initialY = position[1];
-
-  useFrame(({ clock }) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x += speed * 0.008;
-      meshRef.current.rotation.y += speed * 0.012;
-      meshRef.current.position.y = initialY + Math.sin(clock.getElapsedTime() * speed) * 0.3;
+  const glowRef = useRef<THREE.Mesh>(null!);
+  const initialPosition = useMemo(() => new THREE.Vector3(...position), [position]);
+  const phase = useMemo(() => Math.random() * Math.PI * 2, []);
+  
+  useFrame(({ clock, mouse }) => {
+    if (meshRef.current && glowRef.current) {
+      const elapsedTime = clock.getElapsedTime();
+      
+      // Simplified rotation (slowed down further)
+      meshRef.current.rotation.x = Math.sin(elapsedTime * speed * 0.075 + phase) * Math.PI * 0.25;
+      meshRef.current.rotation.y = elapsedTime * speed * 0.125;
+      meshRef.current.rotation.z = Math.cos(elapsedTime * speed * 0.05) * Math.PI * 0.125;
+      
+      // Reduced pulsing scale effect (slowed down further)
+      const pulse = Math.sin(elapsedTime * speed * 0.5 + index) * 0.05 + 1; 
+      meshRef.current.scale.setScalar(pulse);
+      glowRef.current.scale.setScalar(pulse * 1.1); 
+      
+      // Reduced orbital movement and mouse influence (slowed down further)
+      const orbitRadius = 1.25 + Math.sin(elapsedTime * speed * 0.125) * 0.1; 
+      const orbitSpeed = speed * 0.075; 
+      meshRef.current.position.x = initialPosition.x + Math.cos(elapsedTime * orbitSpeed + phase) * orbitRadius + mouse.x * 0.2; 
+      meshRef.current.position.y = initialPosition.y + Math.sin(elapsedTime * orbitSpeed * 0.375 + phase) * orbitRadius + mouse.y * 0.2; 
+      meshRef.current.position.z = initialPosition.z + Math.sin(elapsedTime * orbitSpeed * 0.175) * 0.5; 
+      
+      // Sync glow position
+      glowRef.current.position.copy(meshRef.current.position);
+      glowRef.current.rotation.copy(meshRef.current.rotation);
+      
+      // Reduced dynamic emissive intensity (slowed down further)
+      const emissiveIntensity = (Math.sin(elapsedTime * speed * 0.75 + index * 0.5) + 1) * 0.15;
+      (meshRef.current.material as THREE.MeshPhysicalMaterial).emissiveIntensity = emissiveIntensity * 0.8;
     }
   });
 
   return (
-    <mesh ref={meshRef} position={position}>
-      <primitive object={geometry} />
-      <meshStandardMaterial
-        color={color}
-        transparent
-        opacity={0.4}
-        wireframe
-        emissive={color}
-        emissiveIntensity={0.15}
-      />
-    </mesh>
+    <group>
+      {/* Glow effect mesh */}
+      <mesh ref={glowRef} position={position}>
+        <primitive object={geometry} />
+        <meshBasicMaterial
+          color={color}
+          transparent
+          opacity={0.1}
+          blending={THREE.AdditiveBlending}
+        />
+      </mesh>
+      
+      {/* Main mesh with physical material */}
+      <mesh ref={meshRef} position={position}>
+        <primitive object={geometry} />
+        <meshPhysicalMaterial
+          color={color}
+          emissive={color}
+          emissiveIntensity={0.1}
+          metalness={0.6}
+          roughness={0.3}
+          clearcoat={0.8}
+          clearcoatRoughness={0.1}
+          reflectivity={0.9}
+          envMapIntensity={1}
+        />
+      </mesh>
+    </group>
   );
 };
 
-// Advanced particle system with multiple layers
-const AdvancedParticleSystem = ({ scrollY }: { scrollY: number }) => {
-  const particlesRef = useRef<THREE.Points>(null!);
-  const particles2Ref = useRef<THREE.Points>(null!);
-  const particles3Ref = useRef<THREE.Points>(null!);
+// New Skyscraper Cityscape component
+const SkyscraperCityscape = () => {
+  const groupRef = useRef<THREE.Group>(null!);
 
-  const { particles1, particles2, particles3 } = useMemo(() => {
-    const particleCount1 = 2500;
-    const particleCount2 = 1200;
-    const particleCount3 = 800;
-    
-    // First layer - smallest, fastest particles
-    const positions1 = new Float32Array(particleCount1 * 3);
-    const colors1 = new Float32Array(particleCount1 * 3);
-    const sizes1 = new Float32Array(particleCount1);
-    
-    // Second layer - medium particles
-    const positions2 = new Float32Array(particleCount2 * 3);
-    const colors2 = new Float32Array(particleCount2 * 3);
-    const sizes2 = new Float32Array(particleCount2);
+  const buildings = useMemo(() => {
+    const buildingData = [];
+    const buildingCount = 50; // Number of buildings
+    const cityRadius = 25; // How far out buildings can spawn
+    const minHeight = 5;
+    const maxHeight = 25;
 
-    // Third layer - largest, slowest particles
-    const positions3 = new Float32Array(particleCount3 * 3);
-    const colors3 = new Float32Array(particleCount3 * 3);
-    const sizes3 = new Float32Array(particleCount3);
-
-    const color1 = new THREE.Color('#6366f1'); // Indigo
-    const color2 = new THREE.Color('#8b5cf6'); // Purple
-    const color3 = new THREE.Color('#06b6d4'); // Cyan
-    const color4 = new THREE.Color('#ec4899'); // Pink
-
-    // First layer particles
-    for (let i = 0; i < particleCount1; i++) {
-      positions1[i * 3] = (Math.random() - 0.5) * 35;
-      positions1[i * 3 + 1] = (Math.random() - 0.5) * 35;
-      positions1[i * 3 + 2] = (Math.random() - 0.5) * 20;
+    for (let i = 0; i < buildingCount; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const radius = Math.random() * cityRadius * 0.8 + cityRadius * 0.2; // Avoid very center
+      const x = Math.cos(angle) * radius;
+      const z = Math.sin(angle) * radius;
       
-      const colorChoice = Math.random();
-      const selectedColor = colorChoice < 0.25 ? color1 : colorChoice < 0.5 ? color2 : colorChoice < 0.75 ? color3 : color4;
-      const intensity = Math.random() * 0.4 + 0.3;
+      const height = Math.random() * (maxHeight - minHeight) + minHeight;
+      const width = Math.random() * 1 + 0.5;
+      const depth = Math.random() * 1 + 0.5;
       
-      colors1[i * 3] = selectedColor.r * intensity;
-      colors1[i * 3 + 1] = selectedColor.g * intensity;
-      colors1[i * 3 + 2] = selectedColor.b * intensity;
+      // Varying shades of grey for buildings
+      const greyShade = Math.random() * 0.3 + 0.1; // Darker greys: 0.1 to 0.4
+      const color = new THREE.Color(greyShade, greyShade, greyShade);
       
-      sizes1[i] = Math.random() * 1.5 + 0.3;
+      buildingData.push({
+        position: [x, height / 2, z] as [number, number, number],
+        args: [width, height, depth] as [number, number, number],
+        color,
+        emissiveIntensity: Math.random() * 0.1 + 0.05 // Subtle glow for some buildings
+      });
     }
-
-    // Second layer particles
-    for (let i = 0; i < particleCount2; i++) {
-      positions2[i * 3] = (Math.random() - 0.5) * 45;
-      positions2[i * 3 + 1] = (Math.random() - 0.5) * 45;
-      positions2[i * 3 + 2] = (Math.random() - 0.5) * 25;
-      
-      const selectedColor = Math.random() < 0.5 ? color2 : color3;
-      const intensity = Math.random() * 0.3 + 0.2;
-      
-      colors2[i * 3] = selectedColor.r * intensity;
-      colors2[i * 3 + 1] = selectedColor.g * intensity;
-      colors2[i * 3 + 2] = selectedColor.b * intensity;
-      
-      sizes2[i] = Math.random() * 3 + 1;
-    }
-
-    // Third layer particles
-    for (let i = 0; i < particleCount3; i++) {
-      positions3[i * 3] = (Math.random() - 0.5) * 60;
-      positions3[i * 3 + 1] = (Math.random() - 0.5) * 60;
-      positions3[i * 3 + 2] = (Math.random() - 0.5) * 30;
-      
-      const selectedColor = color1;
-      const intensity = Math.random() * 0.2 + 0.1;
-      
-      colors3[i * 3] = selectedColor.r * intensity;
-      colors3[i * 3 + 1] = selectedColor.g * intensity;
-      colors3[i * 3 + 2] = selectedColor.b * intensity;
-      
-      sizes3[i] = Math.random() * 5 + 2;
-    }
-
-    return {
-      particles1: { positions: positions1, colors: colors1, sizes: sizes1 },
-      particles2: { positions: positions2, colors: colors2, sizes: sizes2 },
-      particles3: { positions: positions3, colors: colors3, sizes: sizes3 }
-    };
+    return buildingData;
   }, []);
 
   useFrame(({ clock }) => {
-    if (particlesRef.current) {
-      particlesRef.current.rotation.y = clock.getElapsedTime() * 0.015;
-      particlesRef.current.position.y = scrollY * 0.0003;
-    }
-    if (particles2Ref.current) {
-      particles2Ref.current.rotation.y = -clock.getElapsedTime() * 0.008;
-      particles2Ref.current.rotation.x = clock.getElapsedTime() * 0.003;
-      particles2Ref.current.position.y = scrollY * 0.0006;
-    }
-    if (particles3Ref.current) {
-      particles3Ref.current.rotation.y = clock.getElapsedTime() * 0.005;
-      particles3Ref.current.rotation.z = clock.getElapsedTime() * 0.002;
-      particles3Ref.current.position.y = scrollY * 0.001;
+    if (groupRef.current) {
+      // Slow rotation of the entire cityscape for a subtle dynamic feel
+      groupRef.current.rotation.y = clock.getElapsedTime() * 0.005;
     }
   });
 
   return (
-    <>
-      {/* First layer - smallest particles */}
-      <points ref={particlesRef}>
-        <bufferGeometry>
-          <primitive 
-            attach="attributes-position" 
-            object={new THREE.BufferAttribute(particles1.positions, 3)} 
+    <group ref={groupRef} position={[0, -5, 0]}> {/* Lower the cityscape slightly */}
+      {buildings.map((building, index) => (
+        <mesh key={index} position={building.position}>
+          <boxGeometry args={building.args} />
+          <meshStandardMaterial 
+            color={building.color} 
+            emissive={building.color} // Emissive color same as base for a glow effect
+            emissiveIntensity={building.emissiveIntensity} 
+            metalness={0.7} // Modern metallic look
+            roughness={0.4} // Moderately smooth
           />
-          <primitive 
-            attach="attributes-color" 
-            object={new THREE.BufferAttribute(particles1.colors, 3)} 
-          />
-          <primitive 
-            attach="attributes-size" 
-            object={new THREE.BufferAttribute(particles1.sizes, 1)} 
-          />
-        </bufferGeometry>
-        <pointsMaterial
-          size={0.015}
-          vertexColors
-          sizeAttenuation
-          transparent
-          opacity={0.7}
-          blending={THREE.AdditiveBlending}
-        />
-      </points>
-
-      {/* Second layer - medium particles */}
-      <points ref={particles2Ref}>
-        <bufferGeometry>
-          <primitive 
-            attach="attributes-position" 
-            object={new THREE.BufferAttribute(particles2.positions, 3)} 
-          />
-          <primitive 
-            attach="attributes-color" 
-            object={new THREE.BufferAttribute(particles2.colors, 3)} 
-          />
-          <primitive 
-            attach="attributes-size" 
-            object={new THREE.BufferAttribute(particles2.sizes, 1)} 
-          />
-        </bufferGeometry>
-        <pointsMaterial
-          size={0.03}
-          vertexColors
-          sizeAttenuation
-          transparent
-          opacity={0.5}
-          blending={THREE.AdditiveBlending}
-        />
-      </points>
-
-      {/* Third layer - largest particles */}
-      <points ref={particles3Ref}>
-        <bufferGeometry>
-          <primitive 
-            attach="attributes-position" 
-            object={new THREE.BufferAttribute(particles3.positions, 3)} 
-          />
-          <primitive 
-            attach="attributes-color" 
-            object={new THREE.BufferAttribute(particles3.colors, 3)} 
-          />
-          <primitive 
-            attach="attributes-size" 
-            object={new THREE.BufferAttribute(particles3.sizes, 1)} 
-          />
-        </bufferGeometry>
-        <pointsMaterial
-          size={0.05}
-          vertexColors
-          sizeAttenuation
-          transparent
-          opacity={0.3}
-          blending={THREE.AdditiveBlending}
-        />
-      </points>
-    </>
+        </mesh>
+      ))}
+      {/* Add a ground plane - very dark grey */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]}>
+        <planeGeometry args={[100, 100]} />
+        <meshStandardMaterial color="#080808" metalness={0.5} roughness={0.8} />
+      </mesh>
+    </group>
   );
 };
 
 // Main scene component
 const HomeScene = ({ scrollY }: { scrollY: number }) => {
   const { camera } = useThree();
+  const lightRef1 = useRef<THREE.PointLight>(null!);
+  const lightRef2 = useRef<THREE.PointLight>(null!);
   
   const geometries = useMemo(() => [
-    new THREE.OctahedronGeometry(0.4),
-    new THREE.TetrahedronGeometry(0.5),
-    new THREE.IcosahedronGeometry(0.3),
-    new THREE.DodecahedronGeometry(0.25),
-    new THREE.BoxGeometry(0.4, 0.4, 0.4),
+    new THREE.SphereGeometry(0.7, 32, 16),
+    new THREE.BoxGeometry(0.8, 0.8, 0.8),
   ], []);
 
   const shapes = useMemo(() => [
-    { position: [-12, 6, -8], geometry: geometries[0], color: '#6366f1', speed: 0.4 },
-    { position: [10, -3, -12], geometry: geometries[1], color: '#8b5cf6', speed: 0.6 },
-    { position: [-8, -6, -5], geometry: geometries[2], color: '#06b6d4', speed: 0.3 },
-    { position: [8, 8, -10], geometry: geometries[3], color: '#ec4899', speed: 0.5 },
-    { position: [0, 10, -15], geometry: geometries[4], color: '#10b981', speed: 0.35 },
-    { position: [-15, 2, -6], geometry: geometries[0], color: '#f59e0b', speed: 0.7 },
-    { position: [12, -8, -9], geometry: geometries[1], color: '#ef4444', speed: 0.45 },
-    { position: [-5, 12, -12], geometry: geometries[2], color: '#8b5cf6', speed: 0.55 },
+    { position: [-6, 2, -4], geometry: geometries[0], color: '#FFFFFF', speed: 0.08 },
+    { position: [5, -1, -3], geometry: geometries[1], color: '#777777', speed: 0.1 },
   ], [geometries]);
 
-  useFrame(() => {
-    camera.position.y = scrollY * 0.0001;
-    camera.rotation.x = scrollY * 0.00003;
+  useFrame(({ clock }) => {
+    // Animate camera (slowed down further)
+    camera.position.x = Math.sin(clock.getElapsedTime() * 0.025) * 0.5;
+    camera.position.y = scrollY * 0.00005 + Math.cos(clock.getElapsedTime() * 0.0375) * 0.25;
+    camera.rotation.z = Math.sin(clock.getElapsedTime() * 0.025) * 0.005;
+    
+    // Animate point lights (slowed down further, new colors)
+    if (lightRef1.current && lightRef2.current) {
+      const time = clock.getElapsedTime();
+      lightRef1.current.position.x = Math.sin(time * 0.125) * 7;
+      lightRef1.current.position.z = Math.cos(time * 0.125) * 7;
+      lightRef1.current.intensity = (Math.sin(time * 0.5) + 1) * 1.0 + 0.25;
+      
+      lightRef2.current.position.x = Math.cos(time * 0.075) * 9;
+      lightRef2.current.position.z = Math.sin(time * 0.075) * 9;
+      lightRef2.current.intensity = (Math.cos(time * 0.375) + 1) * 1.0 + 0.25;
+    }
   });
 
   return (
     <>
-      <ambientLight intensity={0.2} />
-      <directionalLight position={[15, 15, 8]} intensity={0.4} color="#6366f1" />
-      <directionalLight position={[-15, -15, -8]} intensity={0.25} color="#8b5cf6" />
-      <directionalLight position={[0, 10, 5]} intensity={0.3} color="#06b6d4" />
+      <fog attach="fog" args={['#111111', 10, 22]} />
       
-      <AdvancedParticleSystem scrollY={scrollY} />
+      <ambientLight intensity={0.05} />
+      <pointLight ref={lightRef1} position={[8, 8, 4]} intensity={1.0} color="#FFFFFF" distance={30} />
+      <pointLight ref={lightRef2} position={[-8, 8, 4]} intensity={0.8} color="#DDDDDD" distance={30} />
+      <directionalLight position={[0, 15, 10]} intensity={0.3} color="#CCCCCC" />
+      
+      <SkyscraperCityscape />
       
       {shapes.map((shape, index) => (
         <FloatingGeometry
@@ -267,6 +197,7 @@ const HomeScene = ({ scrollY }: { scrollY: number }) => {
           geometry={shape.geometry}
           color={shape.color}
           speed={shape.speed}
+          index={index}
         />
       ))}
     </>
@@ -280,12 +211,15 @@ interface HomeThreeBackgroundProps {
 const HomeThreeBackground: React.FC<HomeThreeBackgroundProps> = ({ scrollY }) => {
   return (
     <div className="fixed inset-0 z-0">
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-neutral-900 to-neutral-800" />
       <Canvas
-        camera={{ position: [0, 0, 12], fov: 70 }}
+        camera={{ position: [0, 0, 15], fov: 75 }}
         gl={{ 
           antialias: true, 
           alpha: true,
-          powerPreference: "high-performance"
+          powerPreference: "high-performance",
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.2
         }}
       >
         <HomeScene scrollY={scrollY} />
@@ -294,4 +228,4 @@ const HomeThreeBackground: React.FC<HomeThreeBackgroundProps> = ({ scrollY }) =>
   );
 };
 
-export default HomeThreeBackground; 
+export default HomeThreeBackground;
