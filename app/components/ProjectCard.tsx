@@ -77,7 +77,7 @@ const TechBadge = ({ tech }: { tech: string }) => (
     initial={{ opacity: 0, scale: 0.8 }}
     animate={{ opacity: 1, scale: 1 }}
     transition={{ duration: 0.3 }}
-    className="px-3 py-1 bg-neutral-700/50 backdrop-blur-sm text-neutral-300 text-xs font-medium rounded-full border border-neutral-600/50 hover:bg-neutral-600/70 hover:border-neutral-500 transition-all duration-300"
+    className="px-3 py-1 bg-muted/50 backdrop-blur-sm text-muted-foreground text-xs font-medium rounded-full border border-border hover:bg-muted/70 hover:border-primary/20 transition-all duration-300"
   >
     {tech}
   </motion.span>
@@ -87,16 +87,14 @@ interface ActionButtonProps {
   href: string;
   icon: React.ComponentType<{ className?: string }>;
   label: string;
-  color?: "purple" | "blue" | "green" | "orange" | "grey";
+  color?: "primary" | "secondary" | "default";
 }
 
-const ActionButton = ({ href, icon: Icon, label, color = "grey" }: ActionButtonProps) => {
+const ActionButton = ({ href, icon: Icon, label, color = "default" }: ActionButtonProps) => {
   const colorClasses = {
-    purple: "from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500",
-    blue: "from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500",
-    green: "from-green-500 to-green-600 hover:from-green-400 hover:to-green-500",
-    orange: "from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500",
-    grey: "from-neutral-600 to-neutral-700 hover:from-neutral-500 hover:to-neutral-600 text-neutral-100"
+    primary: "from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground",
+    secondary: "from-secondary to-secondary/80 hover:from-secondary/90 hover:to-secondary/70 text-secondary-foreground",
+    default: "from-muted to-muted/80 hover:from-muted/90 hover:to-muted/70 text-foreground"
   };
 
   return (
@@ -108,7 +106,7 @@ const ActionButton = ({ href, icon: Icon, label, color = "grey" }: ActionButtonP
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className={`group flex items-center space-x-2 px-4 py-2 bg-gradient-to-r ${colorClasses[color]} text-white rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl`}
+        className={`group flex items-center space-x-2 px-4 py-2 bg-gradient-to-r ${colorClasses[color]} rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl`}
       >
         <Icon className="w-4 h-4" />
         <span className="text-sm font-medium">{label}</span>
@@ -148,7 +146,7 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
     >
       {/* Main Card */}
       <motion.div
-        className="relative h-full bg-gradient-to-br from-neutral-800/80 to-neutral-900/70 backdrop-blur-xl border border-neutral-700 rounded-3xl overflow-hidden shadow-2xl"
+        className="relative h-full bg-gradient-to-br from-card/80 to-card/70 backdrop-blur-xl border border-border rounded-3xl overflow-hidden shadow-2xl"
         whileHover={{ 
           scale: 1.02,
           transition: { duration: 0.2 }
@@ -156,7 +154,7 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
       >
         {/* Animated gradient overlay */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-neutral-600/20 via-neutral-500/20 to-neutral-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          className="absolute inset-0 bg-gradient-to-br from-accent/20 via-primary/20 to-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         />
 
         {/* Featured Badge */}
@@ -165,16 +163,16 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.5 }}
-            className="absolute top-4 right-4 z-20 bg-gradient-to-r from-neutral-500 to-neutral-400 rounded-full p-2 shadow-lg"
+            className="absolute top-4 right-4 z-20 bg-gradient-to-r from-primary to-accent rounded-full p-2 shadow-lg"
           >
-            <Star className="w-4 h-4 text-white" />
+            <Star className="w-4 h-4 text-primary-foreground" />
           </motion.div>
         )}
 
         {/* Category Badge */}
         <div className="absolute top-4 left-4 z-20">
           <motion.span 
-            className="px-3 py-1 bg-neutral-800/50 backdrop-blur-sm text-neutral-200 text-xs font-medium rounded-full border border-neutral-600"
+            className="px-3 py-1 bg-card/50 backdrop-blur-sm text-foreground text-xs font-medium rounded-full border border-border"
             whileHover={{ scale: 1.05 }}
           >
             {project.category?.toUpperCase() || 'PROJECT'}
@@ -206,20 +204,20 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
         {/* Content Section */}
         <div className="p-4 space-y-3 relative z-10">
           <motion.h3 
-            className="text-xl font-bold text-neutral-100 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-neutral-300 group-hover:to-neutral-100 group-hover:bg-clip-text transition-all duration-300 line-clamp-2"
+            className="text-xl font-bold text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text transition-all duration-300 line-clamp-2"
           >
             {project.title}
           </motion.h3>
           
           <motion.p 
-            className="text-neutral-400 text-sm leading-relaxed line-clamp-2"
+            className="text-muted-foreground text-sm leading-relaxed line-clamp-2"
           >
             {project.shortDescription}
           </motion.p>
           
           {/* Tech Stack */}
           <div className="space-y-2">
-            <h4 className="text-xs font-semibold uppercase text-neutral-500 tracking-wider">
+            <h4 className="text-xs font-semibold uppercase text-muted-foreground tracking-wider">
               Tech Stack
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -228,7 +226,7 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
                 <TechBadge key={tech} tech={tech} />
               ))}
               {project.techStack.length > 4 && (
-                <span className="px-3 py-1 bg-neutral-700/30 text-neutral-400 text-xs rounded-full border border-neutral-600/50">
+                <span className="px-3 py-1 bg-muted/30 text-muted-foreground text-xs rounded-full border border-border">
                   +{project.techStack.length - 4}
                 </span>
               )}
@@ -243,7 +241,7 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
                   href={project.githubUrl} 
                   icon={Github} 
                   label="Code" 
-                  color="grey"
+                  color="default"
                 />
               )}
               {project.liveDemoUrl && (
@@ -251,7 +249,7 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
                   href={project.liveDemoUrl} 
                   icon={ExternalLink} 
                   label="Demo" 
-                  color="grey"
+                  color="primary"
                 />
               )}
             </div>
@@ -261,7 +259,7 @@ export default function ProjectCard({ project, variants, index = 0 }: ProjectCar
                 href={project.paperUrl} 
                 icon={FileText} 
                 label="Paper" 
-                color="grey"
+                color="secondary"
               />
             )}
           </div>

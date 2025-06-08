@@ -1,229 +1,336 @@
 "use client";
 
-import { Download, Github, Linkedin, Mail, Menu, X } from 'lucide-react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { BsHexagonFill } from 'react-icons/bs';
+import { AnimatePresence, motion } from "framer-motion";
+import {
+    Briefcase,
+    ChevronDown,
+    ChevronRight,
+    Code,
+    Download,
+    Github,
+    Home,
+    Linkedin,
+    Mail,
+    Menu,
+    Moon,
+    Sun,
+    User,
+    X,
+} from "lucide-react";
+import { useTheme } from "next-themes";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Dispatch, FC, ReactNode, SetStateAction, useEffect, useState } from "react";
+import ClientOnly from "./ClientOnly";
 
-const ModernNavbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [isClient, setIsClient] = useState(false);
-  const pathname = usePathname();
+const navContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const navItemVariants = {
+  hidden: { y: -20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.3,
+    },
+  },
+  exit: { y: -20, opacity: 0 },
+};
+
+const Navbar: FC = () => {
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setSidebarOpen(false);
+      } else {
+        setSidebarOpen(true);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    if (!isClient) return;
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
 
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setScrolled(scrollY > 50);
-      
-      // Calculate scroll progress
-      const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = documentHeight > 0 ? Math.min(100, (scrollY / documentHeight) * 100) : 0;
-      setScrollProgress(progress);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isClient]);
-
-  const navItems = [
-    { name: 'Home', href: '/', id: 'home' },
-    { name: 'About', href: '/about', id: 'about' },
-    { name: 'Projects', href: '/projects', id: 'projects' },
-    { name: 'Contact', href: '/contact', id: 'contact' },
-  ];
-
-  const isActiveRoute = (href: string) => {
-    if (href === '/') {
-      return pathname === '/';
-    }
-    return pathname.startsWith(href);
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!isMobileMenuOpen);
   };
 
   return (
     <>
-      {/* Main Navigation */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled 
-          ? 'bg-black/80 backdrop-blur-xl border-b border-neutral-700/50 shadow-lg shadow-neutral-800/10' 
-          : 'bg-transparent'
-      }`}>
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div className="relative group">
-              <div className="absolute -inset-2 bg-gradient-to-r from-neutral-600 to-neutral-500 rounded-full opacity-0 group-hover:opacity-20 blur-xl transition-all duration-500"></div>
-              <Link 
-                href="/"
-                className="relative text-2xl font-bold bg-gradient-to-r from-neutral-300 to-neutral-100 bg-clip-text text-transparent hover:from-neutral-200 hover:to-white transition-all duration-300 flex items-center"
-              >
-                <BsHexagonFill className="h-8 w-8 text-neutral-400 group-hover:text-neutral-200 transition-all duration-300" />
-              </Link>
-            </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-1">
-              {navItems.map((item) => (
-                <Link
-                  key={item.id}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`relative px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 group ${
-                    isActiveRoute(item.href)
-                      ? 'text-neutral-100'
-                      : 'text-neutral-400 hover:text-neutral-100'
-                  }`}
-                >
-                  {/* Active indicator */}
-                  {isActiveRoute(item.href) && (
-                    <div className="absolute inset-0 bg-neutral-700/30 rounded-full border border-neutral-600/40 backdrop-blur-sm"></div>
-                  )}
-                  
-                  {/* Hover effect */}
-                  <div className="absolute inset-0 bg-neutral-700/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  
-                  <span className="relative z-10">{item.name}</span>
-                </Link>
-              ))}
-            </div>
-
-            {/* Right side items */}
-            <div className="hidden md:flex items-center space-x-4">
-              {/* Social Links */}
-              <div className="flex items-center space-x-2">
-                {[
-                  { icon: Github, href: "https://github.com/mgkram4", label: "GitHub" },
-                  { icon: Linkedin, href: "https://www.linkedin.com/in/mark-garcia-mg18/", label: "LinkedIn" },
-                  { icon: Mail, href: "mailto:mark.garcia4@laverne.edu", label: "Email" }
-                ].map(({ icon: Icon, href, label }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target={href.startsWith('http') ? '_blank' : undefined}
-                    rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    className="relative p-2 text-neutral-500 hover:text-neutral-200 rounded-full transition-all duration-300 group hover:scale-110"
-                    aria-label={label}
-                  >
-                    <div className="absolute inset-0 bg-neutral-700/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <Icon size={18} className="relative z-10" />
-                  </a>
-                ))}
-              </div>
-
-              {/* Resume Download */}
-              <a
-                href="/placeholder-resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative px-6 py-2 bg-gradient-to-r from-neutral-600 to-neutral-700 hover:from-neutral-500 hover:to-neutral-600 text-neutral-100 text-sm font-medium rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-neutral-700/25 group overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-neutral-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative flex items-center space-x-2">
-                  <Download size={16} />
-                  <span>Resume</span>
-                </div>
-              </a>
-            </div>
-
-            {/* Mobile menu button */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden relative p-2 text-neutral-300 hover:text-white rounded-lg transition-all duration-300 group"
-              aria-label="Toggle menu"
+      {/* Mobile Header */}
+      <motion.header 
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="fixed top-0 left-0 right-0 z-40 flex h-16 items-center justify-between bg-card/80 backdrop-blur-md px-4 md:hidden border-b border-border"
+      >
+        <Link href="/" className="flex items-center gap-2">
+          <Code className="h-8 w-8 text-primary" />
+          <span className="text-xl font-bold text-foreground">Mark Garcia</span>
+        </Link>
+        <motion.button onClick={toggleMobileMenu} className="text-foreground p-2" whileTap={{ scale: 0.9 }}>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={isMobileMenuOpen ? 'close' : 'open'}
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.2 }}
             >
-              <div className="absolute inset-0 bg-neutral-700/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="relative z-10">
-                {isOpen ? <X size={24} /> : <Menu size={24} />}
-              </div>
-            </button>
-          </div>
-        </div>
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </motion.div>
+          </AnimatePresence>
+        </motion.button>
+      </motion.header>
 
-        {/* Mobile Navigation Menu */}
-        <div className={`md:hidden transition-all duration-500 ease-in-out ${
-          isOpen 
-            ? 'max-h-screen opacity-100' 
-            : 'max-h-0 opacity-0 overflow-hidden'
-        }`}>
-          <div className="bg-black/95 backdrop-blur-xl border-t border-neutral-700/50 px-6 py-8">
-            {/* Mobile Navigation Items */}
-            <div className="space-y-1 mb-8">
-              {navItems.map((item, index) => (
-                <Link
-                  key={item.id}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`block w-full text-left px-4 py-3 rounded-lg text-lg font-medium transition-all duration-300 ${
-                    isActiveRoute(item.href)
-                      ? 'text-neutral-100 bg-neutral-700/40 border border-neutral-600/50'
-                      : 'text-neutral-400 hover:text-white hover:bg-neutral-800/50'
-                  }`}
-                  style={{
-                    animationDelay: `${index * 100}ms`,
-                  }}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="fixed top-16 left-0 right-0 z-30 bg-card p-4 md:hidden shadow-lg border-b border-border"
+          >
+            <NavContent setMobileMenuOpen={setMobileMenuOpen} isMobile={true} isSidebarOpen={true} />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-            {/* Mobile Social Links */}
-            <div className="border-t border-neutral-700/50 pt-6">
-              <div className="flex justify-center space-x-6 mb-6">
-                {[
-                  { icon: Github, href: "https://github.com/mgkram4", label: "GitHub" },
-                  { icon: Linkedin, href: "https://www.linkedin.com/in/mark-garcia-mg18/", label: "LinkedIn" },
-                  { icon: Mail, href: "mailto:mark.garcia4@laverne.edu", label: "Email" }
-                ].map(({ icon: Icon, href, label }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target={href.startsWith('http') ? '_blank' : undefined}
-                    rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    className="p-3 text-neutral-500 hover:text-neutral-200 rounded-full border border-neutral-700/50 hover:border-neutral-500/70 transition-all duration-300 hover:scale-105"
-                    aria-label={label}
-                  >
-                    <Icon size={20} />
-                  </a>
-                ))}
-              </div>
-
-              {/* Mobile Actions */}
-              <div className="space-y-3">
-                <a
-                  href="/placeholder-resume.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full px-4 py-3 bg-gradient-to-r from-neutral-600 to-neutral-700 hover:from-neutral-500 hover:to-neutral-600 text-neutral-100 font-medium rounded-lg transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-2"
-                >
-                  <Download size={18} />
-                  <span>Download Resume</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Scroll Progress Indicator */}
-      <div className="fixed top-0 left-0 w-full h-1 bg-neutral-800/50 z-40">
-        <div 
-          className="h-full bg-gradient-to-r from-neutral-500 to-neutral-300 transition-all duration-300 ease-out"
-          style={{
-            width: `${scrollProgress}%`
-          }}
+      {/* Sidebar */}
+      <motion.aside
+        initial={false}
+        animate={{ width: isSidebarOpen ? 256 : 80 }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
+        className={`fixed top-0 left-0 z-50 hidden h-full bg-card text-card-foreground md:flex md:flex-col border-r border-border`}
+      >
+        <SidebarHeader
+          isSidebarOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
         />
-      </div>
+        <div className="flex-1 overflow-y-auto overflow-x-hidden">
+           <NavContent setMobileMenuOpen={setMobileMenuOpen} isMobile={false} isSidebarOpen={isSidebarOpen}/>
+        </div>
+        <SidebarFooter isSidebarOpen={isSidebarOpen} />
+      </motion.aside>
+
+      {/* Main Content Offset */}
+      <motion.div
+        className="hidden md:block"
+        initial={false}
+        animate={{ width: isSidebarOpen ? 256 : 80 }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
+      />
     </>
   );
 };
 
-export default ModernNavbar;
+interface SidebarHeaderProps {
+  isSidebarOpen: boolean;
+  toggleSidebar: () => void;
+}
+const SidebarHeader: FC<SidebarHeaderProps> = ({ isSidebarOpen, toggleSidebar }) => (
+  <div className="flex items-center justify-between p-4 h-16 border-b border-border">
+    <AnimatePresence>
+    {isSidebarOpen && (
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -20 }}
+        transition={{ duration: 0.2 }}
+      >
+        <Link href="/" className="flex items-center gap-2">
+          <Code className="h-8 w-8 text-primary" />
+          <span className="text-xl font-bold text-foreground">Mark Garcia</span>
+        </Link>
+      </motion.div>
+    )}
+    </AnimatePresence>
+    <motion.button onClick={toggleSidebar} className="p-2 text-foreground" whileTap={{ scale: 0.9 }}>
+      {isSidebarOpen ? <ChevronDown /> : <ChevronRight />}
+    </motion.button>
+  </div>
+);
+
+interface NavLinkProps {
+  href: string;
+  icon: ReactNode;
+  children: ReactNode;
+  onClick: () => void;
+  isSidebarOpen: boolean;
+  isMobile: boolean;
+}
+const NavLink: FC<NavLinkProps> = ({ href, icon, children, onClick, isSidebarOpen, isMobile }) => {
+  const pathname = usePathname();
+  const isActive = pathname === href;
+
+  return (
+    <motion.div variants={navItemVariants} whileHover={{ x: isSidebarOpen ? 5 : 0 }} className="w-full">
+      <Link
+        href={href}
+        onClick={onClick}
+        className={`flex items-center p-3 rounded-lg transition-colors ${
+          isActive
+            ? "bg-primary text-primary-foreground"
+            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+        } ${!isSidebarOpen && !isMobile ? "justify-center" : ""}`}
+      >
+        {icon}
+        <AnimatePresence>
+          {(isSidebarOpen || isMobile) && <motion.span
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            transition={{ duration: 0.2 }}
+            className="ml-4 whitespace-nowrap">{children}</motion.span>}
+        </AnimatePresence>
+      </Link>
+    </motion.div>
+  );
+};
+
+interface NavContentProps {
+  setMobileMenuOpen: Dispatch<SetStateAction<boolean>>;
+  isMobile: boolean;
+  isSidebarOpen: boolean;
+}
+const NavContent: FC<NavContentProps> = ({ setMobileMenuOpen, isMobile, isSidebarOpen }) => {
+    const handleLinkClick = () => {
+        if(isMobile) {
+            setMobileMenuOpen(false);
+        }
+    }
+    return (
+      <motion.nav 
+        variants={navContainerVariants}
+        initial="hidden"
+        animate="visible"
+        exit="hidden"
+        className="flex flex-col gap-2 p-4"
+      >
+        <NavLink href="/" icon={<Home />} onClick={handleLinkClick} isSidebarOpen={isSidebarOpen} isMobile={isMobile}>Home</NavLink>
+        <NavLink href="/projects" icon={<Briefcase />} onClick={handleLinkClick} isSidebarOpen={isSidebarOpen} isMobile={isMobile}>Projects</NavLink>
+        <NavLink href="/about" icon={<User />} onClick={handleLinkClick} isSidebarOpen={isSidebarOpen} isMobile={isMobile}>About</NavLink>
+        <NavLink href="/contact" icon={<Mail />} onClick={handleLinkClick} isSidebarOpen={isSidebarOpen} isMobile={isMobile}>Contact</NavLink>
+        <motion.a 
+          href="/resume.pdf" 
+          download 
+          onClick={handleLinkClick}
+          variants={navItemVariants}
+          whileHover={{ x: isSidebarOpen ? 5 : 0 }}
+          className={`flex items-center p-3 rounded-lg transition-colors text-muted-foreground hover:bg-muted hover:text-foreground ${!isSidebarOpen && !isMobile ? "justify-center" : ""}`}
+        >
+          <Download />
+          <AnimatePresence>
+            {(isSidebarOpen || isMobile) && <motion.span
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -10 }}
+              transition={{ duration: 0.2 }}
+              className="ml-4 whitespace-nowrap">Resume</motion.span>}
+          </AnimatePresence>
+        </motion.a>
+      </motion.nav>
+    )
+};
+
+interface SidebarFooterProps {
+  isSidebarOpen: boolean;
+}
+const SidebarFooter: FC<SidebarFooterProps> = ({ isSidebarOpen }) => {
+  const { theme, setTheme } = useTheme();
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+
+  const footerVariants = {
+    open: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+    },
+    closed: {
+      opacity: 0,
+    },
+  }
+
+  const footerItemVariants = {
+    open: { opacity: 1, x: 0 },
+    closed: { opacity: 0, x: -20 },
+  }
+
+  return (
+    <div className="border-t border-border p-4">
+      <motion.div 
+        className="flex flex-col gap-4"
+        initial="closed"
+        animate={isSidebarOpen ? "open" : "closed"}
+        variants={footerVariants}
+      >
+        <motion.div variants={footerItemVariants} className={`flex items-center ${!isSidebarOpen ? "justify-center" : ""}`}>
+          <a
+            href="https://github.com/mgkram4"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-foreground"
+          >
+            <Github />
+          </a>
+          {isSidebarOpen && <a href="https://github.com/mgkram4" target="_blank" rel="noopener noreferrer" className="ml-4 text-muted-foreground hover:text-foreground">GitHub</a>}
+        </motion.div>
+        <motion.div variants={footerItemVariants} className={`flex items-center ${!isSidebarOpen ? "justify-center" : ""}`}>
+          <a
+            href="https://www.linkedin.com/in/markgarcia4/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-foreground"
+          >
+            <Linkedin />
+          </a>
+          {isSidebarOpen && <a href="https://www.linkedin.com/in/markgarcia4/" target="_blank" rel="noopener noreferrer" className="ml-4 text-muted-foreground hover:text-foreground">LinkedIn</a>}
+        </motion.div>
+      </motion.div>
+      <ClientOnly>
+        <motion.div 
+            className="mt-4 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: isSidebarOpen ? 0.5 : 0.2 }}
+        >
+          <button
+            onClick={toggleTheme}
+            className="flex w-full items-center gap-2 rounded-lg p-2 text-muted-foreground hover:bg-muted hover:text-foreground"
+          >
+            {theme === "light" ? <Moon /> : <Sun />}
+            <AnimatePresence>
+            {isSidebarOpen && <motion.span
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -10 }}
+              transition={{ duration: 0.2 }}
+             className="ml-2 text-sm whitespace-nowrap">{theme === 'light' ? 'Dark' : 'Light'} Mode</motion.span>}
+            </AnimatePresence>
+          </button>
+        </motion.div>
+      </ClientOnly>
+    </div>
+  );
+};
+
+export default Navbar; 

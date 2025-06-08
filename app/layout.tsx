@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from "./components/Navbar";
+import { ThemeProvider } from "./components/ThemeProvider";
 import './globals.css';
 
 export const metadata = {
@@ -110,6 +111,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Preconnect to external domains for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
         
         {/* Favicon and App Icons */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -157,11 +159,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="bg-neutral-900 text-neutral-200 dark:bg-black dark:text-neutral-300 transition-colors duration-300" suppressHydrationWarning>
-        <Navbar />
-        <main>
-          {children}
-        </main>
+      <body className="bg-background text-foreground" suppressHydrationWarning>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <div className="flex flex-col md:flex-row">
+            <Navbar />
+            <main className="flex-1 p-8 pt-24 md:pt-8">
+              {children}
+            </main>
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

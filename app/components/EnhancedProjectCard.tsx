@@ -107,18 +107,6 @@ export default function EnhancedProjectCard({ project, index }: EnhancedProjectC
     }
   };
 
-  const overlayVariants = {
-    hidden: { opacity: 0, scale: 1.1 },
-    visible: { 
-      opacity: 1, 
-      scale: 1,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut"
-      }
-    }
-  };
-
   const techStackVariants = {
     hidden: { opacity: 0, x: -20 },
     visible: (i: number) => ({
@@ -152,9 +140,9 @@ export default function EnhancedProjectCard({ project, index }: EnhancedProjectC
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: index * 0.1 + 0.8 }}
-          className="absolute -top-2 -right-2 z-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full p-2 shadow-lg"
+          className="absolute -top-2 -right-2 z-20 bg-gradient-to-r from-primary to-accent rounded-full p-2 shadow-lg"
         >
-          <StarIcon className="w-4 h-4 text-white" />
+          <StarIcon className="w-4 h-4 text-primary-foreground" />
         </motion.div>
       )}
 
@@ -164,13 +152,13 @@ export default function EnhancedProjectCard({ project, index }: EnhancedProjectC
           scale: 1.02,
           transition: { duration: 0.2 }
         }}
-        className="relative h-full bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-xl border border-gray-700/50 rounded-2xl overflow-hidden shadow-2xl"
+        className="relative h-full bg-gradient-to-br from-card/80 to-card/70 backdrop-blur-xl border border-border rounded-2xl overflow-hidden shadow-2xl"
         style={{
           transform: "translateZ(50px)"
         }}
       >
         {/* Animated gradient border */}
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-blue-500/20 to-cyan-500/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-secondary/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
         {/* Image/Video section */}
         <div className="relative h-48 overflow-hidden rounded-t-2xl">
@@ -189,17 +177,17 @@ export default function EnhancedProjectCard({ project, index }: EnhancedProjectC
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
             </div>
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
-              <span className="text-gray-400 text-lg">No Preview</span>
+            <div className="w-full h-full bg-gradient-to-br from-muted to-background flex items-center justify-center">
+              <span className="text-muted-foreground text-lg">No Preview</span>
             </div>
           )}
           
           {/* Category badge */}
           <div className="absolute top-4 left-4">
-            <span className="px-3 py-1 bg-black/50 backdrop-blur-sm text-white text-xs font-medium rounded-full border border-white/20">
+            <span className="px-3 py-1 bg-background/50 backdrop-blur-sm text-foreground text-xs font-medium rounded-full border border-border">
               {project.category?.toUpperCase() || 'PROJECT'}
             </span>
           </div>
@@ -208,14 +196,14 @@ export default function EnhancedProjectCard({ project, index }: EnhancedProjectC
         {/* Content section */}
         <div className="p-6 space-y-4">
           <motion.h3 
-            className="text-xl font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-blue-400 group-hover:bg-clip-text transition-all duration-300"
+            className="text-xl font-bold text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text transition-all duration-300"
             style={{ transform: "translateZ(20px)" }}
           >
             {project.title}
           </motion.h3>
           
           <motion.p 
-            className="text-gray-300 text-sm leading-relaxed line-clamp-3"
+            className="text-muted-foreground text-sm leading-relaxed line-clamp-3"
             style={{ transform: "translateZ(10px)" }}
           >
             {project.shortDescription}
@@ -223,7 +211,7 @@ export default function EnhancedProjectCard({ project, index }: EnhancedProjectC
           
           {/* Tech stack */}
           <div className="space-y-2">
-            <h4 className="text-xs font-semibold uppercase text-gray-400 tracking-wider">
+            <h4 className="text-xs font-semibold uppercase text-muted-foreground tracking-wider">
               Tech Stack
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -234,13 +222,13 @@ export default function EnhancedProjectCard({ project, index }: EnhancedProjectC
                   variants={techStackVariants}
                   initial="hidden"
                   animate="visible"
-                  className="px-2 py-1 bg-gradient-to-r from-gray-700/50 to-gray-600/50 text-gray-300 text-xs rounded-md border border-gray-600/30 backdrop-blur-sm hover:from-purple-600/30 hover:to-blue-600/30 transition-all duration-300"
+                  className="px-2 py-1 bg-gradient-to-r from-muted/50 to-card/50 text-muted-foreground text-xs rounded-md border border-border backdrop-blur-sm hover:from-primary/30 hover:to-accent/30 transition-all duration-300"
                 >
                   {tech}
                 </motion.span>
               ))}
               {project.techStack.length > 4 && (
-                <span className="px-2 py-1 bg-gray-700/30 text-gray-400 text-xs rounded-md">
+                <span className="px-2 py-1 bg-muted/30 text-muted-foreground text-xs rounded-md">
                   +{project.techStack.length - 4}
                 </span>
               )}
@@ -248,92 +236,63 @@ export default function EnhancedProjectCard({ project, index }: EnhancedProjectC
           </div>
         </div>
 
-        {/* Hover overlay */}
-        <motion.div 
-          variants={overlayVariants}
-          initial="hidden"
-          whileHover="visible"
-          className="absolute inset-0 bg-black/90 backdrop-blur-sm flex flex-col p-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        {/* Action buttons */}
+        <div 
+          className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background to-transparent"
           style={{ transform: "translateZ(30px)" }}
         >
-          <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-            {project.title}
-          </h3>
-          
-          <div className="flex-1 space-y-3 text-sm overflow-y-auto">
-            <div>
-              <span className="text-purple-400 font-semibold">Situation:</span>
-              <p className="text-gray-300 mt-1">{project.detailedDescription.situation}</p>
-            </div>
-            <div>
-              <span className="text-blue-400 font-semibold">Task:</span>
-              <p className="text-gray-300 mt-1">{project.detailedDescription.task}</p>
-            </div>
-            <div>
-              <span className="text-cyan-400 font-semibold">Action:</span>
-              <p className="text-gray-300 mt-1">{project.detailedDescription.action}</p>
-            </div>
-            <div>
-              <span className="text-green-400 font-semibold">Result:</span>
-              <p className="text-gray-300 mt-1">{project.detailedDescription.result}</p>
-            </div>
-          </div>
-
-          {/* Action buttons */}
-          <div className="flex items-center justify-center space-x-6 pt-4 border-t border-gray-700">
+          <div className="flex items-center justify-end space-x-3">
             {project.githubUrl && (
-              <motion.div
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link 
-                  href={project.githubUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors duration-200"
-                >
-                  <GitHubIcon className="w-5 h-5" />
-                  <span className="text-sm font-medium">Code</span>
-                </Link>
-              </motion.div>
+              <ActionButton 
+                href={project.githubUrl} 
+                icon={GitHubIcon}
+                label="GitHub"
+              />
             )}
-            
             {project.liveDemoUrl && (
-              <motion.div
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link 
-                  href={project.liveDemoUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 rounded-lg transition-all duration-200"
-                >
-                  <ExternalLinkIcon className="w-5 h-5" />
-                  <span className="text-sm font-medium">Demo</span>
-                </Link>
-              </motion.div>
+              <ActionButton 
+                href={project.liveDemoUrl} 
+                icon={ExternalLinkIcon}
+                label="Demo"
+                isPrimary
+              />
             )}
-            
             {project.paperUrl && (
-              <motion.div
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link 
-                  href={project.paperUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 rounded-lg transition-all duration-200"
-                >
-                  <DocumentIcon className="w-5 h-5" />
-                  <span className="text-sm font-medium">Paper</span>
-                </Link>
-              </motion.div>
+              <ActionButton 
+                href={project.paperUrl} 
+                icon={DocumentIcon}
+                label="Paper"
+              />
             )}
           </div>
-        </motion.div>
+        </div>
       </motion.div>
     </motion.div>
   );
-} 
+}
+
+interface ActionButtonProps {
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  isPrimary?: boolean;
+}
+
+const ActionButton = ({ href, icon: Icon, label, isPrimary = false }: ActionButtonProps) => (
+  <Link href={href} passHref>
+    <motion.div
+      whileHover={{ y: -2, scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className={`group flex items-center justify-center space-x-2 rounded-full p-2.5 transition-all duration-300 ${
+        isPrimary 
+          ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-lg shadow-primary/30 hover:shadow-primary/50' 
+          : 'bg-muted/50 text-muted-foreground backdrop-blur-sm border border-border hover:bg-muted'
+      }`}
+    >
+      <Icon className="w-4 h-4" />
+      <span className="absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-xs text-background opacity-0 transition-all group-hover:opacity-100">
+        {label}
+      </span>
+    </motion.div>
+  </Link>
+); 

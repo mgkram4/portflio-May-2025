@@ -46,7 +46,7 @@ const TypewriterText = ({ text, delay = 0 }: TypewriterTextProps) => {
       {displayText}
       {isClient && shouldAnimate && currentIndex < text.length && (
         <motion.span
-          className="inline-block w-0.5 h-8 bg-neutral-400 ml-1" // Cursor color to neutral
+          className="inline-block w-0.5 h-8 bg-muted-foreground ml-1" // Cursor color to muted-foreground
           animate={{ opacity: [1, 0, 1] }}
           transition={{ duration: 1, repeat: Infinity }}
         />
@@ -60,10 +60,9 @@ interface StatCardProps {
   value: string;
   label: string;
   delay: number;
-  gradient: string;
 }
 
-const StatCard = ({ icon: Icon, value, label, delay, gradient }: StatCardProps) => (
+const StatCard = ({ icon: Icon, value, label, delay }: StatCardProps) => (
   <motion.div
     initial={{ opacity: 0, y: 30, scale: 0.8 }}
     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -71,23 +70,23 @@ const StatCard = ({ icon: Icon, value, label, delay, gradient }: StatCardProps) 
     transition={{ delay, duration: 0.6, type: "spring", stiffness: 100 }}
     className="group relative overflow-hidden"
   >
-    <div className={`relative bg-gradient-to-br ${gradient} backdrop-blur-xl border border-neutral-700/30 rounded-3xl p-6 hover:border-neutral-500/40 transition-all duration-500 text-center h-full`}>
+    <div className={`relative bg-card backdrop-blur-xl border border-border rounded-3xl p-6 hover:border-primary/20 transition-all duration-500 text-center h-full`}>
       {/* Animated background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-neutral-800/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-r from-muted/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       
       {/* Floating particles effect */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-3 right-3 w-2 h-2 bg-neutral-600/20 rounded-full animate-pulse" />
-        <div className="absolute bottom-4 left-4 w-1 h-1 bg-neutral-500/30 rounded-full animate-ping" />
+        <div className="absolute top-3 right-3 w-2 h-2 bg-muted/20 rounded-full animate-pulse" />
+        <div className="absolute bottom-4 left-4 w-1 h-1 bg-muted/30 rounded-full animate-ping" />
       </div>
       
       <div className="relative z-10">
         <div className="mb-3 relative">
-          <Icon className="w-8 h-8 text-neutral-100 mx-auto drop-shadow-lg" />
-          <div className="absolute inset-0 bg-neutral-500/20 blur-xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <Icon className="w-8 h-8 text-foreground mx-auto drop-shadow-lg" />
+          <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </div>
-        <div className="text-2xl font-black text-neutral-50 mb-1 tracking-tight">{value}</div>
-        <div className="text-xs text-neutral-400 font-medium uppercase tracking-widest">{label}</div>
+        <div className="text-2xl font-black text-foreground mb-1 tracking-tight">{value}</div>
+        <div className="text-xs text-muted-foreground font-medium uppercase tracking-widest">{label}</div>
       </div>
     </div>
   </motion.div>
@@ -147,7 +146,7 @@ export default function Hero() {
           {/* Main Title */}
           <motion.div variants={itemVariants} className="space-y-4">
             <motion.div 
-              className="inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-neutral-800/40 via-neutral-700/40 to-neutral-800/40 backdrop-blur-xl border border-neutral-600/30 rounded-3xl text-neutral-300 text-sm font-medium mb-6"
+              className="inline-flex items-center space-x-2 px-6 py-3 bg-card/40 backdrop-blur-xl border border-border rounded-3xl text-muted-foreground text-sm font-medium mb-6"
               whileHover={{ scale: 1.05, y: -2 }}
             >
               <Sparkles className="w-4 h-4" />
@@ -155,25 +154,25 @@ export default function Hero() {
             </motion.div>
             
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-none">
-              <span className="block bg-gradient-to-r from-neutral-100 via-neutral-300 to-neutral-400 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-foreground via-muted-foreground to-foreground bg-clip-text text-transparent">
                 Mark
               </span>
-              <span className="block bg-gradient-to-r from-neutral-400 via-neutral-300 to-neutral-100 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-muted-foreground via-muted-foreground to-foreground bg-clip-text text-transparent">
                 Garcia
               </span>
             </h1>
           </motion.div>
 
           {/* Animated Role */}
-          <motion.div variants={itemVariants} className="text-xl md:text-3xl lg:text-4xl font-light text-neutral-200">
+          <motion.div variants={itemVariants} className="text-xl md:text-3xl lg:text-4xl font-light text-muted-foreground">
             <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8">
-              <div className="flex items-center space-x-3 px-8 py-4 bg-gradient-to-br from-neutral-800/30 to-neutral-700/20 backdrop-blur-xl border border-neutral-600/20 rounded-3xl hover:border-neutral-500/40 transition-all duration-500">
-                <Brain className="w-8 h-8 text-neutral-400" />
+              <div className="flex items-center space-x-3 px-8 py-4 bg-card/30 backdrop-blur-xl border border-border rounded-3xl hover:border-primary/20 transition-all duration-500">
+                <Brain className="w-8 h-8 text-muted-foreground" />
                 <TypewriterText text="ML Engineer" delay={500} />
               </div>
-              <span className="text-neutral-600 hidden md:block text-2xl">×</span>
-              <div className="flex items-center space-x-3 px-8 py-4 bg-gradient-to-br from-neutral-800/30 to-neutral-700/20 backdrop-blur-xl border border-neutral-600/20 rounded-3xl hover:border-neutral-500/40 transition-all duration-500">
-                <Code className="w-8 h-8 text-neutral-400" />
+              <span className="text-muted hidden md:block text-2xl">×</span>
+              <div className="flex items-center space-x-3 px-8 py-4 bg-card/30 backdrop-blur-xl border border-border rounded-3xl hover:border-primary/20 transition-all duration-500">
+                <Code className="w-8 h-8 text-muted-foreground" />
                 <TypewriterText text="Full-Stack Dev" delay={2000} />
               </div>
             </div>
@@ -182,14 +181,14 @@ export default function Hero() {
           {/* Description */}
           <motion.div 
             variants={itemVariants}
-            className="relative bg-gradient-to-r from-neutral-900/40 via-neutral-800/50 to-neutral-900/40 backdrop-blur-xl border border-neutral-700/30 rounded-3xl p-8 max-w-5xl mx-auto"
+            className="relative bg-card/40 backdrop-blur-xl border border-border rounded-3xl p-8 max-w-5xl mx-auto"
           >
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neutral-600 via-neutral-500 to-neutral-400" />
-            <p className="text-lg md:text-xl text-neutral-300 leading-relaxed">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-accent" />
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
               Specializing in{' '}
-              <span className="text-neutral-300 font-semibold">computer vision</span> and{' '}
-              <span className="text-neutral-300 font-semibold">biometric analysis</span> with{' '}
-              <span className="text-neutral-200 font-bold">63%+ accuracy improvements</span>.
+              <span className="text-foreground font-semibold">computer vision</span> and{' '}
+              <span className="text-foreground font-semibold">biometric analysis</span> with{' '}
+              <span className="text-foreground font-bold">63%+ accuracy improvements</span>.
               <br />
               Published researcher delivering end-to-end AI systems.
             </p>
@@ -204,29 +203,25 @@ export default function Hero() {
               icon={Brain} 
               value="6+" 
               label="AI Projects" 
-              delay={1.2} 
-              gradient="from-neutral-700/20 to-neutral-800/20"
+              delay={1.2}
             />
             <StatCard 
               icon={Code} 
               value="3+" 
               label="Publications" 
-              delay={1.4} 
-              gradient="from-neutral-700/20 to-neutral-800/20"
+              delay={1.4}
             />
             <StatCard 
               icon={Sparkles} 
               value="63%" 
               label="Accuracy Boost" 
-              delay={1.6} 
-              gradient="from-neutral-600/20 to-neutral-700/20" // Slightly different grey for variety
+              delay={1.6}
             />
             <StatCard 
               icon={Github} 
               value="15+" 
               label="Repositories" 
-              delay={1.8} 
-              gradient="from-neutral-600/20 to-neutral-700/20" // Slightly different grey for variety
+              delay={1.8}
             />
           </motion.div>
 
@@ -236,11 +231,11 @@ export default function Hero() {
             className="flex flex-col sm:flex-row gap-6 justify-center items-center"
           >
             <motion.button 
-              className="group relative px-10 py-5 bg-gradient-to-r from-neutral-200 via-neutral-100 to-white hover:from-neutral-100 hover:via-white hover:to-white text-neutral-800 font-bold rounded-3xl transition-all duration-500 shadow-2xl shadow-neutral-500/25 hover:shadow-neutral-400/40 overflow-hidden"
+              className="group relative px-10 py-5 bg-gradient-to-r from-primary-foreground via-muted to-primary-foreground hover:from-muted hover:via-primary-foreground hover:to-muted text-primary font-bold rounded-3xl transition-all duration-500 shadow-2xl shadow-primary/25 hover:shadow-primary/40 overflow-hidden"
               whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-r from-primary-foreground/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
               <span className="relative flex items-center space-x-3 text-lg">
                 <Link href="/projects">
@@ -254,7 +249,7 @@ export default function Hero() {
               href="/placeholder-resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="group px-10 py-5 bg-gradient-to-br from-neutral-800/40 to-neutral-700/40 backdrop-blur-xl border border-neutral-600/50 hover:border-neutral-400/50 text-neutral-300 hover:text-neutral-100 font-bold rounded-3xl transition-all duration-500 hover:bg-neutral-700/20"
+              className="group px-10 py-5 bg-gradient-to-br from-card to-muted backdrop-blur-xl border border-border rounded-3xl hover:border-primary/20 text-muted hover:text-foreground font-bold rounded-3xl transition-all duration-500 hover:bg-primary/20"
               whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -271,9 +266,9 @@ export default function Hero() {
             className="flex justify-center space-x-6"
           >
             {[
-              { icon: Github, href: "https://github.com/mgkram4", label: "GitHub", gradient: "from-neutral-900/40 to-neutral-800/40", border: "border-neutral-700/50", hover: "hover:border-neutral-500/50 hover:bg-neutral-600/20", iconColor: "text-neutral-400", iconHoverColor: "group-hover:text-neutral-100" },
-              { icon: Linkedin, href: "https://www.linkedin.com/in/mark-garcia-mg18/", label: "LinkedIn", gradient: "from-neutral-800/40 to-neutral-700/40", border: "border-neutral-600/50", hover: "hover:border-neutral-400/50 hover:bg-neutral-500/20", iconColor: "text-neutral-400", iconHoverColor: "group-hover:text-neutral-100" },
-              { icon: Mail, href: "mailto:mark.garcia4@laverne.edu", label: "Email", gradient: "from-neutral-900/40 to-neutral-800/40", border: "border-neutral-700/50", hover: "hover:border-neutral-500/50 hover:bg-neutral-600/20", iconColor: "text-neutral-400", iconHoverColor: "group-hover:text-neutral-100" }
+              { icon: Github, href: "https://github.com/mgkram4", label: "GitHub", gradient: "from-card to-muted", border: "border-border", hover: "hover:border-primary/20 hover:bg-primary/20", iconColor: "text-muted", iconHoverColor: "group-hover:text-foreground" },
+              { icon: Linkedin, href: "https://www.linkedin.com/in/mark-garcia-mg18/", label: "LinkedIn", gradient: "from-muted to-card", border: "border-border", hover: "hover:border-primary/20 hover:bg-primary/20", iconColor: "text-muted", iconHoverColor: "group-hover:text-foreground" },
+              { icon: Mail, href: "mailto:mark.garcia4@laverne.edu", label: "Email", gradient: "from-card to-muted", border: "border-border", hover: "hover:border-primary/20 hover:bg-primary/20", iconColor: "text-muted", iconHoverColor: "group-hover:text-foreground" }
             ].map(({ icon: Icon, href, label, gradient, border, hover, iconColor, iconHoverColor }, index) => (
               <motion.a 
                 key={label}
@@ -287,7 +282,7 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 2 + index * 0.1 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-neutral-700/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl" />
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl" />
                 <Icon className={`w-6 h-6 ${iconColor} ${iconHoverColor} transition-colors relative z-10`} />
               </motion.a>
             ))}
