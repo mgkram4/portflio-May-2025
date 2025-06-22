@@ -9,15 +9,16 @@ const containerVariants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.1,
+      delayChildren: 0.3,
     },
   },
 };
 
 const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
-    y: 0,
     opacity: 1,
+    y: 0,
     transition: {
       duration: 0.5,
     },
@@ -42,7 +43,7 @@ export default function ContactForm() {
     console.log("Form data:", data);
 
     // Simulate form submission delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 2000));
     
     setIsSubmitting(false);
     setSubmitted(true);
@@ -54,22 +55,22 @@ export default function ContactForm() {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="text-center py-12 px-8 bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/30 rounded-2xl backdrop-blur-sm"
+        className="text-center py-12 px-8 glass-card glass-hover border border-glow"
       >
         <div className="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-6">
-          <svg className="w-8 h-8 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-8 h-8 text-glass-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h3 className="text-3xl font-bold text-foreground mb-4">Message Sent!</h3>
-        <p className="text-muted-foreground text-lg mb-6">
+        <h3 className="text-3xl font-bold text-glass-primary mb-4">Message Sent!</h3>
+        <p className="text-glass-secondary text-lg mb-6">
           Thank you for reaching out. I&apos;ll get back to you within 24 hours.
         </p>
         <motion.button
           onClick={() => setSubmitted(false)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="px-6 py-3 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-medium rounded-full transition-all duration-300"
+          className="bg-primary text-glass-primary px-6 py-3 rounded-glass font-medium shadow-glow hover:shadow-glow transition-all duration-200"
         >
           Send Another Message
         </motion.button>
@@ -80,14 +81,14 @@ export default function ContactForm() {
   return (
     <motion.form
       onSubmit={handleSubmit}
-      className="max-w-2xl mx-auto bg-card/50 backdrop-blur-sm p-8 rounded-2xl border border-border hover:border-primary/40 transition-all duration-300"
+      className="max-w-2xl mx-auto glass-card glass-hover p-8"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       <div className="grid md:grid-cols-2 gap-6 mb-6">
         <motion.div variants={itemVariants}>
-          <label htmlFor="name" className="block text-sm font-medium text-muted-foreground mb-2">
+          <label htmlFor="name" className="block text-sm font-medium text-glass-muted mb-2">
             Full Name *
           </label>
           <input 
@@ -95,13 +96,13 @@ export default function ContactForm() {
             name="name" 
             id="name" 
             required 
-            className="w-full px-4 py-3 bg-muted/50 border border-border rounded-xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
+            className="w-full glass-input px-4 py-3 text-glass-primary placeholder-glass-muted"
             placeholder="Your full name"
           />
         </motion.div>
         
         <motion.div variants={itemVariants}>
-          <label htmlFor="email" className="block text-sm font-medium text-muted-foreground mb-2">
+          <label htmlFor="email" className="block text-sm font-medium text-glass-muted mb-2">
             Email Address *
           </label>
           <input 
@@ -109,27 +110,28 @@ export default function ContactForm() {
             name="email" 
             id="email" 
             required 
-            className="w-full px-4 py-3 bg-muted/50 border border-border rounded-xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
+            className="w-full glass-input px-4 py-3 text-glass-primary placeholder-glass-muted"
             placeholder="your.email@example.com"
           />
         </motion.div>
       </div>
 
       <motion.div variants={itemVariants} className="mb-6">
-        <label htmlFor="subject" className="block text-sm font-medium text-muted-foreground mb-2">
-          Subject
+        <label htmlFor="subject" className="block text-sm font-medium text-glass-muted mb-2">
+          Subject *
         </label>
         <input 
           type="text" 
           name="subject" 
           id="subject" 
-          className="w-full px-4 py-3 bg-muted/50 border border-border rounded-xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
-          placeholder="What&apos;s this about?"
+          required 
+          className="w-full glass-input px-4 py-3 text-glass-primary placeholder-glass-muted"
+          placeholder="What would you like to discuss?"
         />
       </motion.div>
 
-      <motion.div variants={itemVariants} className="mb-8">
-        <label htmlFor="message" className="block text-sm font-medium text-muted-foreground mb-2">
+      <motion.div variants={itemVariants} className="mb-6">
+        <label htmlFor="message" className="block text-sm font-medium text-glass-muted mb-2">
           Message *
         </label>
         <textarea 
@@ -137,8 +139,8 @@ export default function ContactForm() {
           id="message" 
           rows={6} 
           required 
-          className="w-full px-4 py-3 bg-muted/50 border border-border rounded-xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 resize-none"
-          placeholder="Tell me about your project, ideas, or just say hello..."
+          className="w-full glass-input px-4 py-3 text-glass-primary placeholder-glass-muted resize-none"
+          placeholder="Tell me about your project, ideas, or how we can collaborate..."
         />
       </motion.div>
 
@@ -148,11 +150,11 @@ export default function ContactForm() {
           disabled={isSubmitting}
           whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
           whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-          className="w-full flex justify-center items-center py-4 px-6 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 disabled:from-muted disabled:to-muted/80 text-primary-foreground font-medium rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-primary/25 disabled:cursor-not-allowed"
+          className="w-full flex justify-center items-center py-4 px-6 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 disabled:from-glass-base disabled:to-glass-base text-glass-primary font-medium rounded-glass transition-all duration-200 shadow-glow hover:shadow-glow disabled:cursor-not-allowed"
         >
           {isSubmitting ? (
             <>
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-primary-foreground" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-glass-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
@@ -169,7 +171,7 @@ export default function ContactForm() {
         </motion.button>
       </motion.div>
 
-      <motion.p variants={itemVariants} className="text-center text-muted-foreground text-sm mt-4">
+      <motion.p variants={itemVariants} className="text-center text-glass-muted text-sm mt-4">
         * Required fields. I typically respond within 24 hours.
       </motion.p>
     </motion.form>

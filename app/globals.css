@@ -72,5 +72,127 @@
   }
   body {
     @apply bg-background text-foreground;
+    background: linear-gradient(135deg, 
+      #1a1a2e 0%, 
+      #16213e 25%, 
+      #0f3460 50%, 
+      #1a1a2e 75%, 
+      #16213e 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  /* Core Glassmorphism Components */
+  .glass-card {
+    @apply bg-glass-base border border-glass-border backdrop-blur-glass rounded-glass shadow-soft transition-all duration-200;
+  }
+  
+  .glass-button {
+    @apply bg-glass-base border border-glass-border backdrop-blur-glass rounded-glass hover:shadow-glow hover:bg-glass-border transition-all duration-200;
+  }
+  
+  .glass-nav {
+    @apply bg-glass-blur border border-glass-border backdrop-blur-glass shadow-soft;
+  }
+  
+  .glass-modal {
+    @apply bg-glass-base border border-glass-border backdrop-blur-glass rounded-glass shadow-glow;
+  }
+  
+  .glass-input {
+    @apply bg-glass-blur border border-glass-border backdrop-blur-glass rounded-glass focus:border-glow focus:shadow-glow transition-all duration-200;
+  }
+  
+  /* Enhanced Interactive States */
+  .glass-hover {
+    @apply hover:shadow-glow hover:border-glow hover:bg-glass-border transition-all duration-200;
+  }
+  
+  .glass-active {
+    @apply bg-primary border-glow shadow-glow text-white;
+  }
+  
+  /* Text Styles for Glass Backgrounds */
+  .text-glass-primary {
+    @apply text-white;
+  }
+  
+  .text-glass-secondary {
+    @apply text-accent;
+  }
+  
+  .text-glass-muted {
+    @apply text-secondary opacity-80;
+  }
+  
+  /* Specialized Glass Variants */
+  .glass-strong {
+    @apply bg-glass-border border border-glass-border backdrop-blur-glass rounded-glass shadow-soft;
+  }
+  
+  .glass-subtle {
+    @apply bg-glass-blur border border-glass-border backdrop-blur-glass rounded-glass;
+  }
+  
+  .glass-dark {
+    @apply bg-darkGlass border border-glass-border backdrop-blur-glass rounded-glass shadow-soft;
+  }
+  
+  /* Glow Animation Effects */
+  .glow-pulse {
+    animation: glow-pulse 2s ease-in-out infinite alternate;
+  }
+  
+  @keyframes glow-pulse {
+    from {
+      box-shadow: 0 0 8px rgba(111, 193, 255, 0.3);
+    }
+    to {
+      box-shadow: 0 0 16px rgba(111, 193, 255, 0.6);
+    }
+  }
+  
+  /* Floating Glass Animation */
+  .glass-float {
+    animation: glass-float 6s ease-in-out infinite;
+  }
+  
+  @keyframes glass-float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  
+  /* Gradient Text Effects */
+  .text-gradient-primary {
+    background: linear-gradient(135deg, #5F87D4, #9EC9F6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .text-gradient-accent {
+    background: linear-gradient(135deg, #9EC9F6, #C0E2FF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Backdrop Blur Variants */
+  .backdrop-blur-glass-light {
+    backdrop-filter: blur(4px);
+  }
+  
+  .backdrop-blur-glass-medium {
+    backdrop-filter: blur(12px);
+  }
+  
+  .backdrop-blur-glass-heavy {
+    backdrop-filter: blur(20px);
   }
 } 

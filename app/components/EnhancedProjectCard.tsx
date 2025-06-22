@@ -152,16 +152,16 @@ export default function EnhancedProjectCard({ project, index }: EnhancedProjectC
           scale: 1.02,
           transition: { duration: 0.2 }
         }}
-        className="relative h-full bg-gradient-to-br from-card/80 to-card/70 backdrop-blur-xl border border-border rounded-2xl overflow-hidden shadow-2xl"
+        className="relative h-full glass-card glass-hover overflow-hidden shadow-glow"
         style={{
           transform: "translateZ(50px)"
         }}
       >
         {/* Animated gradient border */}
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-secondary/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-secondary/20 rounded-glass opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
         {/* Image/Video section */}
-        <div className="relative h-48 overflow-hidden rounded-t-2xl">
+        <div className="relative h-48 overflow-hidden rounded-t-glass">
           {project.videoUrl ? (
             <iframe 
               src={project.videoUrl}
@@ -177,17 +177,17 @@ export default function EnhancedProjectCard({ project, index }: EnhancedProjectC
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-glass-base/60 to-transparent" />
             </div>
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-muted to-background flex items-center justify-center">
-              <span className="text-muted-foreground text-lg">No Preview</span>
+            <div className="w-full h-full bg-gradient-to-br from-glass-blur to-glass-base flex items-center justify-center">
+              <span className="text-glass-muted text-lg">No Preview</span>
             </div>
           )}
           
           {/* Category badge */}
           <div className="absolute top-4 left-4">
-            <span className="px-3 py-1 bg-background/50 backdrop-blur-sm text-foreground text-xs font-medium rounded-full border border-border">
+            <span className="px-3 py-1 glass-subtle text-glass-primary text-xs font-medium rounded-glass">
               {project.category?.toUpperCase() || 'PROJECT'}
             </span>
           </div>
@@ -196,14 +196,14 @@ export default function EnhancedProjectCard({ project, index }: EnhancedProjectC
         {/* Content section */}
         <div className="p-6 space-y-4">
           <motion.h3 
-            className="text-xl font-bold text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text transition-all duration-300"
+            className="text-xl font-bold text-glass-primary group-hover:text-gradient-primary transition-all duration-300"
             style={{ transform: "translateZ(20px)" }}
           >
             {project.title}
           </motion.h3>
           
           <motion.p 
-            className="text-muted-foreground text-sm leading-relaxed line-clamp-3"
+            className="text-glass-muted text-sm leading-relaxed line-clamp-3"
             style={{ transform: "translateZ(10px)" }}
           >
             {project.shortDescription}
@@ -211,7 +211,7 @@ export default function EnhancedProjectCard({ project, index }: EnhancedProjectC
           
           {/* Tech stack */}
           <div className="space-y-2">
-            <h4 className="text-xs font-semibold uppercase text-muted-foreground tracking-wider">
+            <h4 className="text-xs font-semibold uppercase text-glass-muted tracking-wider">
               Tech Stack
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -222,13 +222,13 @@ export default function EnhancedProjectCard({ project, index }: EnhancedProjectC
                   variants={techStackVariants}
                   initial="hidden"
                   animate="visible"
-                  className="px-2 py-1 bg-gradient-to-r from-muted/50 to-card/50 text-muted-foreground text-xs rounded-md border border-border backdrop-blur-sm hover:from-primary/30 hover:to-accent/30 transition-all duration-300"
+                  className="px-2 py-1 glass-subtle text-glass-muted text-xs rounded-glass hover:text-glass-primary transition-all duration-300"
                 >
                   {tech}
                 </motion.span>
               ))}
               {project.techStack.length > 4 && (
-                <span className="px-2 py-1 bg-muted/30 text-muted-foreground text-xs rounded-md">
+                <span className="px-2 py-1 glass-subtle text-glass-muted text-xs rounded-glass">
                   +{project.techStack.length - 4}
                 </span>
               )}
@@ -238,7 +238,7 @@ export default function EnhancedProjectCard({ project, index }: EnhancedProjectC
 
         {/* Action buttons */}
         <div 
-          className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background to-transparent"
+          className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-glass-base to-transparent"
           style={{ transform: "translateZ(30px)" }}
         >
           <div className="flex items-center justify-end space-x-3">
@@ -283,14 +283,14 @@ const ActionButton = ({ href, icon: Icon, label, isPrimary = false }: ActionButt
     <motion.div
       whileHover={{ y: -2, scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className={`group flex items-center justify-center space-x-2 rounded-full p-2.5 transition-all duration-300 ${
+      className={`group flex items-center justify-center space-x-2 rounded-glass p-2.5 transition-all duration-300 ${
         isPrimary 
-          ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-lg shadow-primary/30 hover:shadow-primary/50' 
-          : 'bg-muted/50 text-muted-foreground backdrop-blur-sm border border-border hover:bg-muted'
+          ? 'bg-gradient-to-r from-primary to-accent text-glass-primary shadow-glow hover:shadow-glow' 
+          : 'glass-subtle text-glass-muted hover:text-glass-primary glass-hover'
       }`}
     >
       <Icon className="w-4 h-4" />
-      <span className="absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-xs text-background opacity-0 transition-all group-hover:opacity-100">
+      <span className="absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-glass glass-card px-2 py-1 text-xs text-glass-primary opacity-0 transition-all group-hover:opacity-100">
         {label}
       </span>
     </motion.div>

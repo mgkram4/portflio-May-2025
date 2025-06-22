@@ -46,7 +46,7 @@ const TypewriterText = ({ text, delay = 0 }: TypewriterTextProps) => {
       {displayText}
       {isClient && shouldAnimate && currentIndex < text.length && (
         <motion.span
-          className="inline-block w-0.5 h-8 bg-muted-foreground ml-1" // Cursor color to muted-foreground
+          className="inline-block w-0.5 h-8 bg-secondary ml-1"
           animate={{ opacity: [1, 0, 1] }}
           transition={{ duration: 1, repeat: Infinity }}
         />
@@ -68,25 +68,25 @@ const StatCard = ({ icon: Icon, value, label, delay }: StatCardProps) => (
     animate={{ opacity: 1, y: 0, scale: 1 }}
     whileHover={{ scale: 1.05, y: -5 }}
     transition={{ delay, duration: 0.6, type: "spring", stiffness: 100 }}
-    className="group relative overflow-hidden"
+    className="group relative overflow-hidden glass-float"
   >
-    <div className={`relative bg-card backdrop-blur-xl border border-border rounded-3xl p-6 hover:border-primary/20 transition-all duration-500 text-center h-full`}>
+    <div className={`relative glass-card glass-hover p-6 text-center h-full`}>
       {/* Animated background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-muted/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-r from-glass-base to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
       
       {/* Floating particles effect */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-3 right-3 w-2 h-2 bg-muted/20 rounded-full animate-pulse" />
-        <div className="absolute bottom-4 left-4 w-1 h-1 bg-muted/30 rounded-full animate-ping" />
+        <div className="absolute top-3 right-3 w-2 h-2 bg-primary opacity-30 rounded-full animate-pulse" />
+        <div className="absolute bottom-4 left-4 w-1 h-1 bg-accent opacity-40 rounded-full animate-ping" />
       </div>
       
       <div className="relative z-10">
         <div className="mb-3 relative">
-          <Icon className="w-8 h-8 text-foreground mx-auto drop-shadow-lg" />
-          <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <Icon className="w-8 h-8 text-glass-primary mx-auto drop-shadow-lg" />
+          <div className="absolute inset-0 bg-primary opacity-20 blur-xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
         </div>
-        <div className="text-2xl font-black text-foreground mb-1 tracking-tight">{value}</div>
-        <div className="text-xs text-muted-foreground font-medium uppercase tracking-widest">{label}</div>
+        <div className="text-2xl font-black text-glass-primary mb-1 tracking-tight">{value}</div>
+        <div className="text-xs text-glass-muted font-medium uppercase tracking-widest">{label}</div>
       </div>
     </div>
   </motion.div>
@@ -143,36 +143,61 @@ export default function Hero() {
           animate="visible"
           className="space-y-8"
         >
-          {/* Main Title */}
-          <motion.div variants={itemVariants} className="space-y-4">
+          {/* Professional Header with Profile Picture */}
+          <motion.div variants={itemVariants} className="space-y-8">
+            {/* Profile Picture */}
             <motion.div 
-              className="inline-flex items-center space-x-2 px-6 py-3 bg-card/40 backdrop-blur-xl border border-border rounded-3xl text-muted-foreground text-sm font-medium mb-6"
+              className="relative mx-auto w-32 h-32 md:w-40 md:h-40"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="w-full h-full rounded-full glass-card p-1 shadow-glow">
+                <div className="w-full h-full rounded-full glass-subtle flex items-center justify-center overflow-hidden">
+                  {/* Placeholder - replace with actual image later */}
+                  <div className="w-full h-full bg-primary flex items-center justify-center">
+                    <span className="text-4xl md:text-5xl font-bold text-glass-primary">MG</span>
+                  </div>
+                </div>
+              </div>
+              {/* Status indicator */}
+              <div className="absolute bottom-2 right-2 w-6 h-6 bg-glow border-4 border-glass-border rounded-full animate-pulse glow-pulse"></div>
+            </motion.div>
+
+            <motion.div 
+              className="inline-flex items-center space-x-2 glass-card px-6 py-3 text-glass-primary text-sm font-medium mb-6 glass-hover"
               whileHover={{ scale: 1.05, y: -2 }}
             >
-              <Sparkles className="w-4 h-4" />
-              <span>Available for new opportunities</span>
+              <div className="w-2 h-2 bg-glow rounded-full animate-pulse"></div>
+              <span>🚀 Available for new opportunities • Open to relocation</span>
             </motion.div>
             
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-none">
-              <span className="block bg-gradient-to-r from-foreground via-muted-foreground to-foreground bg-clip-text text-transparent">
-                Mark
-              </span>
-              <span className="block bg-gradient-to-r from-muted-foreground via-muted-foreground to-foreground bg-clip-text text-transparent">
-                Garcia
-              </span>
-            </h1>
+            <div className="text-center space-y-4">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight">
+                <span className="block text-gradient-primary">
+                  Mark Garcia
+                </span>
+              </h1>
+              <div className="max-w-3xl mx-auto">
+                <p className="text-xl md:text-2xl text-glass-secondary font-light leading-relaxed">
+                  AI/ML Engineer & Full-Stack Developer
+                </p>
+                <p className="text-lg text-glass-muted mt-4 leading-relaxed">
+                  Published IEEE researcher with proven expertise in computer vision and production-scale web applications
+                </p>
+              </div>
+            </div>
           </motion.div>
 
           {/* Animated Role */}
-          <motion.div variants={itemVariants} className="text-xl md:text-3xl lg:text-4xl font-light text-muted-foreground">
+          <motion.div variants={itemVariants} className="text-xl md:text-3xl lg:text-4xl font-light text-glass-primary">
             <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8">
-              <div className="flex items-center space-x-3 px-8 py-4 bg-card/30 backdrop-blur-xl border border-border rounded-3xl hover:border-primary/20 transition-all duration-500">
-                <Brain className="w-8 h-8 text-muted-foreground" />
+              <div className="flex items-center space-x-3 glass-card glass-hover px-8 py-4">
+                <Brain className="w-8 h-8 text-primary" />
                 <TypewriterText text="ML Engineer" delay={500} />
               </div>
-              <span className="text-muted hidden md:block text-2xl">×</span>
-              <div className="flex items-center space-x-3 px-8 py-4 bg-card/30 backdrop-blur-xl border border-border rounded-3xl hover:border-primary/20 transition-all duration-500">
-                <Code className="w-8 h-8 text-muted-foreground" />
+              <span className="text-glass-muted hidden md:block text-2xl">×</span>
+              <div className="flex items-center space-x-3 glass-card glass-hover px-8 py-4">
+                <Code className="w-8 h-8 text-secondary" />
                 <TypewriterText text="Full-Stack Dev" delay={2000} />
               </div>
             </div>
@@ -181,14 +206,14 @@ export default function Hero() {
           {/* Description */}
           <motion.div 
             variants={itemVariants}
-            className="relative bg-card/40 backdrop-blur-xl border border-border rounded-3xl p-8 max-w-5xl mx-auto"
+            className="relative glass-card glass-hover p-8 max-w-5xl mx-auto"
           >
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-accent" />
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-secondary rounded-t-glass" />
+            <p className="text-lg md:text-xl text-glass-primary leading-relaxed">
               Specializing in{' '}
-              <span className="text-foreground font-semibold">computer vision</span> and{' '}
-              <span className="text-foreground font-semibold">biometric analysis</span> with{' '}
-              <span className="text-foreground font-bold">63%+ accuracy improvements</span>.
+              <span className="text-glass-primary font-semibold">computer vision</span> and{' '}
+              <span className="text-glass-primary font-semibold">biometric analysis</span> with{' '}
+              <span className="text-accent font-bold">63%+ accuracy improvements</span>.
               <br />
               Published researcher delivering end-to-end AI systems.
             </p>
@@ -225,39 +250,45 @@ export default function Hero() {
             />
           </motion.div>
 
-          {/* CTA Buttons */}
+          {/* Professional CTA Buttons */}
           <motion.div 
             variants={itemVariants}
             className="flex flex-col sm:flex-row gap-6 justify-center items-center"
           >
-            <motion.button 
-              className="group relative px-10 py-5 bg-gradient-to-r from-primary-foreground via-muted to-primary-foreground hover:from-muted hover:via-primary-foreground hover:to-muted text-primary font-bold rounded-3xl transition-all duration-500 shadow-2xl shadow-primary/25 hover:shadow-primary/40 overflow-hidden"
-              whileHover={{ scale: 1.05, y: -3 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-primary-foreground/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-              <span className="relative flex items-center space-x-3 text-lg">
-                <Link href="/projects">
-                  <span>View My Work</span>
-                </Link>
-                
-              </span>
-            </motion.button>
+            <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
+              <Link href="/contact" className="group relative px-10 py-5 bg-primary text-glass-primary font-bold rounded-glass transition-all duration-200 shadow-glow hover:shadow-glow overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-glass-base to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-glass-base to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                <span className="relative flex items-center space-x-3 text-lg">
+                  <Mail className="w-5 h-5 group-hover:animate-bounce" />
+                  <span>Schedule Interview</span>
+                  <span className="opacity-70 group-hover:opacity-100 transition-opacity">→</span>
+                </span>
+              </Link>
+            </motion.div>
             
             <motion.a 
               href="/placeholder-resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group px-10 py-5 bg-gradient-to-br from-card to-muted backdrop-blur-xl border border-border rounded-3xl hover:border-primary/20 text-muted hover:text-foreground font-bold rounded-3xl transition-all duration-500 hover:bg-primary/20"
+              download="Mark_Garcia_Resume.pdf"
+              className="group glass-strong glass-hover px-10 py-5 text-glass-primary font-bold rounded-glass transition-all duration-200"
               whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
             >
               <span className="flex items-center space-x-3 text-lg">
-                <Download className="w-5 h-5" />
+                <Download className="w-5 h-5 group-hover:animate-bounce" />
                 <span>Download Resume</span>
+                <span className="ml-2 text-xs glass-subtle px-2 py-1 rounded-glass text-glow">PDF</span>
               </span>
             </motion.a>
+
+            <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
+              <Link href="/projects" className="group glass-button px-8 py-4 text-glass-muted hover:text-glass-primary font-semibold rounded-glass transition-all duration-200">
+                <span className="flex items-center space-x-2">
+                  <span>View Portfolio</span>
+                  <span className="group-hover:translate-x-1 transition-transform">→</span>
+                </span>
+              </Link>
+            </motion.div>
           </motion.div>
 
           {/* Social Links */}
@@ -266,24 +297,24 @@ export default function Hero() {
             className="flex justify-center space-x-6"
           >
             {[
-              { icon: Github, href: "https://github.com/mgkram4", label: "GitHub", gradient: "from-card to-muted", border: "border-border", hover: "hover:border-primary/20 hover:bg-primary/20", iconColor: "text-muted", iconHoverColor: "group-hover:text-foreground" },
-              { icon: Linkedin, href: "https://www.linkedin.com/in/mark-garcia-mg18/", label: "LinkedIn", gradient: "from-muted to-card", border: "border-border", hover: "hover:border-primary/20 hover:bg-primary/20", iconColor: "text-muted", iconHoverColor: "group-hover:text-foreground" },
-              { icon: Mail, href: "mailto:mark.garcia4@laverne.edu", label: "Email", gradient: "from-card to-muted", border: "border-border", hover: "hover:border-primary/20 hover:bg-primary/20", iconColor: "text-muted", iconHoverColor: "group-hover:text-foreground" }
-            ].map(({ icon: Icon, href, label, gradient, border, hover, iconColor, iconHoverColor }, index) => (
+              { icon: Github, href: "https://github.com/mgkram4", label: "GitHub" },
+              { icon: Linkedin, href: "https://www.linkedin.com/in/mark-garcia-mg18/", label: "LinkedIn" },
+              { icon: Mail, href: "mailto:mark.garcia4@laverne.edu", label: "Email" }
+            ].map(({ icon: Icon, href, label }, index) => (
               <motion.a 
                 key={label}
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`group relative p-4 bg-gradient-to-br ${gradient} backdrop-blur-xl border ${border} rounded-3xl ${hover} transition-all duration-500`}
+                className="group relative glass-card glass-hover p-4 rounded-glass transition-all duration-200"
                 whileHover={{ scale: 1.1, y: -3 }}
                 whileTap={{ scale: 0.95 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 2 + index * 0.1 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl" />
-                <Icon className={`w-6 h-6 ${iconColor} ${iconHoverColor} transition-colors relative z-10`} />
+                <div className="absolute inset-0 bg-gradient-to-r from-glass-base to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-glass" />
+                <Icon className="w-6 h-6 text-secondary group-hover:text-glass-primary transition-colors relative z-10" />
               </motion.a>
             ))}
           </motion.div>

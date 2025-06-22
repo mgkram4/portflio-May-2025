@@ -25,30 +25,33 @@ const config = {
     },
     extend: {
       colors: {
+        // Legacy colors for compatibility
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+        
+        // Custom glassmorphism color palette
+        glass: {
+          base: 'rgba(255, 255, 255, 0.1)',
+          blur: 'rgba(255, 255, 255, 0.05)',
+          border: 'rgba(255, 255, 255, 0.2)',
         },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
+        primary: '#5F87D4',
+        secondary: '#9EC9F6',
+        accent: '#C0E2FF',
+        glow: '#6FC1FF',
+        darkGlass: 'rgba(20, 20, 20, 0.4)',
+        
+        // Legacy structured colors
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -59,7 +62,15 @@ const config = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      boxShadow: {
+        glow: '0 0 8px rgba(111, 193, 255, 0.5)',
+        soft: '0 4px 20px rgba(255, 255, 255, 0.1)',
+      },
+      backdropBlur: {
+        glass: '8px',
+      },
       borderRadius: {
+        glass: '1.25rem',
         lg: `var(--radius)`,
         md: `calc(var(--radius) - 2px)`,
         sm: "calc(var(--radius) - 4px)",

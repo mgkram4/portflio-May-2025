@@ -58,11 +58,11 @@ export default function Skills() {
     >
       <motion.div variants={itemVariants} className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-bold mb-4">
-          <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <span className="text-gradient-primary">
             My Tech Stack
           </span>
         </h2>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+        <p className="text-xl text-glass-secondary max-w-2xl mx-auto">
           A comprehensive toolkit spanning AI/ML, web development, and data science
         </p>
       </motion.div>
@@ -75,10 +75,10 @@ export default function Skills() {
               key={cat.CATEGORY_NAME}
               variants={itemVariants}
               onClick={() => setActiveTab(cat.CATEGORY_NAME)}
-              className={`px-6 py-3 mx-2 mb-4 rounded-full text-sm font-medium transition-all duration-300 ${
+              className={`px-6 py-3 mx-2 mb-4 rounded-glass text-sm font-medium transition-all duration-200 ${
                 activeTab === cat.CATEGORY_NAME
-                  ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-lg shadow-primary/25'
-                  : 'bg-card/50 text-muted-foreground hover:bg-muted/50 hover:text-foreground border border-border hover:border-primary/50'
+                  ? 'bg-primary text-glass-primary shadow-glow'
+                  : 'glass-button text-glass-muted hover:text-glass-primary'
               }`}
             >
               {cat.CATEGORY_NAME}
@@ -92,7 +92,7 @@ export default function Skills() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-card/30 backdrop-blur-sm rounded-2xl p-8 border border-border"
+          className="glass-card glass-hover p-8"
         >
           <motion.div 
             variants={containerVariants}
@@ -105,7 +105,7 @@ export default function Skills() {
                 key={skill}
                 variants={itemVariants}
                 whileHover={{ scale: 1.05, y: -2 }}
-                className="bg-gradient-to-br from-card/50 to-muted/50 backdrop-blur-sm text-foreground text-sm px-4 py-3 rounded-xl border border-border hover:border-primary/50 transition-all duration-300 text-center font-medium shadow-lg hover:shadow-primary/10"
+                className="glass-subtle glass-hover text-glass-primary text-sm px-4 py-3 rounded-glass transition-all duration-200 text-center font-medium"
               >
                 {skill}
               </motion.div>
@@ -119,17 +119,17 @@ export default function Skills() {
           className="mt-12 text-center"
         >
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl p-6 border border-primary/20">
-              <div className="text-3xl font-bold text-primary mb-2">5+</div>
-              <div className="text-muted-foreground">Years of Experience</div>
+            <div className="glass-card glass-hover p-6 transition-all duration-200">
+              <div className="text-3xl font-bold text-accent mb-2">5+</div>
+              <div className="text-glass-muted">Years of Experience</div>
             </div>
-            <div className="bg-gradient-to-br from-accent/10 to-primary/10 rounded-xl p-6 border border-accent/20">
-              <div className="text-3xl font-bold text-accent mb-2">20+</div>
-              <div className="text-muted-foreground">Technologies Mastered</div>
+            <div className="glass-card glass-hover p-6 transition-all duration-200">
+              <div className="text-3xl font-bold text-secondary mb-2">20+</div>
+              <div className="text-glass-muted">Technologies Mastered</div>
             </div>
-            <div className="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-xl p-6 border border-primary/20">
+            <div className="glass-card glass-hover p-6 transition-all duration-200">
               <div className="text-3xl font-bold text-primary mb-2">10+</div>
-              <div className="text-muted-foreground">Projects Completed</div>
+              <div className="text-glass-muted">Projects Completed</div>
             </div>
           </div>
         </motion.div>

@@ -5,7 +5,6 @@ import {
     Briefcase,
     ChevronDown,
     ChevronRight,
-    Code,
     Download,
     Github,
     Home,
@@ -13,9 +12,10 @@ import {
     Mail,
     Menu,
     Moon,
+    PenTool,
     Sun,
     User,
-    X,
+    X
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
@@ -77,13 +77,25 @@ const Navbar: FC = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="fixed top-0 left-0 right-0 z-40 flex h-16 items-center justify-between bg-card/80 backdrop-blur-md px-4 md:hidden border-b border-border"
+        className="fixed top-0 left-0 right-0 z-40 flex h-16 items-center justify-between glass-nav rounded-glass px-4 md:hidden"
       >
-        <Link href="/" className="flex items-center gap-2">
-          <Code className="h-8 w-8 text-primary" />
-          <span className="text-xl font-bold text-foreground">Mark Garcia</span>
+        <Link href="/" className="flex items-center gap-3 group">
+          {/* Professional Mobile Logo */}
+          <div className="relative w-8 h-8 glass-card p-0.5 group-hover:shadow-glow transition-all duration-200">
+            <div className="w-full h-full rounded-glass bg-primary flex items-center justify-center">
+              <span className="text-xs font-bold text-glass-primary">MG</span>
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-lg font-bold text-glass-primary group-hover:text-accent transition-colors">Mark Garcia</span>
+            <span className="text-xs text-glass-muted leading-none">AI/ML Engineer</span>
+          </div>
         </Link>
-        <motion.button onClick={toggleMobileMenu} className="text-foreground p-2" whileTap={{ scale: 0.9 }}>
+        <motion.button 
+          onClick={toggleMobileMenu} 
+          className="glass-button p-2" 
+          whileTap={{ scale: 0.9 }}
+        >
           <AnimatePresence mode="wait">
             <motion.div
               key={isMobileMenuOpen ? 'close' : 'open'}
@@ -92,7 +104,7 @@ const Navbar: FC = () => {
               exit={{ rotate: 90, opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMobileMenuOpen ? <X size={24} className="text-glass-primary" /> : <Menu size={24} className="text-glass-primary" />}
             </motion.div>
           </AnimatePresence>
         </motion.button>
@@ -106,7 +118,7 @@ const Navbar: FC = () => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="fixed top-16 left-0 right-0 z-30 bg-card p-4 md:hidden shadow-lg border-b border-border"
+            className="fixed top-16 left-0 right-0 z-30 glass-card p-4 md:hidden"
           >
             <NavContent setMobileMenuOpen={setMobileMenuOpen} isMobile={true} isSidebarOpen={true} />
           </motion.div>
@@ -118,7 +130,7 @@ const Navbar: FC = () => {
         initial={false}
         animate={{ width: isSidebarOpen ? 256 : 80 }}
         transition={{ duration: 0.3, ease: 'easeInOut' }}
-        className={`fixed top-0 left-0 z-50 hidden h-full bg-card text-card-foreground md:flex md:flex-col border-r border-border`}
+        className={`fixed top-0 left-0 z-50 hidden h-full glass-nav text-glass-primary md:flex md:flex-col`}
       >
         <SidebarHeader
           isSidebarOpen={isSidebarOpen}
@@ -146,7 +158,7 @@ interface SidebarHeaderProps {
   toggleSidebar: () => void;
 }
 const SidebarHeader: FC<SidebarHeaderProps> = ({ isSidebarOpen, toggleSidebar }) => (
-  <div className="flex items-center justify-between p-4 h-16 border-b border-border">
+  <div className="flex items-center justify-between p-4 h-16 border-b border-glass-border">
     <AnimatePresence>
     {isSidebarOpen && (
       <motion.div
@@ -155,15 +167,27 @@ const SidebarHeader: FC<SidebarHeaderProps> = ({ isSidebarOpen, toggleSidebar })
         exit={{ opacity: 0, x: -20 }}
         transition={{ duration: 0.2 }}
       >
-        <Link href="/" className="flex items-center gap-2">
-          <Code className="h-8 w-8 text-primary" />
-          <span className="text-xl font-bold text-foreground">Mark Garcia</span>
+        <Link href="/" className="flex items-center gap-3 group">
+          {/* Professional Sidebar Logo */}
+          <div className="relative w-10 h-10 glass-card p-0.5 group-hover:shadow-glow transition-all duration-200">
+            <div className="w-full h-full rounded-glass bg-primary flex items-center justify-center">
+              <span className="text-sm font-bold text-glass-primary">MG</span>
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-lg font-bold text-glass-primary group-hover:text-accent transition-colors">Mark Garcia</span>
+            <span className="text-xs text-glass-muted leading-none">AI/ML Engineer</span>
+          </div>
         </Link>
       </motion.div>
     )}
     </AnimatePresence>
-    <motion.button onClick={toggleSidebar} className="p-2 text-foreground" whileTap={{ scale: 0.9 }}>
-      {isSidebarOpen ? <ChevronDown /> : <ChevronRight />}
+    <motion.button 
+      onClick={toggleSidebar} 
+      className="glass-button p-2" 
+      whileTap={{ scale: 0.9 }}
+    >
+      {isSidebarOpen ? <ChevronDown className="text-glass-primary" /> : <ChevronRight className="text-glass-primary" />}
     </motion.button>
   </div>
 );
@@ -181,25 +205,35 @@ const NavLink: FC<NavLinkProps> = ({ href, icon, children, onClick, isSidebarOpe
   const isActive = pathname === href;
 
   return (
-    <motion.div variants={navItemVariants} whileHover={{ x: isSidebarOpen ? 5 : 0 }} className="w-full">
+    <motion.div variants={navItemVariants} whileHover={{ x: 2 }} className="w-full">
       <Link
         href={href}
         onClick={onClick}
-        className={`flex items-center p-3 rounded-lg transition-colors ${
-          isActive
-            ? "bg-primary text-primary-foreground"
-            : "text-muted-foreground hover:bg-muted hover:text-foreground"
-        } ${!isSidebarOpen && !isMobile ? "justify-center" : ""}`}
+        className={`flex items-center gap-3 ${isSidebarOpen ? 'px-4 py-3 mx-2' : 'p-3 mx-1 justify-center'} rounded-glass transition-all duration-200 relative group ${
+          isActive 
+            ? 'glass-active' 
+            : 'text-glass-muted hover:text-glass-primary glass-hover'
+        }`}
       >
-        {icon}
-        <AnimatePresence>
-          {(isSidebarOpen || isMobile) && <motion.span
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -10 }}
-            transition={{ duration: 0.2 }}
-            className="ml-4 whitespace-nowrap">{children}</motion.span>}
-        </AnimatePresence>
+        <div className={`flex-shrink-0 ${isActive ? 'text-white' : 'text-secondary group-hover:text-glass-primary'} transition-colors duration-200`}>
+          {icon}
+        </div>
+        {(isSidebarOpen || isMobile) && (
+          <motion.span
+            initial={isMobile ? { opacity: 1 } : { opacity: 0, x: -10 }}
+            animate={isMobile ? { opacity: 1 } : { opacity: 1, x: 0 }}
+            className="font-medium text-sm"
+          >
+            {children}
+          </motion.span>
+        )}
+        {isActive && (
+          <motion.div
+            layoutId="activeIndicator"
+            className={`absolute ${isSidebarOpen ? 'right-2' : 'right-1'} w-1 h-6 bg-glow rounded-full shadow-glow`}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          />
+        )}
       </Link>
     </motion.div>
   );
@@ -226,6 +260,7 @@ const NavContent: FC<NavContentProps> = ({ setMobileMenuOpen, isMobile, isSideba
       >
         <NavLink href="/" icon={<Home />} onClick={handleLinkClick} isSidebarOpen={isSidebarOpen} isMobile={isMobile}>Home</NavLink>
         <NavLink href="/projects" icon={<Briefcase />} onClick={handleLinkClick} isSidebarOpen={isSidebarOpen} isMobile={isMobile}>Projects</NavLink>
+        <NavLink href="/blog" icon={<PenTool />} onClick={handleLinkClick} isSidebarOpen={isSidebarOpen} isMobile={isMobile}>Blog</NavLink>
         <NavLink href="/about" icon={<User />} onClick={handleLinkClick} isSidebarOpen={isSidebarOpen} isMobile={isMobile}>About</NavLink>
         <NavLink href="/contact" icon={<Mail />} onClick={handleLinkClick} isSidebarOpen={isSidebarOpen} isMobile={isMobile}>Contact</NavLink>
         <motion.a 
@@ -233,18 +268,21 @@ const NavContent: FC<NavContentProps> = ({ setMobileMenuOpen, isMobile, isSideba
           download 
           onClick={handleLinkClick}
           variants={navItemVariants}
-          whileHover={{ x: isSidebarOpen ? 5 : 0 }}
-          className={`flex items-center p-3 rounded-lg transition-colors text-muted-foreground hover:bg-muted hover:text-foreground ${!isSidebarOpen && !isMobile ? "justify-center" : ""}`}
+          whileHover={{ x: 2 }}
+          className={`flex items-center gap-3 ${isSidebarOpen ? 'px-4 py-3 mx-2' : 'p-3 mx-1 justify-center'} rounded-glass transition-all duration-200 relative group text-glass-muted hover:text-glass-primary glass-hover`}
         >
-          <Download />
-          <AnimatePresence>
-            {(isSidebarOpen || isMobile) && <motion.span
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -10 }}
-              transition={{ duration: 0.2 }}
-              className="ml-4 whitespace-nowrap">Resume</motion.span>}
-          </AnimatePresence>
+          <div className="flex-shrink-0 text-secondary group-hover:text-glass-primary transition-colors duration-200">
+            <Download />
+          </div>
+          {(isSidebarOpen || isMobile) && (
+            <motion.span
+              initial={isMobile ? { opacity: 1 } : { opacity: 0, x: -10 }}
+              animate={isMobile ? { opacity: 1 } : { opacity: 1, x: 0 }}
+              className="font-medium text-sm"
+            >
+              Resume
+            </motion.span>
+          )}
         </motion.a>
       </motion.nav>
     )
@@ -276,34 +314,34 @@ const SidebarFooter: FC<SidebarFooterProps> = ({ isSidebarOpen }) => {
   }
 
   return (
-    <div className="border-t border-border p-4">
+    <div className="border-t border-glass-border p-4">
       <motion.div 
-        className="flex flex-col gap-4"
+        className={`flex flex-col ${isSidebarOpen ? 'gap-4' : 'gap-2'}`}
         initial="closed"
         animate={isSidebarOpen ? "open" : "closed"}
         variants={footerVariants}
       >
-        <motion.div variants={footerItemVariants} className={`flex items-center ${!isSidebarOpen ? "justify-center" : ""}`}>
+        <motion.div variants={footerItemVariants} className={`flex items-center ${!isSidebarOpen ? "justify-center mb-3" : "mb-3"}`}>
           <a
             href="https://github.com/mgkram4"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-foreground"
+            className="glass-button p-2 hover:shadow-glow transition-all duration-200"
           >
-            <Github />
+            <Github className="text-glass-primary" />
           </a>
-          {isSidebarOpen && <a href="https://github.com/mgkram4" target="_blank" rel="noopener noreferrer" className="ml-4 text-muted-foreground hover:text-foreground">GitHub</a>}
+          {isSidebarOpen && <a href="https://github.com/mgkram4" target="_blank" rel="noopener noreferrer" className="ml-4 text-glass-muted hover:text-glass-primary transition-colors">GitHub</a>}
         </motion.div>
-        <motion.div variants={footerItemVariants} className={`flex items-center ${!isSidebarOpen ? "justify-center" : ""}`}>
+        <motion.div variants={footerItemVariants} className={`flex items-center ${!isSidebarOpen ? "justify-center mb-3" : "mb-3"}`}>
           <a
             href="https://www.linkedin.com/in/markgarcia4/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-foreground"
+            className="glass-button p-2 hover:shadow-glow transition-all duration-200"
           >
-            <Linkedin />
+            <Linkedin className="text-glass-primary" />
           </a>
-          {isSidebarOpen && <a href="https://www.linkedin.com/in/markgarcia4/" target="_blank" rel="noopener noreferrer" className="ml-4 text-muted-foreground hover:text-foreground">LinkedIn</a>}
+          {isSidebarOpen && <a href="https://www.linkedin.com/in/markgarcia4/" target="_blank" rel="noopener noreferrer" className="ml-4 text-glass-muted hover:text-glass-primary transition-colors">LinkedIn</a>}
         </motion.div>
       </motion.div>
       <ClientOnly>
@@ -315,16 +353,16 @@ const SidebarFooter: FC<SidebarFooterProps> = ({ isSidebarOpen }) => {
         >
           <button
             onClick={toggleTheme}
-            className="flex w-full items-center gap-2 rounded-lg p-2 text-muted-foreground hover:bg-muted hover:text-foreground"
+            className={`glass-button ${isSidebarOpen ? 'w-full flex items-center gap-2' : 'flex items-center justify-center'} p-2 hover:shadow-glow transition-all duration-200`}
           >
-            {theme === "light" ? <Moon /> : <Sun />}
+            {theme === "light" ? <Moon className="text-glass-primary" /> : <Sun className="text-glass-primary" />}
             <AnimatePresence>
             {isSidebarOpen && <motion.span
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -10 }}
               transition={{ duration: 0.2 }}
-             className="ml-2 text-sm whitespace-nowrap">{theme === 'light' ? 'Dark' : 'Light'} Mode</motion.span>}
+             className="ml-2 text-sm whitespace-nowrap text-glass-primary">{theme === 'light' ? 'Dark' : 'Light'} Mode</motion.span>}
             </AnimatePresence>
           </button>
         </motion.div>
