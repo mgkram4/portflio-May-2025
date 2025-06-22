@@ -33,20 +33,41 @@ export default function ContactForm() {
     event.preventDefault();
     setIsSubmitting(true);
     
-    // Basic form data extraction
-    const formData = new FormData(event.currentTarget);
-    const data = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      message: formData.get('message'),
-    };
-    console.log("Form data:", data);
+    try {
+      // Extract form data
+      const formData = new FormData(event.currentTarget);
+      const data = {
+        name: formData.get('name') as string,
+        email: formData.get('email') as string,
+        subject: formData.get('subject') as string,
+        message: formData.get('message') as string,
+        company: formData.get('company') as string || '', // Optional field
+      };
 
-    // Simulate form submission delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsSubmitting(false);
-    setSubmitted(true);
+      // Submit to API
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setSubmitted(true);
+        // Reset form
+        event.currentTarget.reset();
+      } else {
+        throw new Error(result.error || 'Failed to send message');
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      alert('Failed to send message. Please try again or contact me directly at mark.garcia4@laverne.edu');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -115,6 +136,19 @@ export default function ContactForm() {
           />
         </motion.div>
       </div>
+
+      <motion.div variants={itemVariants} className="mb-6">
+        <label htmlFor="company" className="block text-sm font-medium text-glass-muted mb-2">
+          Company/Organization
+        </label>
+        <input 
+          type="text" 
+          name="company" 
+          id="company" 
+          className="w-full glass-input px-4 py-3 text-glass-primary placeholder-glass-muted"
+          placeholder="Your company or organization (optional)"
+        />
+      </motion.div>
 
       <motion.div variants={itemVariants} className="mb-6">
         <label htmlFor="subject" className="block text-sm font-medium text-glass-muted mb-2">
