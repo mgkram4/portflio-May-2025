@@ -1,27 +1,23 @@
 "use client";
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 
 const skillCategories = [
   {
-    CATEGORY_NAME: "Programming Languages",
-    SKILLS_LIST: ["Python", "JavaScript", "TypeScript", "SQL", "C++", "MATLAB", "Dart"]
+    name: "Languages",
+    skills: ["Python", "TypeScript", "JavaScript", "SQL", "C++", "Dart"]
   },
   {
-    CATEGORY_NAME: "ML/AI Frameworks",
-    SKILLS_LIST: ["PyTorch", "TensorFlow", "Keras", "Scikit-learn", "MediaPipe", "OpenCV", "YOLO", "SAM", "LangChain", "Hugging Face"]
+    name: "ML & Vision",
+    skills: ["PyTorch", "TensorFlow", "scikit-learn", "Keras", "YOLOv8", "MediaPipe", "OpenCV", "Transformers", "CNNs", "LSTM", "MiDaS", "SAM", "SMPL-X"]
   },
   {
-    CATEGORY_NAME: "Computer Vision",
-    SKILLS_LIST: ["Object Detection", "Image Segmentation", "Pose Estimation", "Facial Recognition", "Biometric Analysis", "Physiological Sensing"]
+    name: "Web & DevOps",
+    skills: ["Next.js", "React", "Flask", "FastAPI", "Flutter", "Node.js", "Git", "Vercel", "AWS", "GCP", "Firebase", "PostgreSQL", "Tailwind CSS", "Framer Motion"]
   },
   {
-    CATEGORY_NAME: "Data Science",
-    SKILLS_LIST: ["Pandas", "NumPy", "SciPy", "Matplotlib", "Seaborn", "Jupyter Notebooks", "Data Visualization", "Statistical Modeling", "Hypothesis Testing"]
-  },
-  {
-    CATEGORY_NAME: "Web / DevOps",
-    SKILLS_LIST: ["Next.js", "React", "FastAPI", "Flask", "Node.js", "HTML", "CSS", "Docker", "Kubernetes", "Google Cloud Platform (GCP)", "AWS", "Vercel", "Git", "GitHub Actions", "CI/CD"]
+    name: "Data & LLMs",
+    skills: ["Pandas", "NumPy", "Matplotlib", "Seaborn", "Langchain", "OpenAI API", "LLaMA"]
   }
 ];
 
@@ -30,7 +26,7 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.05,
     },
   },
 };
@@ -40,100 +36,76 @@ const itemVariants = {
   visible: {
     y: 0,
     opacity: 1,
-    transition: {
-      duration: 0.4,
-    },
   },
 };
 
 export default function Skills() {
-  const [activeTab, setActiveTab] = useState(skillCategories[0].CATEGORY_NAME);
+  const [activeTab, setActiveTab] = useState(skillCategories[0].name);
 
   return (
-    <motion.section 
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-      className="py-20"
-    >
-      <motion.div variants={itemVariants} className="text-center mb-16">
-        <h2 className="text-4xl md:text-5xl font-bold mb-4">
-          <span className="text-gradient-primary">
-            My Tech Stack
-          </span>
-        </h2>
-        <p className="text-xl text-glass-secondary max-w-2xl mx-auto">
-          A comprehensive toolkit spanning AI/ML, web development, and data science
+    <div className="max-w-7xl mx-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        className="text-center mb-16"
+      >
+        <h2 className="text-4xl lg:text-5xl font-bold mb-4"><span className="text-gradient">Technical Skills</span></h2>
+        <p className="text-lg text-glass-muted max-w-3xl mx-auto">
+          A versatile toolkit for building intelligent, high-performance applications.
         </p>
       </motion.div>
 
-      <motion.div variants={itemVariants} className="max-w-6xl mx-auto">
-        {/* Tab Navigation */}
-        <div className="flex flex-wrap justify-center mb-12">
+      <div className="flex justify-center mb-12">
+        <div className="flex items-center gap-2 bg-dark-elevated p-2 rounded-full border border-glass-border">
           {skillCategories.map((cat) => (
-            <motion.button
-              key={cat.CATEGORY_NAME}
-              variants={itemVariants}
-              onClick={() => setActiveTab(cat.CATEGORY_NAME)}
-              className={`px-6 py-3 mx-2 mb-4 rounded-glass text-sm font-medium transition-all duration-200 ${
-                activeTab === cat.CATEGORY_NAME
-                  ? 'bg-primary text-glass-primary shadow-glow'
-                  : 'glass-button text-glass-muted hover:text-glass-primary'
+            <button
+              key={cat.name}
+              onClick={() => setActiveTab(cat.name)}
+              className={`relative px-4 sm:px-6 py-2 rounded-full text-sm font-semibold transition-colors ${
+                activeTab === cat.name ? 'text-white' : 'text-glass-muted hover:text-glass-primary'
               }`}
             >
-              {cat.CATEGORY_NAME}
-            </motion.button>
+              {activeTab === cat.name && (
+                <motion.div
+                  layoutId="active-skill-tab"
+                  className="absolute inset-0 bg-primary rounded-full z-0"
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                />
+              )}
+              <span className="relative z-10">{cat.name}</span>
+            </button>
           ))}
         </div>
+      </div>
 
-        {/* Skills Grid */}
-        <motion.div 
+      <AnimatePresence mode="wait">
+        <motion.div
           key={activeTab}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="glass-card glass-hover p-8"
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+          className="glass-card p-8 md:p-12"
         >
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 text-center"
           >
-            {skillCategories.find(cat => cat.CATEGORY_NAME === activeTab)?.SKILLS_LIST?.map((skill) => (
+            {skillCategories.find(cat => cat.name === activeTab)?.skills.map((skill) => (
               <motion.div
                 key={skill}
                 variants={itemVariants}
-                whileHover={{ scale: 1.05, y: -2 }}
-                className="glass-subtle glass-hover text-glass-primary text-sm px-4 py-3 rounded-glass transition-all duration-200 text-center font-medium"
+                className="bg-dark-elevated text-glass-secondary text-sm font-medium px-4 py-3 rounded-lg border border-transparent hover:border-glass-border transition-colors"
               >
                 {skill}
               </motion.div>
             ))}
           </motion.div>
         </motion.div>
-
-        {/* Skills Summary */}
-        <motion.div 
-          variants={itemVariants}
-          className="mt-12 text-center"
-        >
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <div className="glass-card glass-hover p-6 transition-all duration-200">
-              <div className="text-3xl font-bold text-accent mb-2">5+</div>
-              <div className="text-glass-muted">Years of Experience</div>
-            </div>
-            <div className="glass-card glass-hover p-6 transition-all duration-200">
-              <div className="text-3xl font-bold text-secondary mb-2">20+</div>
-              <div className="text-glass-muted">Technologies Mastered</div>
-            </div>
-            <div className="glass-card glass-hover p-6 transition-all duration-200">
-              <div className="text-3xl font-bold text-primary mb-2">10+</div>
-              <div className="text-glass-muted">Projects Completed</div>
-            </div>
-          </div>
-        </motion.div>
-      </motion.div>
-    </motion.section>
+      </AnimatePresence>
+    </div>
   );
 } 

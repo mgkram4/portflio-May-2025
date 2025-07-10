@@ -1,7 +1,8 @@
 import { Inter } from 'next/font/google';
 import React from 'react';
+import LayeredBackground from "./components/LayeredBackground";
 import Navbar from "./components/Navbar";
-import { ThemeProvider } from "./components/ThemeProvider";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import './globals.css';
 
 const inter = Inter({
@@ -205,10 +206,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 "addressCountry": "US"
               },
               "sameAs": [
-                "https://github.com/mgkram4",
-                "https://linkedin.com/in/mark-garcia-ai",
-                "https://twitter.com/mgkram4",
-                "https://scholar.google.com/citations?user=YOUR_SCHOLAR_ID"
+                "https://www.linkedin.com/in/mark-a-garcia/",
+                "https://github.com/mark-a-garcia",
+                "https://twitter.com/mgkram4"
               ],
               "knowsAbout": [
                 "Artificial Intelligence",
@@ -354,17 +354,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="bg-background text-foreground" suppressHydrationWarning>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <div className="flex flex-col md:flex-row min-h-screen">
-            <Navbar />
-            <main className="flex-1 p-8 pt-24 md:pt-8 relative">
-              <div className="absolute inset-0 bg-glass-blur backdrop-blur-glass-light"></div>
-              <div className="relative z-10">
-                {children}
-              </div>
-            </main>
-          </div>
+      <body>
+        <ThemeProvider>
+          <LayeredBackground />
+          <Navbar />
+          <main className="relative z-10 mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8">
+            {children}
+          </main>
         </ThemeProvider>
       </body>
     </html>

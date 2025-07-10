@@ -1,86 +1,131 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Download, Eye, Github, Mail, Star } from 'lucide-react';
+import { ArrowRight, Download, Eye, Github, Mail } from 'lucide-react';
 import Link from 'next/link';
 import Hero from './components/Hero';
 import Skills from './components/Skills';
 
-const ProjectCard = ({ shortTitle, title, category, description, githubUrl, liveDemoUrl, featured = false }: { 
-  shortTitle: string; 
+const allProjects = [
+    {
+        title: "BIO-SCAN: Real-Time Biometric Analysis",
+        shortTitle: "BIO-SCAN",
+        shortDescription: "An end-to-end pipeline for real-time biometric analysis using a suite of advanced computer vision models.",
+        category: "AI/ML Research",
+        imageUrl: "/images/ai-ml-default.svg",
+        techStack: ["YOLOv8", "MediaPipe", "MiDaS", "SAM", "SMPL-X", "Python", "OpenCV"],
+        detailedDescription: {
+            situation: "The need for non-invasive, real-time health monitoring in sports and fitness contexts.",
+            task: "Develop a comprehensive biometric pipeline capable of extracting vital signs and performing detailed pose analysis from video streams.",
+            action: "Architected the 'BIO-SCAN' system, integrating YOLOv8 for detection, MediaPipe for landmarks, MiDaS for depth, and SMPL-X for 3D human model reconstruction. Implemented PPG signal extraction for vitals.",
+            result: "The system formed the basis of a research paper accepted to IEEE ICHI 2025 and is part of a pending university patent.",
+        },
+        paperUrl: "#",
+        featured: true,
+    },
+    {
+        title: "Perfect Pose: AI-Powered Fitness Coach",
+        shortTitle: "Perfect Pose",
+        shortDescription: "An intelligent system providing real-time feedback on exercise form by upgrading a baseline model with a high-accuracy Transformer.",
+        category: "AI/ML",
+        imageUrl: "/images/pose-analysis.svg",
+        githubUrl: "#",
+        techStack: ["Transformers", "PyTorch", "OpenCV", "Flask", "REST API"],
+        detailedDescription: {
+            situation: "Existing pose estimation models for fitness applications lacked the required accuracy and real-time feedback capabilities.",
+            task: "Improve the accuracy of a pose estimation pipeline for a community-led fitness application.",
+            action: "Upgraded the ML pipeline with a custom Transformer architecture, featuring an 8-head attention mechanism.",
+            result: "Increased model accuracy from a baseline of 29% to 94%, enabling precise, real-time feedback for users.",
+        },
+        liveDemoUrl: "#",
+        featured: true,
+    },
+    {
+        title: "Vista Pacific Capital - Financing Platform",
+        shortTitle: "Fintech Platform",
+        shortDescription: "A complete overhaul of a legacy financing portal, focusing on performance, user experience, and modern web technologies.",
+        category: "Web Dev",
+        imageUrl: "/images/finance-platform.svg",
+        githubUrl: "https://github.com/mgkram4/Vista-Pacific-Capital",
+        liveDemoUrl: "https://www.vistapacificcapital.com/",
+        techStack: ["React", "Next.js", "Tailwind CSS", "Vercel", "Framer Motion"],
+        detailedDescription: {
+            situation: "The company's existing financing portal was slow, had a poor user experience, and was difficult to maintain.",
+            task: "Revamp the entire frontend, optimize for performance, and implement new features like secure file uploads and PDF generation.",
+            action: "Rebuilt the platform from the ground up using Next.js and Tailwind CSS. Implemented significant performance optimizations, reducing JS execution time and optimizing assets.",
+            result: "Improved the Google Lighthouse Score from 45 to 93 (a 107% gain), cut FCP by 70%, and eliminated Total Blocking Time, resulting in a vastly improved user experience.",
+        },
+        featured: true, // Let's feature this one for demonstration
+    }
+];
+
+
+const ProjectCard = ({ 
+  title, 
+  category, 
+  description, 
+  githubUrl, 
+  liveDemoUrl,
+  techStack,
+  featured = false 
+}: { 
   title: string; 
   category: string; 
   description: string;
   githubUrl?: string; 
   liveDemoUrl?: string;
+  techStack?: string[];
   featured?: boolean;
 }) => (
   <motion.div 
-    className={`glass-card glass-hover flex flex-col h-full overflow-hidden ${featured ? 'md:col-span-2 lg:col-span-1' : ''}`}
+    className={`glass-card glass-hover flex flex-col h-full overflow-hidden p-6 ${featured ? 'lg:col-span-2' : ''}`}
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, amount: 0.3 }}
-    whileHover={{ y: -5, scale: 1.02 }}
-    transition={{ duration: 0.5 }}
+    whileHover={{ y: -5, transform: 'scale(1.02)' }}
+    transition={{ duration: 0.3 }}
   >
-    <div className="h-48 bg-gradient-to-br from-primary to-secondary flex items-center justify-center p-6 relative overflow-hidden">
-      {featured && (
-        <div className="absolute top-4 right-4 glass-subtle px-3 py-1 rounded-glass text-xs font-medium text-accent">
-          Featured
+    <div className="flex-grow flex flex-col">
+      <div className="flex justify-between items-start mb-4">
+        <h3 className="font-bold text-xl text-glass-primary">{title}</h3>
+        {featured && (
+          <div className="bg-glass-surface border border-glass-border px-3 py-1 rounded-full text-xs font-medium text-accent -mt-1 -mr-1">
+            Featured
+          </div>
+        )}
+      </div>
+      <p className="text-sm text-accent mb-4 font-medium">{category}</p>
+      <p className="text-glass-muted text-sm mb-6 flex-grow">{description}</p>
+      
+      {techStack && (
+        <div className="flex flex-wrap gap-2 mb-6">
+          {techStack.map((tech) => (
+            <span key={tech} className="bg-dark-elevated text-glass-secondary text-xs font-medium px-3 py-1 rounded-full">
+              {tech}
+            </span>
+          ))}
         </div>
       )}
-      <h2 className="text-3xl font-bold text-glass-primary text-center">{shortTitle}</h2>
-    </div>
-    <div className="p-6 flex-grow flex flex-col">
-      <h3 className="font-semibold text-xl mb-2 text-glass-primary">{title}</h3>
-      <p className="text-sm text-accent mb-3 font-medium">{category}</p>
-      <p className="text-glass-muted text-sm mb-4 flex-grow">{description}</p>
-      <div className="flex justify-between items-center">
-        <div className="flex gap-3">
+
+      <div className="flex justify-between items-center mt-auto pt-4 border-t border-glass-border">
+        <div className="flex gap-2">
           {githubUrl && (
             <Link href={githubUrl} target="_blank" rel="noopener noreferrer" 
-              className="glass-button p-2">
-              <Github size={20} className="text-glass-primary" />
+              className="hover:bg-glass-hover rounded-full p-2 transition-colors">
+              <Github size={18} className="text-glass-secondary" />
             </Link>
           )}
           {liveDemoUrl && (
             <Link href={liveDemoUrl} target="_blank" rel="noopener noreferrer" 
-              className="glass-button p-2">
-              <Eye size={20} className="text-glass-primary" />
+              className="hover:bg-glass-hover rounded-full p-2 transition-colors">
+              <Eye size={18} className="text-glass-secondary" />
             </Link>
           )}
         </div>
-        <Link href="/projects" className="text-accent hover:text-secondary text-sm font-medium flex items-center gap-1 transition-colors duration-200">
-          Learn More <ArrowRight size={14} />
+        <Link href="/projects" className="text-accent hover:text-white text-sm font-medium flex items-center gap-1 transition-colors duration-200">
+          Details <ArrowRight size={14} />
         </Link>
       </div>
-    </div>
-  </motion.div>
-);
-
-const TestimonialCard = ({ name, role, company, text, rating }: {
-  name: string;
-  role: string;
-  company: string;
-  text: string;
-  rating: number;
-}) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.9 }}
-    whileInView={{ opacity: 1, scale: 1 }}
-    viewport={{ once: true }}
-    whileHover={{ y: -5 }}
-    className="glass-card glass-hover p-6 h-full transition-all duration-200"
-  >
-    <div className="flex mb-4">
-      {[...Array(rating)].map((_, i) => (
-        <Star key={i} className="w-4 h-4 text-glow fill-current" />
-      ))}
-    </div>
-    <p className="text-glass-primary mb-4 italic">&ldquo;{text}&rdquo;</p>
-    <div>
-      <div className="font-semibold text-glass-primary">{name}</div>
-      <div className="text-sm text-glass-muted">{role} at {company}</div>
     </div>
   </motion.div>
 );
@@ -89,12 +134,12 @@ const StatCard = ({ number, label, description }: { number: string; label: strin
   <motion.div 
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
+    viewport={{ once: true, amount: 0.5 }}
     whileHover={{ scale: 1.05 }}
-    className="text-center glass-card glass-hover p-6 transition-all duration-200"
+    className="text-center glass-card glass-hover p-6 transition-all duration-300 hover:shadow-glow-md"
   >
-    <div className="text-3xl font-bold text-accent mb-2">{number}</div>
-    <div className="font-semibold text-glass-primary mb-1">{label}</div>
+    <div className="text-5xl font-bold text-gradient mb-2">{number}</div>
+    <div className="font-semibold text-glass-primary mb-2">{label}</div>
     <div className="text-sm text-glass-muted">{description}</div>
   </motion.div>
 );
@@ -102,166 +147,108 @@ const StatCard = ({ number, label, description }: { number: string; label: strin
 export default function HomePage() {
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
       <Hero />
 
       {/* Stats Section */}
-      <section className="py-20 px-8 relative">
-        <div className="absolute inset-0 bg-glass-blur backdrop-blur-glass-light"></div>
-        <div className="max-w-6xl mx-auto relative z-10">
+      <section className="py-24 sm:py-32 px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.3 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold mb-4 text-gradient-primary">Impact & Achievements</h2>
-            <p className="text-lg text-glass-secondary max-w-2xl mx-auto">
-              Proven track record of delivering results in AI research and software development
+            <h2 className="text-4xl lg:text-5xl font-bold mb-4"><span className="text-gradient">Impact &amp; Achievements</span></h2>
+            <p className="text-lg text-glass-muted max-w-3xl mx-auto">
+              A proven track record of delivering results in AI research and software development.
             </p>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <StatCard 
-              number="63%+" 
-              label="Accuracy Improvement" 
-              description="In biometric analysis systems" 
+              number="94%" 
+              label="Model Accuracy" 
+              description="Achieved in pose estimation with a custom Transformer model" 
             />
             <StatCard 
-              number="223%" 
-              label="Performance Boost" 
-              description="Mobile app optimization" 
+              number="107%" 
+              label="Lighthouse Score Gain" 
+              description="From optimizing a legacy financial services platform" 
             />
             <StatCard 
-              number="100+" 
-              label="Developers Taught" 
-              description="Through workshops & courses" 
+              number="2" 
+              label="Publications" 
+              description="Accepted papers at IEEE ICHI 2025 and SAM'25" 
             />
             <StatCard 
-              number="IEEE" 
-              label="Published Research" 
-              description="Computer vision & AI" 
+              number="2x" 
+              label="AI Awards" 
+              description="Recognized for innovative LLM and Computer Vision projects" 
             />
           </div>
         </div>
       </section>
 
       {/* Skills Section */}
-      <section className="py-20 px-8">
+      <section className="py-24 sm:py-32 px-6 lg:px-8">
         <Skills />
       </section>
 
       {/* Featured Projects Section */}
-      <section className="py-20 px-8 relative">
-        <div className="absolute inset-0 bg-glass-blur backdrop-blur-glass-light"></div>
-        <div className="max-w-6xl mx-auto relative z-10">
+      <section className="py-24 sm:py-32 px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.3 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold mb-4 text-gradient-primary">Featured Projects</h2>
-            <p className="text-lg text-glass-secondary max-w-2xl mx-auto">
-              A showcase of my latest work in AI/ML, web development, and research
+            <h2 className="text-4xl lg:text-5xl font-bold mb-4"><span className="text-gradient">Featured Projects</span></h2>
+            <p className="text-lg text-glass-muted max-w-3xl mx-auto">
+              A showcase of my latest work in AI/ML, web development, and research.
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            <ProjectCard
-              shortTitle="Pose Analysis"
-              title="Intelligent Perfect Pose and Health Analysis"
-              category="AI Research"
-              description="Advanced computer vision system for real-time pose estimation and biometric analysis, achieving 63%+ accuracy improvements over existing methods."
-              githubUrl="#"
-              liveDemoUrl="#"
-              featured={true}
-            />
-            <ProjectCard
-              shortTitle="Farm Vision"
-              title="Agricultural Intelligence Platform"
-              category="AI/ML"
-              description="Award-winning agricultural AI system for crop monitoring and yield prediction using computer vision and machine learning."
-              githubUrl="https://github.com/mgkram4/Hack-4-Humanity-2025"
-              liveDemoUrl="https://devpost.com/software/farmer-vision"
-            />
-            <ProjectCard
-              shortTitle="Vista Capital"
-              title="Financial Services Platform"
-              category="Full-Stack Web"
-              description="High-performance fintech platform with 223% mobile performance improvement and 65% reduction in load times."
-              githubUrl="https://github.com/mgkram4/Vista-Pacific-Capital"
-              liveDemoUrl="https://www.vistapacificcapital.com/"
-            />
+            {allProjects.filter(p => p.featured).map(project => (
+              <ProjectCard
+                key={project.title}
+                title={project.title}
+                category={project.category}
+                description={project.shortDescription}
+                githubUrl={project.githubUrl}
+                liveDemoUrl={project.liveDemoUrl}
+                featured={project.featured}
+                techStack={project.techStack}
+              />
+            ))}
           </div>
 
-          <div className="text-center">
+          <div className="text-center mt-16">
             <Link href="/projects">
               <motion.button 
                 whileHover={{ scale: 1.05 }} 
                 whileTap={{ scale: 0.95 }}
-                className="glass-strong glass-hover px-8 py-3 rounded-glass font-semibold flex items-center gap-2 mx-auto text-glass-primary transition-all duration-200"
+                className="bg-primary hover:bg-secondary text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 shadow-lg shadow-primary/20 hover:shadow-secondary/30"
               >
-                View All Projects <ArrowRight size={20} />
+                View All Projects <ArrowRight size={20} className="inline -mt-1" />
               </motion.button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-20 px-8">
-        <div className="max-w-6xl mx-auto">
+      {/* Contact Section */}
+      <section className="py-24 sm:py-32 px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold mb-4 text-gradient-primary">What People Say</h2>
-            <p className="text-lg text-glass-secondary max-w-2xl mx-auto">
-              Feedback from colleagues, mentors, and collaborators
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <TestimonialCard
-              name="Dr. Sarah Johnson"
-              role="Research Supervisor"
-              company="University of La Verne"
-              text="Mark's work on biometric analysis has been exceptional. His innovative approach led to significant breakthroughs in our research."
-              rating={5}
-            />
-            <TestimonialCard
-              name="Alex Chen"
-              role="CTO"
-              company="Vista Pacific Capital"
-              text="Mark delivered outstanding results, improving our platform's performance by over 200%. His technical expertise is remarkable."
-              rating={5}
-            />
-            <TestimonialCard
-              name="Maria Rodriguez"
-              role="Student"
-              company="Coding Minds Academy"
-              text="Mark is an incredible instructor who made complex AI concepts accessible. His teaching helped our team win the hackathon!"
-              rating={5}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 px-8 relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-20 backdrop-blur-glass-heavy"></div>
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.3 }}
             className="space-y-8"
           >
-            <h2 className="text-4xl font-bold text-gradient-primary">Ready to Work Together?</h2>
-            <p className="text-lg text-glass-secondary max-w-2xl mx-auto">
+            <h2 className="text-4xl lg:text-5xl font-bold"><span className="text-gradient">Ready to Work Together?</span></h2>
+            <p className="text-lg text-glass-muted max-w-3xl mx-auto">
                I&apos;m actively seeking new opportunities in AI/ML engineering and full-stack development. 
                Let&apos;s discuss how I can contribute to your team&apos;s success.
              </p>
@@ -271,7 +258,7 @@ export default function HomePage() {
                 <motion.button 
                   whileHover={{ scale: 1.05 }} 
                   whileTap={{ scale: 0.95 }}
-                  className="bg-primary text-glass-primary px-8 py-3 rounded-glass font-semibold flex items-center gap-2 shadow-glow hover:shadow-glow transition-all duration-200"
+                  className="w-full sm:w-auto bg-primary hover:bg-secondary text-white px-8 py-3 rounded-full font-semibold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300"
                 >
                   <Mail size={20} />
                   Get In Touch
@@ -283,7 +270,7 @@ export default function HomePage() {
                 download="Mark_Garcia_Resume.pdf"
                 whileHover={{ scale: 1.05 }} 
                 whileTap={{ scale: 0.95 }}
-                className="glass-strong glass-hover text-glass-primary px-8 py-3 rounded-glass font-semibold flex items-center gap-2 transition-all duration-200"
+                className="w-full sm:w-auto glass-card glass-hover px-8 py-3 font-semibold flex items-center justify-center gap-2"
               >
                 <Download size={20} />
                 Download Resume
