@@ -44,7 +44,7 @@ export default function Hero() {
         className="relative z-10 text-center max-w-4xl mx-auto"
       >
         <motion.div variants={itemVariants}>
-          <div className="inline-flex items-center space-x-2 glass-card px-4 py-2 text-glass-secondary text-sm font-medium mb-8">
+          <div className="inline-flex items-center space-x-2 glass-card px-4 py-2 text-muted-foreground text-sm font-medium mb-8">
             <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
             <span>Available for new opportunities</span>
           </div>
@@ -59,7 +59,7 @@ export default function Hero() {
         
         <motion.p 
           variants={itemVariants}
-          className="text-lg md:text-xl text-glass-secondary max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
         >
           Full-Stack AI Engineer specializing in computer vision, real-time biometric systems, and building scalable, intelligent solutions from the ground up.
         </motion.p>
@@ -95,10 +95,10 @@ export default function Hero() {
           variants={itemVariants}
           className="flex justify-center gap-6"
         >
-          <a href="https://github.com/mgkram4" target="_blank" rel="noopener noreferrer" className="text-glass-muted hover:text-primary transition-colors">
+          <a href="https://github.com/mgkram4" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
             <Github size={24} />
           </a>
-          <a href="https://linkedin.com/in/mark-garcia-cs" target="_blank" rel="noopener noreferrer" className="text-glass-muted hover:text-primary transition-colors">
+          <a href="https://linkedin.com/in/mark-garcia-cs" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
             <Linkedin size={24} />
           </a>
         </motion.div>

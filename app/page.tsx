@@ -87,7 +87,7 @@ const ProjectCard = ({
   >
     <div className="flex-grow flex flex-col">
       <div className="flex justify-between items-start mb-4">
-        <h3 className="font-bold text-xl text-glass-primary">{title}</h3>
+        <h3 className="font-bold text-xl text-foreground">{title}</h3>
         {featured && (
           <div className="bg-glass-surface border border-glass-border px-3 py-1 rounded-full text-xs font-medium text-accent -mt-1 -mr-1">
             Featured
@@ -95,34 +95,34 @@ const ProjectCard = ({
         )}
       </div>
       <p className="text-sm text-accent mb-4 font-medium">{category}</p>
-      <p className="text-glass-muted text-sm mb-6 flex-grow">{description}</p>
+      <p className="text-muted-foreground text-sm mb-6 flex-grow">{description}</p>
       
       {techStack && (
         <div className="flex flex-wrap gap-2 mb-6">
           {techStack.map((tech) => (
-            <span key={tech} className="bg-dark-elevated text-glass-secondary text-xs font-medium px-3 py-1 rounded-full">
+            <span key={tech} className="bg-muted text-muted-foreground text-xs font-medium px-3 py-1 rounded-full">
               {tech}
             </span>
           ))}
         </div>
       )}
 
-      <div className="flex justify-between items-center mt-auto pt-4 border-t border-glass-border">
+      <div className="flex justify-between items-center mt-auto pt-4 border-t border-border">
         <div className="flex gap-2">
           {githubUrl && (
             <Link href={githubUrl} target="_blank" rel="noopener noreferrer" 
               className="hover:bg-glass-hover rounded-full p-2 transition-colors">
-              <Github size={18} className="text-glass-secondary" />
+              <Github size={18} className="text-muted-foreground" />
             </Link>
           )}
           {liveDemoUrl && (
             <Link href={liveDemoUrl} target="_blank" rel="noopener noreferrer" 
               className="hover:bg-glass-hover rounded-full p-2 transition-colors">
-              <Eye size={18} className="text-glass-secondary" />
+              <Eye size={18} className="text-muted-foreground" />
             </Link>
           )}
         </div>
-        <Link href="/projects" className="text-accent hover:text-white text-sm font-medium flex items-center gap-1 transition-colors duration-200">
+        <Link href="/projects" className="text-accent hover:text-primary text-sm font-medium flex items-center gap-1 transition-colors duration-200">
           Details <ArrowRight size={14} />
         </Link>
       </div>
@@ -139,8 +139,8 @@ const StatCard = ({ number, label, description }: { number: string; label: strin
     className="text-center glass-card glass-hover p-6 transition-all duration-300 hover:shadow-glow-md"
   >
     <div className="text-5xl font-bold text-gradient mb-2">{number}</div>
-    <div className="font-semibold text-glass-primary mb-2">{label}</div>
-    <div className="text-sm text-glass-muted">{description}</div>
+    <div className="font-semibold text-foreground mb-2">{label}</div>
+    <div className="text-sm text-muted-foreground">{description}</div>
   </motion.div>
 );
 
@@ -159,7 +159,7 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl lg:text-5xl font-bold mb-4"><span className="text-gradient">Impact &amp; Achievements</span></h2>
-            <p className="text-lg text-glass-muted max-w-3xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
               A proven track record of delivering results in AI research and software development.
             </p>
           </motion.div>
@@ -204,7 +204,7 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl lg:text-5xl font-bold mb-4"><span className="text-gradient">Featured Projects</span></h2>
-            <p className="text-lg text-glass-muted max-w-3xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
               A showcase of my latest work in AI/ML, web development, and research.
             </p>
           </motion.div>
@@ -248,7 +248,7 @@ export default function HomePage() {
             className="space-y-8"
           >
             <h2 className="text-4xl lg:text-5xl font-bold"><span className="text-gradient">Ready to Work Together?</span></h2>
-            <p className="text-lg text-glass-muted max-w-3xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
                I&apos;m actively seeking new opportunities in AI/ML engineering and full-stack development. 
                Let&apos;s discuss how I can contribute to your team&apos;s success.
              </p>

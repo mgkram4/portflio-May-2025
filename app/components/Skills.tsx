@@ -51,19 +51,19 @@ export default function Skills() {
         className="text-center mb-16"
       >
         <h2 className="text-4xl lg:text-5xl font-bold mb-4"><span className="text-gradient">Technical Skills</span></h2>
-        <p className="text-lg text-glass-muted max-w-3xl mx-auto">
+        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
           A versatile toolkit for building intelligent, high-performance applications.
         </p>
       </motion.div>
 
       <div className="flex justify-center mb-12">
-        <div className="flex items-center gap-2 bg-dark-elevated p-2 rounded-full border border-glass-border">
+        <div className="flex items-center gap-2 bg-glass-surface border border-glass-border p-2 rounded-full backdrop-blur-sm">
           {skillCategories.map((cat) => (
             <button
               key={cat.name}
               onClick={() => setActiveTab(cat.name)}
               className={`relative px-4 sm:px-6 py-2 rounded-full text-sm font-semibold transition-colors ${
-                activeTab === cat.name ? 'text-white' : 'text-glass-muted hover:text-glass-primary'
+                activeTab === cat.name ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               {activeTab === cat.name && (
@@ -98,7 +98,7 @@ export default function Skills() {
               <motion.div
                 key={skill}
                 variants={itemVariants}
-                className="bg-dark-elevated text-glass-secondary text-sm font-medium px-4 py-3 rounded-lg border border-transparent hover:border-glass-border transition-colors"
+                className="bg-muted/50 text-muted-foreground text-sm font-medium px-4 py-3 rounded-lg border border-border hover:border-primary/30 hover:bg-muted/70 transition-colors"
               >
                 {skill}
               </motion.div>

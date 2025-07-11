@@ -1,8 +1,8 @@
+import { ThemeProvider } from 'next-themes';
 import { Inter } from 'next/font/google';
 import React from 'react';
 import LayeredBackground from "./components/LayeredBackground";
 import Navbar from "./components/Navbar";
-import { ThemeProvider } from "./contexts/ThemeContext";
 import './globals.css';
 
 const inter = Inter({
@@ -355,7 +355,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <ThemeProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={true}
+          disableTransitionOnChange={false}
+        >
           <LayeredBackground />
           <Navbar />
           <main className="relative z-10 mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8">

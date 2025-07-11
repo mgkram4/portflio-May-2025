@@ -35,7 +35,7 @@ const Navbar = () => {
     <>
       <motion.header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'bg-dark-base/80 backdrop-blur-lg shadow-md' : 'bg-transparent'
+          isScrolled ? 'bg-background/80 backdrop-blur-lg shadow-md' : 'bg-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -46,9 +46,9 @@ const Navbar = () => {
                 whileHover={{ scale: 1.05 }}
               >
                 <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">M</span>
+                  <span className="text-primary-foreground font-bold text-lg">M</span>
                 </div>
-                <span className="text-xl font-bold text-glass-primary hidden sm:block">Mark Garcia</span>
+                <span className="text-xl font-bold text-foreground hidden sm:block">Mark Garcia</span>
               </motion.div>
             </Link>
 
@@ -65,7 +65,7 @@ const Navbar = () => {
               <div className="md:hidden">
                 <motion.button
                   onClick={toggleMobileMenu}
-                  className="p-2 rounded-md text-glass-primary"
+                  className="p-2 rounded-md text-foreground hover:bg-glass-hover"
                   whileTap={{ scale: 0.9 }}
                 >
                   <AnimatePresence mode="wait">
@@ -95,7 +95,7 @@ const Navbar = () => {
             exit={{ opacity: 0, y: -20 }}
             className="fixed top-20 left-0 right-0 z-40 md:hidden"
           >
-            <div className="bg-dark-elevated/95 backdrop-blur-lg mx-4 rounded-lg shadow-xl border border-glass-border">
+            <div className="glass-card mx-4 shadow-xl">
               <nav className="flex flex-col p-4">
                 {navLinks.map((link) => (
                   <Link
@@ -104,8 +104,8 @@ const Navbar = () => {
                     onClick={() => setMobileMenuOpen(false)}
                     className={`px-4 py-3 rounded-md text-lg font-medium transition-colors ${
                       pathname === link.href
-                        ? 'bg-primary text-white'
-                        : 'text-glass-secondary hover:bg-glass-hover hover:text-glass-primary'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'text-muted-foreground hover:bg-glass-hover hover:text-foreground'
                     }`}
                   >
                     {link.label}
@@ -130,7 +130,7 @@ const NavLink = ({ href, label, currentPath }: { href: string; label: string; cu
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        <span className={`relative z-10 transition-colors ${isActive ? 'text-white' : 'text-glass-secondary hover:text-glass-primary'}`}>
+        <span className={`relative z-10 transition-colors ${isActive ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`}>
           {label}
         </span>
         {isActive && (
@@ -147,11 +147,20 @@ const NavLink = ({ href, label, currentPath }: { href: string; label: string; cu
 
 const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="w-10 h-10" />; // Placeholder to prevent layout shift
+  }
 
   return (
     <motion.button
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      className="p-2 rounded-full text-glass-primary bg-glass-surface hover:bg-glass-hover"
+      className="p-2 rounded-full text-foreground bg-glass-surface hover:bg-glass-hover border border-glass-border"
       whileTap={{ scale: 0.9 }}
       whileHover={{ scale: 1.1 }}
     >

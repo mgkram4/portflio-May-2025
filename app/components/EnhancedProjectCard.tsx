@@ -46,29 +46,29 @@ export default function EnhancedProjectCard({ project }: EnhancedProjectCardProp
             className="object-cover"
           />
         ) : (
-          <div className="w-full h-full bg-dark-elevated flex items-center justify-center">
-            <span className="text-glass-muted">No Preview</span>
+          <div className="w-full h-full bg-muted flex items-center justify-center">
+            <span className="text-muted-foreground">No Preview</span>
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-dark-elevated to-transparent" />
-        <span className="absolute top-4 left-4 bg-dark-elevated/80 text-glass-primary text-xs font-medium px-3 py-1 rounded-full backdrop-blur-sm border border-glass-border">
+        <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
+        <span className="absolute top-4 left-4 bg-background/80 text-foreground text-xs font-medium px-3 py-1 rounded-full backdrop-blur-sm border border-border">
           {project.category}
         </span>
       </div>
 
       <div className="p-6 flex flex-col flex-grow">
-        <h3 className="text-xl font-bold text-glass-primary mb-2">{project.title}</h3>
-        <p className="text-glass-muted text-sm mb-4 flex-grow">{project.shortDescription}</p>
+        <h3 className="text-xl font-bold text-foreground mb-2">{project.title}</h3>
+        <p className="text-muted-foreground text-sm mb-4 flex-grow">{project.shortDescription}</p>
 
         <div className="mb-4">
-          <h4 className="text-xs font-semibold uppercase text-glass-muted tracking-wider mb-2">
+          <h4 className="text-xs font-semibold uppercase text-muted-foreground tracking-wider mb-2">
             Tech Stack
           </h4>
           <div className="flex flex-wrap gap-2">
             {project.techStack.map((tech) => (
               <span
                 key={tech}
-                className="bg-dark-elevated text-glass-secondary text-xs font-medium px-2.5 py-1 rounded-full"
+                className="bg-muted text-muted-foreground text-xs font-medium px-2.5 py-1 rounded-full"
               >
                 {tech}
               </span>
@@ -76,7 +76,7 @@ export default function EnhancedProjectCard({ project }: EnhancedProjectCardProp
           </div>
         </div>
         
-        <div className="mt-auto pt-4 border-t border-glass-border flex justify-end gap-2">
+        <div className="mt-auto pt-4 border-t border-border flex justify-end gap-2">
             {project.githubUrl && (
                 <ActionButton href={project.githubUrl} icon={Github} label="GitHub" />
             )}
@@ -96,7 +96,7 @@ export default function EnhancedProjectCard({ project }: EnhancedProjectCardProp
 const ActionButton = ({ href, icon: Icon, label }: { href: string; icon: React.ElementType; label: string }) => (
     <Link href={href} passHref target="_blank" rel="noopener noreferrer">
         <motion.div
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-dark-elevated hover:bg-glass-hover border border-glass-border text-glass-secondary hover:text-glass-primary transition-colors"
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted hover:bg-muted/70 border border-border text-muted-foreground hover:text-foreground transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
         >
@@ -104,4 +104,4 @@ const ActionButton = ({ href, icon: Icon, label }: { href: string; icon: React.E
             <span className="text-sm font-medium">{label}</span>
         </motion.div>
     </Link>
-); 
+);

@@ -96,7 +96,7 @@ const AboutPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-lg md:text-xl text-glass-secondary max-w-3xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
           >
             I&apos;m a Full-Stack AI Engineer passionate about building intelligent systems that solve real-world problems. My expertise lies at the intersection of computer vision, machine learning, and scalable web development.
           </motion.p>
@@ -118,8 +118,8 @@ const AboutPage = () => {
                 <div className="bg-primary/10 p-3 rounded-lg mb-6">
                   <item.icon className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold text-glass-primary mb-3">{item.title}</h3>
-                <p className="text-glass-muted flex-grow">{item.description}</p>
+                <h3 className="text-xl font-bold text-foreground mb-3">{item.title}</h3>
+                <p className="text-muted-foreground flex-grow">{item.description}</p>
               </motion.div>
             ))}
           </div>
@@ -142,7 +142,7 @@ const AboutPage = () => {
                   <div className="hidden sm:flex w-1/2">
                     {index % 2 === 0 && <TimelineCard item={item} />}
                   </div>
-                  <div className="z-10 bg-dark-base p-2 rounded-full border-2 border-primary">
+                  <div className="z-10 bg-background p-2 rounded-full border-2 border-primary">
                     <item.icon className="h-6 w-6 text-primary" />
                   </div>
                   <div className="w-full sm:w-1/2 sm:pl-8 pl-8">
@@ -165,8 +165,8 @@ const AboutPage = () => {
                         <GraduationCap className="h-8 w-8 text-primary" />
                     </div>
                     <div>
-                        <h3 className="text-xl font-bold text-glass-primary">{edu.institution}</h3>
-                        <p className="text-glass-muted">{edu.degree}</p>
+                        <h3 className="text-xl font-bold text-foreground">{edu.institution}</h3>
+                        <p className="text-muted-foreground">{edu.degree}</p>
                     </div>
                 </div>
                 <p className="text-right text-sm font-medium text-accent">{edu.period}</p>
@@ -178,7 +178,7 @@ const AboutPage = () => {
         {/* CTA */}
         <section className="text-center py-16">
           <h2 className="text-3xl font-bold mb-4">Interested in working together?</h2>
-          <p className="text-glass-muted mb-8 max-w-xl mx-auto">I&apos;m always open to discussing new projects, creative ideas, or opportunities to be part of an ambitious team.</p>
+          <p className="text-muted-foreground mb-8 max-w-xl mx-auto">I&apos;m always open to discussing new projects, creative ideas, or opportunities to be part of an ambitious team.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link href="/contact" passHref>
               <motion.button 
@@ -210,9 +210,9 @@ const AboutPage = () => {
 const TimelineCard = ({ item }: { item: TimelineItem }) => (
     <div className="glass-card p-6">
       <p className="text-sm text-accent mb-2">{item.date}</p>
-      <h3 className="text-lg font-bold text-glass-primary">{item.title}</h3>
-      <p className="text-sm text-glass-muted mb-4">{item.company}</p>
-      <p className="text-sm text-glass-muted">{item.description}</p>
+      <h3 className="text-lg font-bold text-foreground">{item.title}</h3>
+      <p className="text-sm text-muted-foreground mb-4">{item.company}</p>
+      <p className="text-sm text-muted-foreground">{item.description}</p>
     </div>
 );
 

@@ -39,7 +39,7 @@ const PublicationsPage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
-                    className="text-lg md:text-xl text-glass-secondary max-w-3xl mx-auto leading-relaxed"
+                    className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
                 >
                     A collection of my published research in peer-reviewed journals and conferences.
                 </motion.p>

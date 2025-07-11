@@ -87,7 +87,7 @@ const ContactPage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
-                    className="text-lg md:text-xl text-glass-secondary max-w-3xl mx-auto leading-relaxed"
+                    className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
                 >
                     Ready to discuss AI/ML projects, research collaborations, or new opportunities? I&apos;d love to hear from you.
                 </motion.p>
@@ -95,7 +95,7 @@ const ContactPage = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                 <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}>
-                    <h2 className="text-3xl font-bold text-glass-primary mb-8">Contact Form</h2>
+                    <h2 className="text-3xl font-bold text-foreground mb-8">Contact Form</h2>
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <InputField id="name" label="Name" value={formData.name} onChange={handleChange} required />
@@ -111,7 +111,7 @@ const ContactPage = () => {
                                 onChange={handleChange}
                                 required
                                 rows={5}
-                                className="w-full bg-dark-elevated border border-glass-border rounded-lg p-3 text-glass-primary focus:ring-2 focus:ring-primary focus:outline-none transition-all"
+                                className="w-full glass-input"
                                 placeholder="Tell me about your project..."
                             />
                         </div>

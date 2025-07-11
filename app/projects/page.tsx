@@ -109,20 +109,20 @@ const ProjectsPage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
-                    className="text-lg md:text-xl text-glass-secondary max-w-3xl mx-auto leading-relaxed"
+                    className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
                 >
                     A curated collection of my work in AI/ML research, full-stack development, and data-driven applications.
                 </motion.p>
             </header>
 
             <div className="flex justify-center mb-12">
-                <div className="flex items-center gap-2 bg-dark-elevated p-2 rounded-full border border-glass-border">
+                <div className="flex items-center gap-2 bg-glass-surface border border-glass-border p-2 rounded-full backdrop-blur-sm">
                 {categories.map(category => (
                     <button
                         key={category}
                         onClick={() => setActiveFilter(category)}
                         className={`relative px-4 sm:px-6 py-2 rounded-full text-sm font-semibold transition-colors ${
-                            activeFilter === category ? 'text-white' : 'text-glass-muted hover:text-glass-primary'
+                            activeFilter === category ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
                         }`}
                     >
                     {activeFilter === category && (
